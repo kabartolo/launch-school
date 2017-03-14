@@ -1,0 +1,3 @@
+Adding first line of text
+Another example of writing to a file.
+A new line of textWriting to files in Ruby is simple.

@@ -1,0 +1,17 @@
+x = 0
+3.times do
+  x += 1
+end
+puts x
+
+Solution: This outputs 3.
+
+y = 0
+3.times do
+  y += 1
+  x = y
+end
+puts x
+
+Solution: This gives an error that x is undefined 
+because x is declared within the scope of the do block and is not available to the global scope.

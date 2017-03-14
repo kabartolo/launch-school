@@ -1,0 +1,7 @@
+x = "hi there"
+my_hash = {x: "some value"}
+my_hash2 = {x => "some value"}
+
+Solution:
+The first takes x as a symbol => {:x => "some value"}
+The second takes x as a variable and makes its value the key => {"hi there" => "some value"}

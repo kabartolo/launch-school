@@ -1,0 +1,6 @@
+NameError: undefined local variable or method `shoes' for main:Object
+  from (irb):3
+  from /usr/local/rvm/rubies/ruby-2.0.0-rc2/bin/irb:16:in `<main>'
+
+
+Solution: This error message tells us a variable or method "shoes" cannot be referenced where it is being called. It is either out of scope or it doesn't exist at all.

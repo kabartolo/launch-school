@@ -1,0 +1,39 @@
+# Exercise 2
+
+def execute(&block)
+  block
+end
+
+execute { puts "Hello from inside the execute method!" }
+
+Solution:
+
+Returns a Proc object. 
+(from book: the block is never activated with .call)
+
+# Exercise 3
+
+Exception handling prevents the program from exiting when an error occurs and may perform some action before allowing the program to continue running.
+
+# Exercise 4
+
+def execute(&block)
+  block.call # solution
+end
+
+execute { puts "Hello from inside the execute method!" }
+
+# Exercise 5
+
+def execute(block)
+  block.call
+end
+
+execute { puts "Hello from inside the execute method!" }
+
+=> block.rb1:in `execute': wrong number of arguments (0 for 1) (ArgumentError)
+from test.rb:5:in `<main>'
+
+Solution: 
+
+The block parameter in execute is missing an ampersand. It's interpreted as a regular parameter instead of a block and the program looks for an argument when execute is called below.
