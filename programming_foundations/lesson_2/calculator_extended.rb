@@ -1,6 +1,6 @@
 # 101 Lesson 2 (14-15 March 2017)
 # Assignment: Calculator Bonus Features
-# Did not refactor original Launch School code except
+# NOTE: Did not refactor original Launch School code except
 # where required by an exercise
 
 require 'yaml'
@@ -28,9 +28,11 @@ def valid_number?(num)
 end
 
 # 2.
-# matches pos/neg integers, floats, and (most?) edge cases
+# Matches pos/neg integers, floats, and edge cases
+# including -0 or 0, -00 or 00, -0. or 0. and -.0 or .0
+# This allows answers such as NaN and +/-Infinity
 def number?(num)
-  /^-*\d+\.?\d*$/.match(num)
+  /^-*\d+\.?\d*$/.match.num || /^-*\d*\.?\d+$/.match.num
 end
 
 # 3.
