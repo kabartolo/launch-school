@@ -1,0 +1,76 @@
+Notes following problem-solving process
+Easy 1: Exercise 3: List of Digits
+
+Problem:
+Write a method that takes one argument, a positive integer, and returns a list of the digits in the number.
+
+Examples:
+puts digit_list(12345) == [1, 2, 3, 4, 5]
+puts digit_list(7) == [7]
+puts digit_list(375290) == [3, 7, 5, 2, 9, 0]
+puts digit_list(444) == [4, 4, 4]
+
+all => true
+
+input: 
+positive integer
+
+output: 
+array of single digits in that integer
+
+edge cases:
+repeated digits?
+digits in array are in same order as in the number?
+string, negative num, float => convert to integer
+if nil? => return nil
+
+test cases:
+puts digit_list(12345) == [1, 2, 3, 4, 5]
+puts digit_list(7) == [7]
+puts digit_list(375290) == [3, 7, 5, 2, 9, 0]
+puts digit_list(444) == [4, 4, 4]
+puts digit_list(nil) == nil
+puts digit_list(-1) == [1]
+puts digit_list(30.5) == [3, 0]
+puts digit_list(0) == [0]
+puts digit_list('4') == [4]
+puts digit_list('x') == nil
+
+data structures:
+-number => string
+-array
+
+algorithm:
+- split the number
+- add each digit to an array
+- (make sure it's an array of integers)
+
+abstraction:
+- convert given number into string
+  - to_s
+- split the string into an array of digits in string format
+  - split
+- map each string in the array to integers
+  - map: s => s.to_i
+
+pseudeocode:
+
+START
+
+Given positive integer called "number"
+
+SET number_string = number.to_s
+SET array_of_strings = number_string.split('')
+SET array_of_digits = []
+SET iterator = 0
+
+WHILE iterator < array_of_strings.length
+  SET digit = array_of_strings[iterator].to_i
+  push digit to array_of_digits
+
+  iterator = iterator + 1
+
+RETURN array_of_digits
+
+END
+  
