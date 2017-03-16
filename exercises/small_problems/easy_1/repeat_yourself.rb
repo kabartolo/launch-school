@@ -1,6 +1,6 @@
 # Easy 1: 1. Repeat Yourself
-# Write a method that takes two arguments, a string and a 
-# positive integer, and prints the string as many times as the 
+# Write a method that takes two arguments, a string and a
+# positive integer, and prints the string as many times as the
 # integer indicates.
 
 # Assumptions:
@@ -11,8 +11,8 @@
 def repeat(string, num)
   return if !string || !num
 
-  num.times do |i|
-    puts string    
+  num.times do
+    puts string
   end
 end
 
@@ -26,11 +26,11 @@ puts
 puts "=>Print 'Hello' -1 times (should do nothing)"
 repeat('Hello', -1)
 puts
-puts "=>Print empty string 2 times"
+puts '=>Print empty string 2 times'
 repeat('', 2)
 puts
-puts "=>nil string: Return without printing"
+puts '=>nil string: Return without printing'
 repeat(nil, 2)
 puts
-puts "=>nil num: Return without printing"
+puts '=>nil num: Return without printing'
 repeat('Hello', nil)
