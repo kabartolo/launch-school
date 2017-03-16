@@ -1,0 +1,61 @@
+Notes following problem-solving process
+Easy 1: 2. Odd
+
+Write a method that takes one argument in the form of an integer or a float; 
+this argument may be either positive or negative. This method should check if a 
+number is odd, returning true if its absolute value is odd. You may assume that 
+only integers are passed in as arguments.
+
+Examples:
+
+puts is_odd?(2)    # => false
+puts is_odd?(5)    # => true
+puts is_odd?(-17)  # => true
+puts is_odd?(-8)   # => false
+
+Keep in mind that you're not allowed to use #odd? or #even? in your solution.
+
+input: 
+positive or negative integer
+
+output: 
+true/false
+
+rules: 
+- if number % 2 == 0, then it's even
+- if number % 2 == 1, then it's odd
+- this works for negative numbers
+
+edge cases:
+- assume only integers given
+- what about 0? => treat as positive since 0 % 2 = 0, and 0 is technically not odd
+
+test cases:
+
+puts is_odd?(2)
+puts is_odd?(5)
+puts is_odd?(-17)
+puts is_odd?(-8)
+puts is_odd?(0)
+
+data structures:
+number 
+
+algorithm:
+- if the absolute value modulo 2 is 1
+ - return true
+- else
+ - return false
+
+pseudeocode:
+
+START
+
+Given positive or negative integer "num"
+
+IF num % 2 == 1
+  RETURN true
+ELSE
+  RETURN false
+
+END
