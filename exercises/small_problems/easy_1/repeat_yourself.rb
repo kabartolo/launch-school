@@ -1,4 +1,5 @@
-# Easy 1: 1. Repeat Yourself
+# Easy 1: Exercise 1: Repeat Yourself (16 March 2017)
+
 # Write a method that takes two arguments, a string and a
 # positive integer, and prints the string as many times as the
 # integer indicates.
