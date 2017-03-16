@@ -1,0 +1,58 @@
+Notes following problem-solving process
+Easy 1: 1. Repeat Yourself
+
+Write a method that takes two arguments, a string and a 
+positive integer, and prints the string as many times as the 
+integer indicates.
+
+Example:
+repeat('Hello', 3)
+=> 
+Hello
+Hello
+Hello
+
+
+input: 
+-string
+-positive integer n
+-need to valide?
+
+output: 
+-print string n times
+-each repeat is on a new line
+
+edge cases:
+empty string, nil string, negative or 0 number, nil number
+
+test cases:
+
+repeat('Hello', 3)
+repeat('Hello', 0)
+repeat('Hello', -1)
+repeat('', 2)
+repeat(nil, 2)
+repeat('Hello', nil)
+
+
+data structures:
+string => string
+num => iterator
+
+algorithm:
+- make an iterator from the number (array?)
+- iterate n times (Ruby option: use n.times to iterate n times)
+  - puts the string each iteration 
+
+pseudeocode:
+START
+Given string "string" and positive integer "num"
+
+SET iterator = 0
+
+WHILE iterator < num
+  PRINT string + "\n"
+
+  iterator = iterator + 1
+
+END
