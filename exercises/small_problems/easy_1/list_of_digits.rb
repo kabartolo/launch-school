@@ -12,6 +12,7 @@
 
 def digit_list(num)
   # Return nil if num is nil or a string that cannot be converted to an integer
+  # Misses edge case '0'
   return if !num || num.to_i.zero? && !num.zero?
 
   num = num.to_i.abs
