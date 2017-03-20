@@ -1,0 +1,50 @@
+Notes following problem-solving process
+Easy 1: Exercise 5: Reverse It (Part 1)
+
+Problem:
+Write a method that takes one argument, a string, and returns the same string with the words in reverse order.
+
+Examples:
+puts reverse_sentence('') == ''
+puts reverse_sentence('Hello World') == 'World Hello'
+puts reverse_sentence('Reverse these words') == 'words these Reverse'
+
+
+input: 
+- string
+
+output: 
+- string
+
+edge cases:
+-empty string
+-nil
+- strings with one word
+  - return that word
+
+test cases:
+puts reverse_sentence('') == ''
+puts reverse_sentence('Hello World') == 'World Hello'
+puts reverse_sentence('Reverse these words') == 'words these Reverse'
+puts reverse_sentence('one') == 'one'
+
+data structures:
+- string, array
+
+abstraction:
+- given string
+  - split the string into an array of words divided by a space, #split(' ')
+  - reverse that array
+  - join the array with a space, #join(' ')
+- return new string (original not mutated)
+
+pseudeocode:
+START
+
+Given string
+
+SET array = string.split(' ')
+SET array = array.reverse
+SET new_string = array.join(' ')
+
+PRINT new_string
