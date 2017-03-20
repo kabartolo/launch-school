@@ -1,0 +1,73 @@
+Easy 1: Exercise 4: How Many?
+
+Problem: Write a method that counts the number of occurrences of each element in a given array.
+
+Examples:
+vehicles = ['car', 'car', 'truck', 'car', 'SUV', 'truck', 'motorcycle', 'motorcycle', 'car', 'truck']
+
+count_occurrences(vehicles)
+
+car => 4
+truck => 3
+SUV => 1
+motorcycle => 2
+
+input: 
+- array
+output: 
+- hash (print each element with its count)
+
+edge cases:
+- empty array
+- nil array element
+
+test cases:
+count_occurrences([])
+count_occurrences([nil, nil, 2, 3])
+count_occurrences(nil)
+
+data structures:
+- array, hash
+
+algorithm:
+- for each item in array
+  - if item in result, result[item] += 1
+  - else add item to result
+  - DO NOT mutate array while iterating
+- return result
+
+abstraction:
+- set result hash
+- iterate through given array (#each)
+  - for each item
+    - if item in result
+      - result[item] += 1
+    - else
+      - result[item] == 0
+- iterate through result (#each |key, value|)
+  - for each item
+    - print item and the number of occurrences
+
+pseudeocode:
+START
+
+Given array of items
+SET result = {}
+
+SET iterator = 0
+WHILE iterator < array.length
+  SET item = current item in array
+  if item in result
+    result[item] += 1
+  else
+    result[item] == 0
+
+  iterator += 1
+
+SET iterator = 0
+WHILE iterator < result.length
+  SET item = current key of result
+  SET count = current value of result
+  PRINT item => count
+  
+END
