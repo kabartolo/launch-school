@@ -22,7 +22,7 @@ def get_message(message, language)
 end
 
 # 1.
-# not used
+# not used in program
 def valid_number?(num)
   num.to_i.to_s == num.to_s
 end
@@ -30,10 +30,15 @@ end
 # 2.
 # Matches pos/neg integers, floats, and edge cases
 # including -0 or 0, -00 or 00, -0. or 0. and -.0 or .0
-# This allows answers such as NaN and +/-Infinity
+# (these will all be converted to 0 in the program)
 def number?(num)
-  /^-*\d+\.?\d*$/.match.num || /^-*\d*\.?\d+$/.match.num
+  /^-?\d+(\.\d+)?$/.match(num) || /^-?\d*\.?\d+$/.match(num)
 end
+
+# A more sensible method (requires at least one digit before the decimal
+# and at least one after if it exists)
+def number?(num)
+  /^-?\d+(\.\d+)?$/.match(num)
 
 # 3.
 # My original solution was adding return after each "then" but we
