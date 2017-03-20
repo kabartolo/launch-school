@@ -1,0 +1,119 @@
+# 101 Lesson 2 (17 March 2017)
+# Assignment: Mortgage/Car Loan Calculator
+
+input: 
+  string of an integer or float: principal
+  string of an integer or float: annual_interest_rate (50% not 0.5)
+  string of an integer or float: duration_years
+
+calculate:
+  float: monthly_interest_rate
+  float: duration_months
+
+output:
+  float to 2 decimals: monthly_payment
+
+rules:
+  -APR to monthly interest rate
+    - divide by 12
+  - Loan duration in years to months
+    - multiply by 12
+  - Formula for monthly payment: 
+      m = p * (j / (1 - (1 + j)**(-n)))
+
+      m = monthly payment
+      p = loan amount
+      j = monthly interest rate
+      n = loan duration in months
+
+edge cases:
+- don't accept any negative values or 0 or floats like "3."
+- do accept values less than 1 and floats like ".3"
+
+test cases:
+v# puts "Test Cases should all return true"
+# puts "valid_input?"
+# puts valid_input?('-1.5').nil?
+# puts valid_input?('-3').nil?
+# puts valid_input?('0') == false
+# puts valid_input?('3') == true
+# puts valid_input?('240000302') == true
+# puts valid_input?('0.4') == true
+# puts valid_input?('.4') == true
+# puts valid_input?('3.').nil?
+# puts valid_input?('four').nil?
+
+# puts
+# puts "valid_percentage?"
+# puts valid_percentage?(101) == false
+# puts valid_percentage?(100) == true
+# puts valid_percentage?(400) == false
+# puts valid_percentage?(0.5) == true
+# puts valid_percentage?(2.5) == true
+# puts valid_percentage?(3) == true
+# puts valid_percentage?(0) == false
+# puts valid_percentage?(-1) == false
+
+# puts
+# puts "calculate_monthly_pmt"
+# puts calculate_monthly_pmt(5000, 4.5 / 12 / 100, 5 * 12).round(2) == 93.22
+# puts calculate_monthly_pmt(50000, 14.5 / 12 / 100, 25 * 12).round(2) == 621.08
+# puts calculate_monthly_pmt(0.5, 0.1 / 12 / 100, 900 * 12).round(2) == 0.00
+
+
+data structures:
+- float (rounded to 2 decimal points at printing)
+- integer
+
+algorithm:
+- input loop:
+  - ask user for input
+  - validate input
+  - break if valid
+  - ask again if not
+
+abstraction:
+- get principal, apr and term in years from user
+  - input loop
+- SET monthly_percentage_rate
+  - convert_to_monthly(annual_percentage_rate)
+- SET duration_months
+  - convert_to_monthly(duration_years)
+- SET monthly_payment
+  - calculate_monthly_payment
+- return monthly_payment
+
+pseudeocode:
+
+START
+
+WHILE true
+  GET the loan_amt from user
+  SET loan_amt = input from user
+
+  IF valid input
+    break
+
+  PRINT feedback
+
+WHILE true
+  GET the APR from user
+  SET apr = input from user
+
+  IF valid input && apr is valid percentage
+    break
+
+  PRINT feedback
+
+WHILE true
+  GET the loan duration in years from user
+  SET term_years = input from user
+
+  IF valid input
+    break
+
+  PRINT feedback
+
+SET monthly_payment = calculate monthly payment
+
+PRINT monthly_payment
