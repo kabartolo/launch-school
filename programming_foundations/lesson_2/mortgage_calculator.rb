@@ -32,7 +32,7 @@ def print_result(input)
 end
 
 def format_two_decimals(number)
-  format('%.2f', number.round(2))
+  format('%.2f', number)
 end
 
 def get_info(ask_message, error_message)
@@ -53,10 +53,9 @@ def get_apr(ask_message, error_message)
   end
 end
 
-# p = loan amount, j = monthly interest rate, n = term in months
 # Returns monthly payment amount
-def calculate_monthly_pmt(p, j, n)
-  p * (j / (1 - (1 + j)**-n))
+def calculate_monthly_pmt(loan_amt, monthly_int_rate, term_months)
+  loan_amt * (monthly_int_rate / (1 - (1 + monthly_int_rate)**-term_months))
 end
 
 #---Program start---#
@@ -94,14 +93,18 @@ loop do
   prompt("Your monthly payment amount is:")
   print_result("$#{format_two_decimals(monthly_pmt)}")
 
-  prompt("Do you want to start over? 'Y' for yes, or any key to exit.")
-  answer = gets.chomp.downcase
-  unless answer.start_with?('y')
-    prompt("Goodbye!")
-    break
+  #---Start over?---#
+  exit = ''
+  loop do
+    prompt("Do you want to start over? y/n")
+    exit = Kernel.gets().chomp().downcase
+    break if exit.start_with?('y', 'n')
+    prompt("Enter 'y' or 'n'.")
   end
+  break unless exit.start_with?('y') 
 end
 
+prompt("Thank you! Goodbye")
 # ---Test Cases---#
 # puts
 # puts "Test Cases should all return true"
