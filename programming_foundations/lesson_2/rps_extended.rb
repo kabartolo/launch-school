@@ -27,14 +27,14 @@ def user_input_name
   loop do
     prompt('What is your name?')
     name = gets.chomp
-    return name if name.length < 20
-    prompt('Please use fewer than 20 characters.')
+    return name if name.length <= 20 && !name.empty?
+    prompt('Please enter between 1 and 20 characters.')
   end
 end
 
-def user_choose_move(valid_choices)
+def user_choose_move(valid_choices, choice_type)
   loop do
-    prompt("Enter a letter:")
+    prompt("Enter a #{choice_type}:")
     prompt("(Ctrl + c to exit)")
     display_table(valid_choices)
 
@@ -62,9 +62,9 @@ def display_table(table)
   table.each { |label, value| puts " | #{label}: #{value}" }
 end
 
-def display_welcome(player, winning_score)
+def display_welcome(player, game_name, winning_score)
   prompt("Hello, #{player}!")
-  prompt("Welcome to Rock Paper Scissors Lizard Spock.")
+  prompt("Welcome to #{game_name}.")
   prompt("First to a score of #{winning_score} wins!")
 end
 
@@ -100,16 +100,18 @@ PLAYER1 = user_input_name()
 PLAYER2 = 'Computer'
 
 WINNING_SCORE = 5
+GAME_NAME = "Rock Paper Scissors Lizard Spock"
+CHOICE_TYPE = "letter"
 
-loop do
+loop do # main game
   scores = { PLAYER1 => 0, PLAYER2 => 0 }
   clear_screen
 
-  display_welcome(PLAYER1, WINNING_SCORE)
+  display_welcome(PLAYER1, GAME_NAME, WINNING_SCORE)
   puts("\n")
 
-  loop do
-    choice = user_choose_move(VALID_CHOICES)
+  loop do # game round
+    choice = user_choose_move(VALID_CHOICES, CHOICE_TYPE)
     computer_choice = VALID_CHOICES.values.sample
 
     clear_screen
