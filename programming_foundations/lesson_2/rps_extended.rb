@@ -32,17 +32,17 @@ def user_input_name
   end
 end
 
-def user_choose_move(choices)
+def user_choose_move(valid_choices)
   loop do
     prompt("Enter a letter:")
     prompt("(Ctrl + c to exit)")
-    display_table(choices)
+    display_table(valid_choices)
 
     choice = gets.chomp.downcase
 
-    if choices[choice]
-      return choices[choice]
-    elsif choices.value?(choice)
+    if valid_choices[choice]
+      return valid_choices[choice]
+    elsif valid_choices.value?(choice)
       return choice
     end
 
