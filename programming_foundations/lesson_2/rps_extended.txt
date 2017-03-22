@@ -1,11 +1,6 @@
 # 101 Lesson 2: RPS (20 March 2017)
 # Assignment: Rock Paper Scissors: Bonus Features
 
-# NOTES: 
-1. In an effort to compartmentalize my methods, I pass around a lot of arguments, but at one point I had a method like winner(choice1, choice2, player1, player2, outcome_table) that returned the winner. My instinct said that was too many arguments for one method. I ended up removing the winner method and putting its logic back into the main game logic. I feel like I'm overthinking this and missing the simple solution.
-
-2. I originally had get_user_name and get_user_choice but Rubocop complained about using the "get" prefix in reader method names. I changed my method names anyway, but is this really a Ruby convention? The Ruby docs on this issue seem to be referring to class accessors (https://github.com/bbatsov/ruby-style-guide#accessor_mutator_method_names), and Rubocop did not complain on get_apr and get_info in my mortgage calculator. Just a bit confused as to what's going on here.
-
 input: 
   - number that maps to string choice
 
