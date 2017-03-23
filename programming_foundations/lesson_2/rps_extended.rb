@@ -13,6 +13,9 @@ OUTCOME_TABLE = { 'rock' => %w(scissors lizard),
                   'lizard' => %w(paper spock),
                   'spock' => %w(rock scissors) }
 
+GAME_NAME = "Rock Paper Scissors Lizard Spock"
+WINNING_SCORE = 5
+
 #---Helper methods---#
 
 def prompt(message)
@@ -27,22 +30,22 @@ def user_input_name
   loop do
     prompt('What is your name?')
     name = gets.chomp
-    return name if name.length <= 20 && !name.empty?
-    prompt('Please enter between 1 and 20 characters.')
+    return name if /^\w+/.match(name)
+    prompt('Not a valid name.')
   end
 end
 
-def user_choose_move(valid_choices, choice_type)
+def user_choose_move
   loop do
-    prompt("Enter a #{choice_type}:")
+    prompt("Enter a letter:")
     prompt("(Ctrl + c to exit)")
-    display_table(valid_choices)
+    display_table(VALID_CHOICES)
 
     choice = gets.chomp.downcase
 
-    if valid_choices[choice]
-      return valid_choices[choice]
-    elsif valid_choices.value?(choice)
+    if VALID_CHOICES[choice]
+      return VALID_CHOICES[choice]
+    elsif VALID_CHOICES.value?(choice)
       return choice
     end
 
@@ -50,8 +53,16 @@ def user_choose_move(valid_choices, choice_type)
   end
 end
 
-def win?(choice1, choice2, outcome_table)
-  outcome_table[choice1].include?(choice2)
+def win?(choice1, choice2)
+  OUTCOME_TABLE[choice1].include?(choice2)
+end
+
+def winner(player, computer, player_choice, computer_choice)
+  if win?(player_choice, computer_choice)
+    player
+  elsif win?(computer_choice, player_choice)
+    computer
+  end
 end
 
 def update_score(player, scores, points)
@@ -68,15 +79,15 @@ def display_welcome(player, game_name, winning_score)
   prompt("First to a score of #{winning_score} wins!")
 end
 
-def display_chosen_moves(user_choice, computer_choice)
-  prompt("You chose: #{user_choice.upcase}")
+def display_chosen_moves(player_choice, computer_choice)
+  prompt("You chose: #{player_choice.upcase}")
   prompt("Computer chose: #{computer_choice.upcase}")
 end
 
-def display_winner(winner, player1, player2)
+def display_winner(winner, player, computer)
   prompt case winner
-         when player1 then "#{player1.upcase} WON!"
-         when player2 then "#{player2.upcase} WON!"
+         when player then "#{player.upcase} WON!"
+         when computer then "#{computer.upcase} WON!"
          else "IT'S A TIE!"
          end
 end
@@ -96,37 +107,28 @@ end
 
 #---Game start---#
 
-PLAYER1 = user_input_name()
-PLAYER2 = 'Computer'
+player = user_input_name()
+computer = 'Computer'
 
-WINNING_SCORE = 5
-GAME_NAME = "Rock Paper Scissors Lizard Spock"
-CHOICE_TYPE = "letter"
+clear_screen
+display_welcome(player, GAME_NAME, WINNING_SCORE)
+puts("\n")
 
 loop do # main game
-  scores = { PLAYER1 => 0, PLAYER2 => 0 }
-  clear_screen
-
-  display_welcome(PLAYER1, GAME_NAME, WINNING_SCORE)
-  puts("\n")
+  scores = { player => 0, computer => 0 }
 
   loop do # game round
-    choice = user_choose_move(VALID_CHOICES, CHOICE_TYPE)
+    player_choice = user_choose_move
     computer_choice = VALID_CHOICES.values.sample
 
     clear_screen
-    display_chosen_moves(choice, computer_choice)
+    display_chosen_moves(player_choice, computer_choice)
     puts("\n")
 
-    winner = if win?(choice, computer_choice, OUTCOME_TABLE)
-               PLAYER1
-             elsif win?(computer_choice, choice, OUTCOME_TABLE)
-               PLAYER2
-             end
-
+    winner = winner(player, computer, player_choice, computer_choice)
     update_score(winner, scores, 1) if winner
 
-    display_winner(winner, PLAYER1, PLAYER2)
+    display_winner(winner, player, computer)
     puts("\n")
     display_scores(scores)
     puts("-" * 27)
@@ -139,6 +141,7 @@ loop do # main game
 
   #---Game over----#
   play_again_answer = play_again?()
+  clear_screen
   break unless play_again_answer.start_with?('y')
 end
 
