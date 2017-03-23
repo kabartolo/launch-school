@@ -1,3 +1,5 @@
+# 101 Lesson 3: Easy 1 (21 March 2017)
+
 # 1. What would you expect the code below to print out?
 
 numbers = [1, 2, 2, 3]
