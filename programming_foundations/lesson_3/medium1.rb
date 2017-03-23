@@ -195,13 +195,9 @@ end
 # After writing this method, he typed the following...and before
 # Grandpa could stop him, he hit the Enter key with his tail:
 
-mess_with_demographics(munsters)
-p munsters
-
 # Did the family's data get ransacked? Why or why not?
 
-# YES because #[] will modify the hash permanently and the method
-# does not copy the munsters hash to a new object id
+# YES because #[] will modify the hash permanently
 
 # 9. Method calls can take expressions as arguments. Suppose we
 # define a function called rps as follows, which follows the classic
