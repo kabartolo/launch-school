@@ -1,5 +1,5 @@
 # 101 Lesson 5: Exercises (27 March 2017)
-# Exercise 5
+# Exercise 7
 
 # Given this code, what would be the final values of a
 # and b? Try to work this out without running the code.

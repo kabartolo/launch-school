@@ -1,5 +1,5 @@
 # 101 Lesson 5: Exercises (27 March 2017)
-# Exercise 5
+# Exercise 6
 
 # One of the most frequently used real-world string
 # properties is that of "string substitution", where
