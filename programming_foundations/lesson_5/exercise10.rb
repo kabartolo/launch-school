@@ -16,6 +16,11 @@ new_arr = arr.map do |hash|
   end.to_h # weird!
 end
 
+# or 
+new_arr = arr.map do |hash|
+  hash.map{|letter, num| [letter, num += 1]}.to_h
+end
+
 p new_arr
 
 # Less weird solution
