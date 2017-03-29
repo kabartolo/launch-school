@@ -1,0 +1,53 @@
+current_state = board # state of board at computer's turn
+actions = empty_squares(current_state) # possible moves from current_state
+result(current_state, actions) # state after action taken on current_state
+terminal?(current_state) # if board is full or there is a winner
+assess(current_state, player) # -10 : loss, 0: tie, +10: win 
+
+PSEUDOCODE
+
+// minimax(state, max_player = computer, min_player = user)
+  GIVEN current state
+
+  SET v = max_value(state)
+  RETURN action in next_possible_states(state) with value == v
+
+// max_value(state)
+   GIVEN a state
+
+   
+   SET value = -infinity
+   FOR action, state in next_possible_states(state) do
+    SET value = max(value, min_value(state))
+   RETURN value
+
+// min_value(state)
+   GIVEN a state
+
+   IF terminal?(state)
+    RETURN assess(state, min_player)
+
+   SET value = +infinity
+   FOR action, state in successors(state) do
+    SET value = min(v, max_value(state)
+
+   RETURN value
+
+// terminal?(state)
+   GIVEN a state
+  
+   IF there is a winner OR the board is full
+    RETURN true
+   else
+    RETURN false
+
+// assess(state, player)
+   GIVEN a terminal state and the current player (MIN or MAX)
+
+   IF winner of state is player
+    + 10
+   ELSE IF winner of state is other player
+    - 10
+   ELSE # there is a tie
+    0
+
