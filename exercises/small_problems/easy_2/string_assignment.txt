@@ -1,0 +1,45 @@
+# Easy 2: Exercise 9: String Assignment (31 March 2017)
+
+Take a look at the following code:
+
+name = 'Bob'
+save_name = name
+name = 'Alice'
+puts name, save_name
+
+What does this code print out? Think about it for a moment before continuing.
+
+If you said that code printed
+
+Alice
+Bob
+
+you are 100% correct, and the answer should come as no surprise. Now, let's look at something a bit different:
+
+name = 'Bob'
+save_name = name
+name.upcase!
+puts name, save_name
+
+What does this print out? Can you explain these results?
+
+SOLUTION:
+
+=> BOB
+=> BOB
+
+This is because name is a label pointing to the string object 'Bob'.
+We create a new label save_name which points to the same string object ('Bob')
+and which has the same object id as name.
+The string object is mutated with the upcase! method.
+Both name and save_name still point to the string object (now 'BOB') and both
+still have the same object id as before.
+
+name = 'Bob'
+[name | object_id = 15132500] -----> ['Bob']
+
+save_name = name
+[name | object_id = 15132500] -----> ['Bob'] <----- [save_name | object_id = 15132500]
+
+name.upcase! (the upcase! method is passed the value of name's reference (15132500), not the value of the object itself)
+[name | object_id = 15132500] -----> ['BOB'] <----- [save_name | object_id = 15132500]
