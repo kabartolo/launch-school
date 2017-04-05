@@ -40,5 +40,5 @@ puts xor?(5.even?, 4.odd?) == false
 # in xor operations even make sense?
 # SOLUTION:
 #   In my implementation it makes sense. If a is true
-# and b is not true in the first operand, xor will return true
+# and b is not true for the first operand, xor will return true
 # and not evaluate the second operand.

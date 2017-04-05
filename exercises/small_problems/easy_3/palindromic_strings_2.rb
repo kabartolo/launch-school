@@ -1,4 +1,4 @@
-# Easy 3: Exercise 8: Palindromic Strings 2 (5 April 2017)
+# Easy 3: Exercise 9: Palindromic Strings 2 (5 April 2017)
 
 # Write another method that returns true if the string
 # passed as an argument is a palindrome, false otherwise.
