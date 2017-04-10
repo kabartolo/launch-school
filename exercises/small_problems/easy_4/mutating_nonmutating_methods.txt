@@ -1,0 +1,117 @@
+# Easy 4: Exercise 9: Convert a Number to a String (7 April, 2017)
+
+Mutating and non-mutating methods for String, Hash and Array classes
+
+String mutating methods with no '!' 
+(there's no "!" because it has no non-mutating counterpart)
+
+  concat, <<, +=, []=
+  clear
+  replace
+  insert
+  prepend
+
+String methods with mutating and non-mutating versions
+
+  capitalize, capitalize!
+  chomp, chomp!
+  chop, chop!
+  delete, delete!
+  downcase, downcase!
+  encode, encode!
+  gsub, gsub!
+  lstrip, lstrip!
+  next, next!
+  reverse, reverse!
+  rstrip, rstrip!
+  scrub, scrub!
+  slice, slice!
+  squeeze, squeeze!
+  strip, strip!
+  sub, sub!
+  succ, succ!
+  swapcase, swapcase!
+  tr, tr!, tr_s, tr_s!
+  upcase, upcase!
+
+String non-mutating methods (return original string?)
+
+  center
+  +,* (must be set to a variable to create a new string)
+  % ("%05d" % 123 #=> "00123"
+  byteslice
+  chr
+  crypt
+  dump
+  each_byte/each_char(unless block modifies the string)
+  force_encoding
+  ljust
+  rjust
+  upto
+
+Array mutating methods (no "!")
+
+  []=
+  <<
+  clear
+  concat
+  delete, delete_at, delete_if
+  fill
+  initialize_copy (replace)
+  insert
+  keep_if
+  pop, pop(n), push
+  replace
+  shift, unshift
+
+Array mutating/non-mutating pairs
+
+  collect, collect!
+  compact, compact!
+  flatten, flatten!
+  map, map!
+  reject, reject! (delete_if)
+  reverse, reverse!
+  rotate, rotate!
+  select, select!
+  shuffle, shuffle!
+  slice, slice!
+  sort, sort!, sort_by!
+  uniq, uniq!
+
+Array non-mutating methods
+
+  & (intersection), *, +, -
+  slice
+  assoc
+  drop, drop_while
+  permutation
+  product
+  repeated_combination, repeated_permutation
+  sample
+  take, take_while
+  transpose
+  values_at
+  zip
+
+Hash mutating methods (no "!")
+
+  any assignment method (?)
+  clear
+  delete, delete_if
+  keep_if
+  rehash (?)
+  replace
+  shift
+  update (same as merge!)
+
+Hash mutating/non-mutating method pairs
+
+  merge, merge!
+  reject, reject!
+  select, select!
+
+Hash non-mutating methods
+
+  flatten (creates an array)
+  invert
