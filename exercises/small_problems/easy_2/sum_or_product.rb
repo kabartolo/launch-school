@@ -43,6 +43,8 @@ def choose_operation
   end
 end
 
+#NOTE: This uses symbols but a string ("+") would also work
+# with the inject method
 def assess_operation(operation_letter)
   case operation_letter
   when 's' then return 'sum', :+
