@@ -32,6 +32,6 @@ puts integer_to_string(10) == '10'
 puts integer_to_string(100) == '100'
 puts integer_to_string(05) == '5'
 
-# Array#sort_by! has no non-mutating counterpart
+# Array#sort_by is missing in the docs (but is in the Enumerable module)
 # String#delete is non-mutating (has a #delete! counterpart)
 # BUT Array#delete and Hash#delete are mutating
