@@ -57,3 +57,5 @@ display_board(board)
 player_mark_board(board)
 computer_mark_board(board)
 empty_squares(board)
+board_full?(board) -- checks empty_squares(board) empty?
+winner?(board) 
