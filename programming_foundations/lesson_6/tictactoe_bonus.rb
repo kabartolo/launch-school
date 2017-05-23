@@ -1,77 +1,114 @@
 # 101 Lesson 6: Tic Tac Toe Bonus Features (28 March 2017)
 require 'pry'
 
-WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
-                [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
-                [[1, 5, 9], [3, 5, 7]]              # diagonals
-
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
 
-FIRST_PLAYER = 'choose' # player, computer, or choose
-DIFFICULTY = 'impossible' # easy, hard, impossible, or choose
+FIRST_PLAYER = 'choose'   # player, computer, or choose
+DIFFICULTY = 'choose' # easy, hard, impossible, or choose
 
+WINNING_SCORE = 5
 SIZE = 3
 
+#---Input methods---#
 def prompt(msg)
   puts "=> #{msg}"
 end
 
-def joinor(array, delimiter = ', ', conjunction = 'or')
+def joiner(array, delimiter = ', ', conjunction = 'or')
   case array.size
   when 0 then ''
   when 1 then array.first
   when 2 then array.join(" #{conjunction} ")
   else
-    result = array[0..-2].join(delimiter) + delimiter
-    result += "#{conjunction} #{array.last}"
+    "#{array[0..-2].join(delimiter)} #{conjunction} #{array.last}"
   end
 end
 
-def initialize_board
-  new_board = {}
-  (1..9).each { |num| new_board[num] = INITIAL_MARKER }
-  new_board
+def input(message, options)
+  prompt message
+  loop do
+    answer = gets.chomp.downcase
+    return answer if options.include?(answer)
+    prompt("Please enter #{joiner(options)}.")
+  end
 end
-
-# rubocop:disable Metrics/AbcSize
-def display_board(brd)
-  system('cls') || system('clear')
-  puts "You are #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
-  puts ''
-  puts '1    |2    |3'
-  puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
-  puts '     |     |'
-  puts '-----+-----+-----'
-  puts '4    |5    |6'
-  puts "  #{brd[4]}  |  #{brd[5]}  |  #{brd[6]}"
-  puts '     |     |'
-  puts '-----+-----+-----'
-  puts '7    |8    |9'
-  puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
-  puts '     |     |'
-  puts ''
-end
-# rubocop:enable Metrics/AbcSize
 
 def decide_first_player
   return FIRST_PLAYER unless FIRST_PLAYER == 'choose'
-  loop do
-    prompt "Who should go first? ('me' / 'computer')"
-    answer = gets.chomp.downcase
-    return PLAYER_MARKER if answer == 'me'
-    return COMPUTER_MARKER if answer == 'computer'
-    prompt "That is not a valid choice."
+  
+  answer = input("Do you want to go first? (y or n)", %w(y yes n no))
+  
+  answer.start_with?('y') ? PLAYER_MARKER : COMPUTER_MARKER
+end
+
+def decide_difficulty
+  return DIFFICULTY unless DIFFICULTY == 'choose'
+  
+  answer = input("Difficulty: easy (e), hard (h), or impossible (i)", %w(e easy h hard i impossible))
+  
+  case answer.chr
+  when 'e' then 'easy'
+  when 'h' then 'hard'
+  when 'i' then 'impossible'
   end
 end
 
-def alternate_player(current_player)
-  if current_player == PLAYER_MARKER
-    COMPUTER_MARKER
-  elsif current_player == COMPUTER_MARKER
-    PLAYER_MARKER
+#---Game methods---#
+
+def calculate_winning_lines
+  num_squares = SIZE**2
+
+  rows = (1..num_squares).each_slice(SIZE).to_a
+  columns =  rows.map.with_index do |row, outer_index|
+    row.map.with_index { |num, inner_index | rows[inner_index][outer_index] }
   end
+  diagonal1 = (1..num_squares).each_slice(SIZE + 1).map(&:first)
+  diagonal2 = (SIZE...num_squares).each_slice(SIZE - 1).map(&:first)
+
+  rows + columns << diagonal1 << diagonal2
+end
+
+def initialize_board
+  (1..SIZE**2).each_with_object({}) { |num, new_board| new_board[num] = INITIAL_MARKER }
+end
+
+def draw_square(row_squares, brd)
+  top = ''
+  middle = ''
+  bottom = ''
+
+  row_squares.map(&:to_s).each do |num|
+    top +=  num + ' '*(5 - num.size) + '|'
+    middle += "  #{brd[num.to_i]}  |"
+    bottom +=           "     |"
+  end
+  puts top.chomp('|')
+  puts middle.chomp('|')
+  puts bottom.chomp('|')
+end
+
+def draw_border(size)
+  puts '-----+'*(size-1) + '-----'
+end
+
+def display_board(brd)
+  num_squares = SIZE**2
+  rows = (1..num_squares).each_slice(SIZE).to_a
+  
+  system('cls') || system('clear')
+  puts "You are #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
+  
+  rows[0..-2].each do |row| 
+    draw_square(row, brd)
+    draw_border(SIZE)
+  end
+  draw_square(rows.last, brd)
+end
+
+def alternate_player(current_player)
+  current_player == PLAYER_MARKER ? COMPUTER_MARKER : PLAYER_MARKER
 end
 
 def update_score(score, winner)
@@ -79,9 +116,7 @@ def update_score(score, winner)
 end
 
 def display_score(score)
-  score.each do |marker, score|
-    puts "#{marker}: #{score}"
-  end  
+  score.each { |marker, score| puts "#{marker}: #{score}" }  
 end
 
 def empty_squares(board)
@@ -89,12 +124,13 @@ def empty_squares(board)
 end
 
 def find_threatened_square(board, ai)
+  winning_lines = calculate_winning_lines()
   marker = COMPUTER_MARKER if ai == 'offensive'
   marker = PLAYER_MARKER if ai == 'defensive'
 
-  WINNING_LINES.each do |line|
+  winning_lines.each do |line|
     squares = board.values_at(*line)
-    if squares.count(marker) == 2 && squares.count(INITIAL_MARKER) == 1
+    if squares.count(marker) == (SIZE - 1) && squares.count(INITIAL_MARKER) == 1
       return line[squares.index(INITIAL_MARKER)]
     end
   end
@@ -116,7 +152,9 @@ def someone_won?(board) # => should return true/false not truthiness
 end
 
 def detect_winner(board)
-  WINNING_LINES.each do |line|
+  winning_lines = calculate_winning_lines
+  
+  winning_lines.each do |line|
     if line.all? { |sqr| board[sqr] == PLAYER_MARKER }
       return PLAYER_MARKER
     elsif line.all? { |sqr| board[sqr] == COMPUTER_MARKER }
@@ -193,35 +231,35 @@ end
 
 #---Play methods---#
 
-def place_piece!(board, current_player)
-  if current_player == PLAYER_MARKER
-    player_places_piece!(board)
-  elsif current_player == COMPUTER_MARKER
-    computer_places_piece!(board)
+def place_piece!(board, current_player, difficulty)
+  case current_player
+  when PLAYER_MARKER then player_places_piece!(board)
+  when COMPUTER_MARKER then computer_places_piece!(board, difficulty)
   end
 end
 
 def player_places_piece!(board)
-  square = ''
-  loop do
-    prompt "Choose a square (#{joinor(empty_squares(board))}):"
-    square = gets.chomp.to_i
-    break if empty_squares(board).include?(square)
-    prompt "Sorry, that's not a valid choice."
-  end
-
+  options = empty_squares(board).map(&:to_s)
+  square = input("Choose a square (#{joiner(options)}):", options).to_i
+  
   board[square] = PLAYER_MARKER
 end
 
-def computer_places_piece!(board)
-  if empty_squares(board).size == board.size
-    square = center_square(board)
-  # square = find_threatened_square(board, 'offensive') ||
-  #          find_threatened_square(board, 'defensive') ||
-  #          center_square(board) ||
-  else
-    square =  minimax(board)
-  end
+def computer_places_piece!(board, difficulty)
+  square = case difficulty 
+           when 'impossible'
+             prompt "Computer is thinking..."
+             # Shortcut note: minimax is slow on >8 squares and computer always chooses 9
+             # when it has the first move on a 3x3 grid.
+             empty_squares(board).size == board.size ? SIZE**2 : minimax(board)
+           when 'hard'
+             find_threatened_square(board, 'offensive') ||
+             find_threatened_square(board, 'defensive') ||
+             center_square(board) ||
+             empty_squares(board).sample
+           when 'easy'
+             empty_squares(board).sample    
+           end
 
   board[square] = COMPUTER_MARKER
 end
@@ -229,8 +267,10 @@ end
 #---Game start---#
 
 loop do # game loop
-  score = { PLAYER_MARKER => 0, COMPUTER_MARKER => 0 }
-  first_player = decide_first_player
+  scores = { PLAYER_MARKER => 0, COMPUTER_MARKER => 0 }
+  first_player = decide_first_player()
+  difficulty = decide_difficulty()
+  winning_lines = calculate_winning_lines()
 
   system('cls') || system('clear')
 
@@ -240,7 +280,7 @@ loop do # game loop
 
     loop do
       display_board(board)
-      place_piece!(board, current_player)
+      place_piece!(board, current_player, difficulty)
       current_player = alternate_player(current_player)
       break if someone_won?(board) || board_full?(board)
     end
@@ -249,32 +289,31 @@ loop do # game loop
     winner = detect_winner(board)
     if someone_won?(board)
       prompt "#{winner} won!"
-      update_score(score, winner)
+      update_score(scores, winner)
     else
       prompt "It's a tie!"
     end
 
-    display_score(score)
+    display_score(scores)
 
-    if score[winner] == 5
-      prompt "Game over! #{winner} wins the game!"
-      break
-    end
-
-    prompt 'Continue? (y or n)'
-    answer = gets.chomp
-    break unless answer.downcase == 'y'
+    puts("--------------------------")
+      if scores[winner] == WINNING_SCORE
+        prompt("#{winner} won the game!")
+        break
+      else
+        continue = input('Continue? (y or n)', %w(y n yes no))
+        break if continue.start_with?('n')
+      end
   end
 
-  prompt 'Do you want to start a new game? (y or n)'
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  restart = input('Start a new game? (y or n)', %w(y n yes no))
+  break if restart.start_with?('n')
 end
 
 prompt 'Thanks for playing Tic Tac Toe! Good bye!'
 
 #Test Cases
-joinor([1, 2])                   # => "1 or 2"
-joinor([1, 2, 3])                # => "1, 2, or 3"
-joinor([1, 2, 3], '; ')          # => "1; 2; or 3"
-joinor([1, 2, 3], ', ', 'and')   # => "1, 2, and 3"
+joiner([1, 2])                   # => "1 or 2"
+joiner([1, 2, 3])                # => "1, 2, or 3"
+joiner([1, 2, 3], '; ')          # => "1; 2; or 3"
+joiner([1, 2, 3], ', ', 'and')   # => "1, 2, and 3"
