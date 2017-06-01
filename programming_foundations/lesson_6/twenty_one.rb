@@ -75,7 +75,7 @@ def wait_for_dealer
   sleep(1)
 end
 
-def update_display(hands, player, hand_scores, hide_dealer_cards)
+def display_hands(hands, player, hand_scores, hide_dealer_cards)
   player_hand, dealer_hand = hands
   player_score, dealer_score = hand_scores.values
 
@@ -98,11 +98,11 @@ end
 
 ### Game round methods ###
 
-def starting_deck
-  CARD_VALUES.product(CARD_SUITS)
+def new_shuffled_deck
+  CARD_VALUES.product(CARD_SUITS).shuffle
 end
 
-def adjust_score_for_aces(hand, score)
+def adjusted_score_for_aces(hand, score)
   aces = hand.select { |card| card.first == 'A' }
 
   new_score = score
@@ -115,22 +115,15 @@ def calculate_hand_score(hand)
   card_scores = hand.map { |card| CARD_SCORE_TABLE[card.first] }
   total_score = card_scores.reduce(:+)
 
-  adjust_score_for_aces(hand, total_score)
+  adjusted_score_for_aces(hand, total_score)
 end
 
 def update_hand_score!(player, hand, hand_scores)
   hand_scores[player] = calculate_hand_score(hand)
 end
 
-def remove_card_from_deck!(deck, card)
-  deck.delete(card)
-end
-
 def hit!(hand, deck)
-  random_card = deck.sample
-
-  remove_card_from_deck!(random_card, deck)
-  hand << random_card
+  hand << deck.pop
 end
 
 def deal!(n, hands, deck)
@@ -174,7 +167,7 @@ def player_plays(hands, deck, player, hand_scores)
 
     hit!(player_hand, deck) if answer.start_with?('h')
     update_hand_score!(player, player_hand, hand_scores)
-    update_display(hands, player, hand_scores, true)
+    display_hands(hands, player, hand_scores, true)
 
     break if busted?(hand_scores[player]) || answer.start_with?('s')
   end
@@ -183,7 +176,7 @@ end
 def dealer_plays(hands, deck, player, hand_scores)
   dealer_hand = hands.last
 
-  update_display(hands, player, hand_scores, false)
+  display_hands(hands, player, hand_scores, false)
 
   loop do
     break if hand_scores[:dealer] >= DEALER_CUTOFF
@@ -192,11 +185,11 @@ def dealer_plays(hands, deck, player, hand_scores)
     hit!(dealer_hand, deck)
     update_hand_score!(:dealer, dealer_hand, hand_scores)
 
-    update_display(hands, player, hand_scores, false)
+    display_hands(hands, player, hand_scores, false)
   end
 end
 
-def play_hands(hands, deck, player, hand_scores)
+def play_round(hands, deck, player, hand_scores)
   player_plays(hands, deck, player, hand_scores)
 
   if busted?(hand_scores[player])
@@ -229,11 +222,11 @@ end
 
 def display_game_winner(winner)
   puts("--------------------------")
-  prompt("#{winner.capitalize} won the game!")
+  prompt("#{winner.capitalize} wins the game!")
 end
 
-def play_round(player)
-  deck = starting_deck
+def round_winner(player)
+  deck = new_shuffled_deck
   hands = [[], []]
   hand_scores = { player => nil, :dealer => nil }
 
@@ -242,9 +235,9 @@ def play_round(player)
 
   update_hand_score!(player, player_hand, hand_scores)
   update_hand_score!(:dealer, dealer_hand, hand_scores)
-  update_display(hands, player, hand_scores, true)
+  display_hands(hands, player, hand_scores, true)
 
-  winner = play_hands(hands, deck, player, hand_scores)
+  winner = play_round(hands, deck, player, hand_scores)
   buster = buster(hand_scores, player)
 
   display_round_winner(winner, buster)
@@ -254,35 +247,29 @@ end
 
 ### Main ###
 
-# rubocop:disable Metrics/MethodLength
-def main
-  display_welcome
-  player = user_input_name.capitalize
+display_welcome
+player = user_input_name.capitalize
+
+loop do
+  game_scores = { player => 0, :dealer => 0 }
 
   loop do
-    game_scores = { player => 0, :dealer => 0 }
+    winner = round_winner(player)
+    update_game_scores(winner, game_scores) if winner
+    display_game_scores(game_scores)
 
-    loop do
-      winner = play_round(player)
-      update_game_scores(winner, game_scores) if winner
-      display_game_scores(game_scores)
-
-      if game_scores[winner] == WINNING_SCORE
-        display_game_winner(winner)
-        break
-      else
-        play_again = user_choose_option('play again? (y or n)', %w[y n yes no])
-        break if play_again.start_with?('n')
-      end
-    end
-
-    restart = user_choose_option('start a new game? (y or n)', %w[y n yes no])
-    if restart.start_with?('n')
-      prompt("Goodbye, #{player}!")
+    if game_scores[winner] == WINNING_SCORE
+      display_game_winner(winner)
       break
+    else
+      play_again = user_choose_option('play again? (y or n)', %w[y n yes no])
+      break if play_again.start_with?('n')
     end
   end
-end
-# rubocop:enable Metrics/MethodLength
 
-main
+  restart = user_choose_option('start a new game? (y or n)', %w[y n yes no])
+  if restart.start_with?('n')
+    prompt("Goodbye, #{player}!")
+    break
+  end
+end
