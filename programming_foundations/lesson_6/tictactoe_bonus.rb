@@ -47,10 +47,21 @@ def decide_first_player
   answer.start_with?('y') ? PLAYER_MARKER : COMPUTER_MARKER
 end
 
+def disable_hardest_difficulty?
+  SIDE_LENGTH > 3
+end
+
 def user_inputs_difficulty
-  options = %w[e easy h hard i impossible]
+  if disable_hardest_difficulty?
+    message = 'easy (e) or hard (h)'
+    options = %w[e easy h hard]
+  else
+    message = 'easy (e), hard (h), or impossible (i)'
+    options = %w[e easy h hard i impossible]
+  end
+
   prompt("Choose your difficulty: ")
-  answer = input("easy (e), hard (h), or impossible (i)", options)
+  answer = input(message, options)
 
   case answer.chr
   when 'e' then :easy
@@ -66,10 +77,9 @@ def decide_difficulty
                  DIFFICULTY
                end
 
-  if difficulty == :impossible && SIDE_LENGTH > 3
+  if difficulty == :impossible && disable_hardest_difficulty?
     prompt("'Impossible' difficulty disabled on boards greater than 3x3.")
-    puts
-    difficulty = decide_difficulty
+    difficulty = user_inputs_difficulty
   end
 
   difficulty
@@ -255,7 +265,7 @@ def computer_places_piece!(board, winning_lines, difficulty)
            when :impossible
              prompt "Computer is thinking..."
              # Minimax is slow on > 8 squares; choose center square
-             # if computer starts (i.e., board is empty).
+             # if board is empty (i.e., computer starts).
              board_empty?(board) ? center_square : minimax(board, winning_lines)
            when :hard
              find_best_move(board, winning_lines)
@@ -405,12 +415,12 @@ loop do # game loop
       display_game_winner(winner)
       break
     else
-      continue = input('Continue? (y or n)', %w[y n yes no])
+      continue = input('Continue? (y or n)', %w[y yes n no])
       break if continue.start_with?('n')
     end
   end
 
-  restart = input('Start a new game? (y or n)', %w[y n yes no])
+  restart = input('Start a new game? (y or n)', %w[y yes n no])
   break if restart.start_with?('n')
 end
 
