@@ -1,19 +1,23 @@
-# 101 Lesson 6: Tic Tac Toe Bonus Features (28 March 2017)
-require 'pry'
+# 101 Lesson 6: Tic Tac Toe Bonus Features
 
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
 
-FIRST_PLAYER = 'choose'   # player, computer, or choose
-DIFFICULTY = 'choose' # easy, hard, impossible, or choose
+FIRST_PLAYER = :choose # :player, :computer, :choose
+DIFFICULTY = :choose # :easy, :hard, :impossible, :choose
 
 WINNING_SCORE = 5
-SIZE = 3
+SIDE_LENGTH = 3
 
-#---Input methods---#
-def prompt(msg)
-  puts "=> #{msg}"
+#---UI methods---#
+
+def prompt(message)
+  puts "=> #{message}"
+end
+
+def clear_screen
+  system('cls') || system('clear')
 end
 
 def joiner(array, delimiter = ', ', conjunction = 'or')
@@ -22,7 +26,8 @@ def joiner(array, delimiter = ', ', conjunction = 'or')
   when 1 then array.first
   when 2 then array.join(" #{conjunction} ")
   else
-    "#{array[0..-2].join(delimiter)} #{conjunction} #{array.last}"
+    last_item = delimiter + "#{conjunction} #{array.last}"
+    array[0..-2].join(delimiter) + last_item
   end
 end
 
@@ -36,124 +41,188 @@ def input(message, options)
 end
 
 def decide_first_player
-  return FIRST_PLAYER unless FIRST_PLAYER == 'choose'
-  
-  answer = input("Do you want to go first? (y or n)", %w(y yes n no))
-  
+  return FIRST_PLAYER unless FIRST_PLAYER == :choose
+
+  answer = input("Do you want to go first? (y or n)", %w[y yes n no])
   answer.start_with?('y') ? PLAYER_MARKER : COMPUTER_MARKER
 end
 
-def decide_difficulty
-  return DIFFICULTY unless DIFFICULTY == 'choose'
-  
-  answer = input("Difficulty: easy (e), hard (h), or impossible (i)", %w(e easy h hard i impossible))
-  
+def user_inputs_difficulty
+  options = %w[e easy h hard i impossible]
+  prompt("Choose your difficulty: ")
+  answer = input("easy (e), hard (h), or impossible (i)", options)
+
   case answer.chr
-  when 'e' then 'easy'
-  when 'h' then 'hard'
-  when 'i' then 'impossible'
+  when 'e' then :easy
+  when 'h' then :hard
+  when 'i' then :impossible
   end
 end
 
-#---Game methods---#
+def decide_difficulty
+  difficulty = if DIFFICULTY == :choose
+                 user_inputs_difficulty
+               else
+                 DIFFICULTY
+               end
 
-def calculate_winning_lines
-  num_squares = SIZE**2
-
-  rows = (1..num_squares).each_slice(SIZE).to_a
-  columns =  rows.map.with_index do |row, outer_index|
-    row.map.with_index { |num, inner_index | rows[inner_index][outer_index] }
+  if difficulty == :impossible && SIDE_LENGTH > 3
+    prompt("'Impossible' difficulty disabled on boards greater than 3x3.")
+    puts
+    difficulty = decide_difficulty
   end
-  diagonal1 = (1..num_squares).each_slice(SIZE + 1).map(&:first)
-  diagonal2 = (SIZE...num_squares).each_slice(SIZE - 1).map(&:first)
 
-  rows + columns << diagonal1 << diagonal2
+  difficulty
 end
 
-def initialize_board
-  (1..SIZE**2).each_with_object({}) { |num, new_board| new_board[num] = INITIAL_MARKER }
-end
-
-def draw_square(row_squares, brd)
+def draw_square(row_numbers, board)
   top = ''
   middle = ''
   bottom = ''
 
-  row_squares.map(&:to_s).each do |num|
-    top +=  num + ' '*(5 - num.size) + '|'
-    middle += "  #{brd[num.to_i]}  |"
-    bottom +=           "     |"
+  row_numbers.each do |num|
+    top += num.to_s + (' ' * (5 - num.to_s.size)) + '|'
+    middle += "  #{board[num]}  |"
+    bottom += '     |'
   end
+
   puts top.chomp('|')
   puts middle.chomp('|')
   puts bottom.chomp('|')
 end
 
 def draw_border(size)
-  puts '-----+'*(size-1) + '-----'
+  puts '-----' * (size - 1) + '-----'
 end
 
-def display_board(brd)
-  num_squares = SIZE**2
-  rows = (1..num_squares).each_slice(SIZE).to_a
-  
-  system('cls') || system('clear')
+def display_board(board)
+  rows = rows()
+  last_row = rows.pop
+
+  clear_screen
   puts "You are #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
-  
-  rows[0..-2].each do |row| 
-    draw_square(row, brd)
-    draw_border(SIZE)
+
+  rows.each do |row|
+    draw_square(row, board)
+    draw_border(SIDE_LENGTH)
   end
-  draw_square(rows.last, brd)
+  draw_square(last_row, board)
 end
 
-def alternate_player(current_player)
-  current_player == PLAYER_MARKER ? COMPUTER_MARKER : PLAYER_MARKER
+def display_score(score)
+  score.each { |player, value| puts "#{player}: #{value}" }
+end
+
+def display_outcome(winner, board, winning_lines)
+  if someone_won?(board, winning_lines)
+    prompt "#{winner} won!"
+  else
+    prompt "It's a tie!"
+  end
+end
+
+def display_game_winner(winner)
+  puts("--------------------------")
+  prompt("#{winner} won the game!")
+end
+
+#---Game methods---#
+
+def rows
+  num_squares = SIDE_LENGTH**2
+
+  (1..num_squares).each_slice(SIDE_LENGTH).to_a
+end
+
+def columns(rows)
+  rows.map.with_index do |row, outer_index|
+    row.map.with_index { |_, inner_index| rows[inner_index][outer_index] }
+  end
+end
+
+def diagonals
+  num_squares = SIDE_LENGTH**2
+  diagonals = []
+
+  diagonals << (1..num_squares).step(SIDE_LENGTH + 1).to_a
+  diagonals << (SIDE_LENGTH..num_squares - 1).step(SIDE_LENGTH - 1).to_a
+
+  diagonals
+end
+
+def calculate_winning_lines
+  rows + columns(rows) + diagonals
+end
+
+def new_board
+  board = {}
+  (1..SIDE_LENGTH**2).each { |num| board[num] = INITIAL_MARKER }
+  board
 end
 
 def update_score(score, winner)
   score[winner] += 1
 end
 
-def display_score(score)
-  score.each { |marker, score| puts "#{marker}: #{score}" }  
-end
-
 def empty_squares(board)
   board.keys.select { |num| board[num] == INITIAL_MARKER }
 end
 
-def find_threatened_square(board, ai)
-  winning_lines = calculate_winning_lines()
-  marker = COMPUTER_MARKER if ai == 'offensive'
-  marker = PLAYER_MARKER if ai == 'defensive'
-
-  winning_lines.each do |line|
-    squares = board.values_at(*line)
-    if squares.count(marker) == (SIZE - 1) && squares.count(INITIAL_MARKER) == 1
-      return line[squares.index(INITIAL_MARKER)]
-    end
-  end
-
-  nil
+def center_square
+  (SIDE_LENGTH**2 + 1) / 2
 end
 
-def center_square(board)
-  center = (SIZE**2 + 1) / 2
-  return center if empty_squares(board).include?(center) 
+def choose_center_square_if_available(board)
+  center_square if square_empty?(board, center_square)
+end
+
+def square_empty?(board, square)
+  empty_squares(board).include?(square)
+end
+
+def board_empty?(board)
+  empty_squares(board).size == SIDE_LENGTH**2
 end
 
 def board_full?(board)
   empty_squares(board).empty?
 end
 
-def someone_won?(board) # => should return true/false not truthiness
-  !!detect_winner(board)
+def find_threatened_square(board, marker, winning_lines)
+  winning_lines.each do |line|
+    squares_in_line = board.values_at(*line)
+    num_marker_squares = squares_in_line.count(marker)
+    num_empty_squares = squares_in_line.count(INITIAL_MARKER)
+
+    if num_marker_squares == (SIDE_LENGTH - 1) && num_empty_squares == 1
+      empty_square_index = squares_in_line.index(INITIAL_MARKER)
+      return line[empty_square_index]
+    end
+  end
+
+  nil
 end
 
-def detect_winner(board)
-  winning_lines = calculate_winning_lines
-  
+def choose_random_square(board)
+  empty_squares(board).sample
+end
+
+def find_best_move(board, winning_lines)
+  find_threatened_square(board, COMPUTER_MARKER, winning_lines) ||
+    find_threatened_square(board, PLAYER_MARKER, winning_lines) ||
+    choose_center_square_if_available(board) ||
+    choose_random_square(board)
+end
+
+def alternate_player(current_player)
+  current_player == PLAYER_MARKER ? COMPUTER_MARKER : PLAYER_MARKER
+end
+
+def someone_won?(board, winning_lines)
+  !!detect_winner(board, winning_lines)
+end
+
+def detect_winner(board, winning_lines)
   winning_lines.each do |line|
     if line.all? { |sqr| board[sqr] == PLAYER_MARKER }
       return PLAYER_MARKER
@@ -161,11 +230,45 @@ def detect_winner(board)
       return COMPUTER_MARKER
     end
   end
+
   nil
+end
+
+def place_piece!(board, current_player, winning_lines, difficulty)
+  case current_player
+  when PLAYER_MARKER
+    player_places_piece!(board)
+  when COMPUTER_MARKER
+    computer_places_piece!(board, winning_lines, difficulty)
+  end
+end
+
+def player_places_piece!(board)
+  options = empty_squares(board).map(&:to_s)
+  square = input("Choose a square (#{joiner(options)}):", options).to_i
+
+  board[square] = PLAYER_MARKER
+end
+
+def computer_places_piece!(board, winning_lines, difficulty)
+  square = case difficulty
+           when :impossible
+             prompt "Computer is thinking..."
+             # Minimax is slow on > 8 squares; choose center square
+             # if computer starts (i.e., board is empty).
+             board_empty?(board) ? center_square : minimax(board, winning_lines)
+           when :hard
+             find_best_move(board, winning_lines)
+           when :easy
+             choose_random_square(board)
+           end
+
+  board[square] = COMPUTER_MARKER
 end
 
 def try_move(board, square, new_marker)
   new_board = {}
+
   board.each do |num, current_marker|
     if num == square
       new_board[square] = new_marker
@@ -173,147 +276,142 @@ def try_move(board, square, new_marker)
       new_board[num] = current_marker
     end
   end
+
   new_board
 end
 
-#---Minimax methods---#
-def terminal?(state)
-  someone_won?(state) || board_full?(state)
+def end_of_game?(board, winning_lines)
+  someone_won?(board, winning_lines) || board_full?(board)
 end
 
-def assess(state, max_player, min_player)
-  if detect_winner(state) == max_player
-    return 1
-  elsif detect_winner(state) == min_player
-    return -1
-  else
-    return 0
+#---AI/minimax methods---#
+
+def assess(winner, max_player, min_player)
+  case winner
+  when max_player then 1
+  when min_player then -1
+  else 0
   end
 end
 
-# The maximizing player starts
-def minimax(starting_state, max_player = COMPUTER_MARKER, min_player = PLAYER_MARKER)
-  values_of_next_possible_moves = {}
-  
-  empty_squares(starting_state).each do |move|
-    state = try_move(starting_state, move, max_player)
-    value = minimax_value(state, min_player, max_player, min_player)
+def maximize_score(next_possible_board_states, players, winning_lines)
+  score = -2
+  min_player = players.last
 
-    values_of_next_possible_moves[value] = move
+  next_possible_board_states.each do |next_state|
+    next_score = minimax_score(next_state, min_player, players, winning_lines)
+    score = [score, next_score].max
   end
 
-  optimal_value = values_of_next_possible_moves.keys.max
-  return values_of_next_possible_moves[optimal_value]
+  score
 end
 
-def minimax_value(current_state, current_player, max_player, min_player)
-  return assess(current_state, max_player, min_player) if terminal?(current_state)
-  
-  possible_moves = empty_squares(current_state)
-  
+def minimize_score(next_possible_board_states, players, winning_lines)
+  score = 2
+  max_player = players.first
+
+  next_possible_board_states.each do |next_state|
+    next_score = minimax_score(next_state, max_player, players, winning_lines)
+    score = [score, next_score].min
+  end
+
+  score
+end
+
+def minimax_score(board, current_player, players, winning_lines)
+  max_player = players.first
+  min_player = players.last
+
+  if end_of_game?(board, winning_lines)
+    winner = detect_winner(board, winning_lines)
+    return assess(winner, max_player, min_player)
+  end
+
+  available_moves = empty_squares(board)
+  next_possible_board_states = available_moves.map do |move|
+    try_move(board, move, current_player)
+  end
+
   if current_player == max_player
-    value = -2
-    possible_moves.each do |move|
-      state = try_move(current_state, move, current_player)
-      value = [value, minimax_value(state, min_player, max_player, min_player)].max
-    end
-      
+    maximize_score(next_possible_board_states, players, winning_lines)
   else
-    value = 2
-    possible_moves.each do |move|
-      state = try_move(current_state, move, current_player)
-      value = [value, minimax_value(state, max_player, max_player, min_player)].min
-    end
-  end
-
-  return value
-end
-
-#---Play methods---#
-
-def place_piece!(board, current_player, difficulty)
-  case current_player
-  when PLAYER_MARKER then player_places_piece!(board)
-  when COMPUTER_MARKER then computer_places_piece!(board, difficulty)
+    minimize_score(next_possible_board_states, players, winning_lines)
   end
 end
 
-def player_places_piece!(board)
-  options = empty_squares(board).map(&:to_s)
-  square = input("Choose a square (#{joiner(options)}):", options).to_i
-  
-  board[square] = PLAYER_MARKER
+def minimax(start_state, winning_lines)
+  max_player = COMPUTER_MARKER
+  min_player = PLAYER_MARKER
+  players = [max_player, min_player]
+
+  available_first_moves = empty_squares(start_state)
+  minimaxed_scores = {}
+
+  next_possible_board_states = available_first_moves.map do |move|
+    next_state = try_move(start_state, move, max_player)
+    [next_state, move]
+  end
+
+  next_possible_board_states.each do |next_state, move|
+    score = minimax_score(next_state, min_player, players, winning_lines)
+    minimaxed_scores[score] = move
+  end
+
+  optimal_score = minimaxed_scores.keys.max
+  minimaxed_scores[optimal_score]
 end
 
-def computer_places_piece!(board, difficulty)
-  square = case difficulty 
-           when 'impossible'
-             prompt "Computer is thinking..."
-             # Shortcut note: minimax is slow on >8 squares and computer always chooses 9
-             # when it has the first move on a 3x3 grid.
-             empty_squares(board).size == board.size ? SIZE**2 : minimax(board)
-           when 'hard'
-             find_threatened_square(board, 'offensive') ||
-             find_threatened_square(board, 'defensive') ||
-             center_square(board) ||
-             empty_squares(board).sample
-           when 'easy'
-             empty_squares(board).sample    
-           end
+#---Main---#
 
-  board[square] = COMPUTER_MARKER
+def play_round(winning_lines, first_player, difficulty)
+  board = new_board
+  current_player = first_player
+
+  loop do
+    display_board(board)
+    place_piece!(board, current_player, winning_lines, difficulty)
+    current_player = alternate_player(current_player)
+    break if end_of_game?(board, winning_lines)
+  end
+
+  display_board(board)
+  board
 end
 
-#---Game start---#
+def game_winner?(winner, scores)
+  scores[winner] == WINNING_SCORE
+end
 
 loop do # game loop
-  scores = { PLAYER_MARKER => 0, COMPUTER_MARKER => 0 }
-  first_player = decide_first_player()
-  difficulty = decide_difficulty()
-  winning_lines = calculate_winning_lines()
+  clear_screen
 
-  system('cls') || system('clear')
+  scores = { PLAYER_MARKER => 0, COMPUTER_MARKER => 0 }
+  winning_lines = calculate_winning_lines
+  difficulty = decide_difficulty
+  first_player = decide_first_player
+
+  clear_screen
 
   loop do # round loop
-    board = initialize_board
-    current_player = first_player
+    board = play_round(winning_lines, first_player, difficulty)
 
-    loop do
-      display_board(board)
-      place_piece!(board, current_player, difficulty)
-      current_player = alternate_player(current_player)
-      break if someone_won?(board) || board_full?(board)
-    end
+    winner = detect_winner(board, winning_lines)
+    display_outcome(winner, board, winning_lines)
 
-    display_board(board)
-    winner = detect_winner(board)
-    if someone_won?(board)
-      prompt "#{winner} won!"
-      update_score(scores, winner)
-    else
-      prompt "It's a tie!"
-    end
-
+    update_score(scores, winner) if winner
     display_score(scores)
 
-    puts("--------------------------")
-      if scores[winner] == WINNING_SCORE
-        prompt("#{winner} won the game!")
-        break
-      else
-        continue = input('Continue? (y or n)', %w(y n yes no))
-        break if continue.start_with?('n')
-      end
+    if game_winner?(winner, scores)
+      display_game_winner(winner)
+      break
+    else
+      continue = input('Continue? (y or n)', %w[y n yes no])
+      break if continue.start_with?('n')
+    end
   end
 
-  restart = input('Start a new game? (y or n)', %w(y n yes no))
+  restart = input('Start a new game? (y or n)', %w[y n yes no])
   break if restart.start_with?('n')
 end
 
 prompt 'Thanks for playing Tic Tac Toe! Good bye!'
-
-#Test Cases
-joiner([1, 2])                   # => "1 or 2"
-joiner([1, 2, 3])                # => "1, 2, or 3"
-joiner([1, 2, 3], '; ')          # => "1; 2; or 3"
-joiner([1, 2, 3], ', ', 'and')   # => "1, 2, and 3"
