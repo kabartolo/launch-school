@@ -19,7 +19,12 @@ def prompt(message)
   puts "\n>>#{message}"
 end
 
-def user_input_name
+def display_welcome
+  clear
+  prompt("Welcome to #{GAME_NAME}! First to #{WINNING_SCORE} wins!")
+end
+
+def user_inputs_name
   loop do
     prompt('What is your name?')
     name = gets.chomp
@@ -28,7 +33,7 @@ def user_input_name
   end
 end
 
-def user_choose_option(message, options)
+def user_chooses_option(message, options)
   loop do
     prompt("Do you want to #{message}")
     answer = gets.chomp.downcase
@@ -96,13 +101,23 @@ def display_round_winner(winner, buster)
   prompt(result)
 end
 
-### Game round methods ###
+def display_game_scores(scores)
+  puts "\nCurrent score:"
+  scores.each { |player, score| puts "| #{player.capitalize}: #{score} |" }
+end
+
+def display_game_winner(winner)
+  puts("--------------------------")
+  prompt("#{winner.capitalize} wins the game!")
+end
+
+### Game methods ###
 
 def new_shuffled_deck
   CARD_VALUES.product(CARD_SUITS).shuffle
 end
 
-def adjusted_score_for_aces(hand, score)
+def adjust_score_for_aces(hand, score)
   aces = hand.select { |card| card.first == 'A' }
 
   new_score = score
@@ -115,11 +130,17 @@ def calculate_hand_score(hand)
   card_scores = hand.map { |card| CARD_SCORE_TABLE[card.first] }
   total_score = card_scores.reduce(:+)
 
-  adjusted_score_for_aces(hand, total_score)
+  adjust_score_for_aces(hand, total_score)
 end
 
 def update_hand_score!(player, hand, hand_scores)
   hand_scores[player] = calculate_hand_score(hand)
+end
+
+def update_scores!(player, hands, hand_scores)
+  player_hand, dealer_hand = hands
+  update_hand_score!(player, player_hand, hand_scores)
+  update_hand_score!(:dealer, dealer_hand, hand_scores)
 end
 
 def hit!(hand, deck)
@@ -139,7 +160,7 @@ def busted?(score)
   score > GOAL
 end
 
-def buster(hand_scores, player)
+def detect_buster(hand_scores, player)
   player_score, dealer_score = hand_scores.values
 
   if busted?(player_score)
@@ -159,11 +180,21 @@ def round_winner_by_score(hand_scores, player)
   end
 end
 
-def player_plays(hands, deck, player, hand_scores)
+def detect_winner(player, hand_scores)
+  if busted?(hand_scores[:dealer])
+    player
+  elsif busted?(hand_scores[player])
+    :dealer
+  else
+    round_winner_by_score(hand_scores, player)
+  end
+end
+
+def player_plays!(hands, deck, player, hand_scores)
   player_hand = hands.first
 
   loop do
-    answer = user_choose_option("hit or stay? (h or s)", %w[h s hit stay])
+    answer = user_chooses_option("hit or stay? (h or s)", %w[h s hit stay])
 
     hit!(player_hand, deck) if answer.start_with?('h')
     update_hand_score!(player, player_hand, hand_scores)
@@ -173,7 +204,7 @@ def player_plays(hands, deck, player, hand_scores)
   end
 end
 
-def dealer_plays(hands, deck, player, hand_scores)
+def dealer_plays!(hands, deck, player, hand_scores)
   dealer_hand = hands.last
 
   display_hands(hands, player, hand_scores, false)
@@ -189,87 +220,65 @@ def dealer_plays(hands, deck, player, hand_scores)
   end
 end
 
-def play_round(hands, deck, player, hand_scores)
-  player_plays(hands, deck, player, hand_scores)
-
-  if busted?(hand_scores[player])
-    :dealer
-  else
-    dealer_plays(hands, deck, player, hand_scores)
-    if busted?(hand_scores[:dealer])
-      player
-    else
-      round_winner_by_score(hand_scores, player)
-    end
-  end
+def play!(hands, deck, player, hand_scores)
+  player_plays!(hands, deck, player, hand_scores)
+  return if busted?(hand_scores[player])
+  dealer_plays!(hands, deck, player, hand_scores)
 end
 
 ### Main game methods ###
-
-def display_welcome
-  clear
-  puts "Welcome to #{GAME_NAME}! First to #{WINNING_SCORE} wins!"
-end
 
 def update_game_scores(player, game_scores)
   game_scores[player] += 1
 end
 
-def display_game_scores(scores)
-  puts "\nCurrent score:"
-  scores.each { |player, score| puts "| #{player.capitalize}: #{score} |" }
+def game_winner?(winner, scores)
+  scores[winner] == WINNING_SCORE
 end
 
-def display_game_winner(winner)
-  puts("--------------------------")
-  prompt("#{winner.capitalize} wins the game!")
-end
-
-def round_winner(player)
+def play_round(player)
   deck = new_shuffled_deck
   hands = [[], []]
   hand_scores = { player => nil, :dealer => nil }
 
   deal!(STARTING_DEAL_NUM_CARDS, hands, deck)
-  player_hand, dealer_hand = hands
-
-  update_hand_score!(player, player_hand, hand_scores)
-  update_hand_score!(:dealer, dealer_hand, hand_scores)
+  update_scores!(player, hands, hand_scores)
   display_hands(hands, player, hand_scores, true)
 
-  winner = play_round(hands, deck, player, hand_scores)
-  buster = buster(hand_scores, player)
+  play!(hands, deck, player, hand_scores)
 
-  display_round_winner(winner, buster)
+  winner = detect_winner(player, hand_scores)
+  buster = detect_buster(hand_scores, player)
 
-  winner
+  [winner, buster]
 end
 
 ### Main ###
 
 display_welcome
-player = user_input_name.capitalize
+player = user_inputs_name.capitalize
 
-loop do
+loop do # game loop
   game_scores = { player => 0, :dealer => 0 }
 
-  loop do
-    winner = round_winner(player)
+  loop do # round loop
+    winner, buster = play_round(player)
+    display_round_winner(winner, buster)
+
     update_game_scores(winner, game_scores) if winner
     display_game_scores(game_scores)
 
-    if game_scores[winner] == WINNING_SCORE
+    if game_winner?(winner, game_scores)
       display_game_winner(winner)
       break
     else
-      play_again = user_choose_option('play again? (y or n)', %w[y n yes no])
+      play_again = user_chooses_option('play again? (y or n)', %w[y n yes no])
       break if play_again.start_with?('n')
     end
   end
 
-  restart = user_choose_option('start a new game? (y or n)', %w[y n yes no])
-  if restart.start_with?('n')
-    prompt("Goodbye, #{player}!")
-    break
-  end
+  restart = user_chooses_option('start a new game? (y or n)', %w[y n yes no])
+  break if restart.start_with?('n')
 end
+
+prompt("Goodbye, #{player}!")
