@@ -25,7 +25,7 @@ class Cat
     @@total += 1
   end
 
-  # This works but has setter method syntax even though
+  # The below works but has setter method syntax even though
   # the Cat class already has a setter method (from attr_accessor)
   # def rename(name)
   #   @name = name
