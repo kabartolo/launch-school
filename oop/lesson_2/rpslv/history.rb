@@ -1,8 +1,6 @@
 require_relative 'outcome'
 
 class History
-  attr_accessor :list_of_outcomes, :repeat_count, :change_count
-
   WIN_RATIO_GOAL = 0.6
 
   def initialize
@@ -18,7 +16,17 @@ class History
     list_of_outcomes << new_outcome
   end
 
-  def detect_human_strategy
+  def display_all(human, computer)
+    list_of_outcomes.each do |outcome|
+      outcome.display(human, computer)
+    end
+  end
+
+  def display_last_outcome(human, computer)
+    last_outcome.display(human, computer)
+  end
+
+  def human_strategy
     if human_repeating? && win_ratio(num_outcomes: 3) >= WIN_RATIO_GOAL
       :repeat
     elsif human_changing? && win_ratio(num_outcomes: 3) >= WIN_RATIO_GOAL
@@ -26,21 +34,17 @@ class History
     end
   end
 
-  def display_all(human_name, computer_name)
-    list_of_outcomes.each do |outcome|
-      outcome.display(human_name, computer_name)
-    end
+  def last_human_move
+    last_outcome&.human_move
   end
 
-  def display_last_outcome(human_name, computer_name)
-    last_outcome.display(human_name, computer_name)
-  end
-
-  def reset
-    self.list_of_outcomes = []
+  def reset!
+    @list_of_outcomes = []
   end
 
   private
+
+  attr_reader :list_of_outcomes, :repeat_count, :change_count
 
   def human_changing?
     change_count > 1
@@ -62,11 +66,11 @@ class History
     return if first_move?
 
     if last_outcome.human_move == new_outcome.human_move
-      self.repeat_count += 1
-      self.change_count = 0
+      @repeat_count += 1
+      @change_count = 0
     else
-      self.change_count += 1
-      self.repeat_count = 0
+      @change_count += 1
+      @repeat_count = 0
     end
   end
 

@@ -9,25 +9,24 @@ class RPSGame
   GOAL = 10
   GAME_NAME = 'Rock, Paper, Scissors, Lizard, Spock'.freeze
 
-  attr_reader :human, :computer, :history
+  attr_reader :history, :human, :computer
   attr_accessor :round_winner
 
   def initialize
-    @human = Human.new
-    @computer = Computer.new
     @history = History.new
+    @human = Human.new
+    @computer = Computer.create_random_personality(history)
     @round_winner = nil
 
     display_welcome_message
   end
 
   def play
-    reset_game
+    reset_game!
 
     loop do
       play_round
       update_history
-      update_strategy if computer.using_strategy?
       display_outcome
 
       update_winner_score
@@ -61,11 +60,11 @@ class RPSGame
   end
 
   def display_outcome
-    history.display_last_outcome(human.name, computer.name)
+    history.display_last_outcome(human, computer)
   end
 
   def display_replay
-    history.display_all(human.name, computer.name)
+    history.display_all(human, computer)
   end
 
   def display_replay?
@@ -106,15 +105,10 @@ class RPSGame
     detect_winner
   end
 
-  def reset_game
-    human.reset_score
-    computer.reset_score
-    history.reset
-  end
-
-  def restart?
-    restart = user_chooses_option('start a new game? (y or n)', %w[y n yes no])
-    restart.start_with?('y')
+  def reset_game!
+    human.reset_score!
+    computer.reset_score!
+    history.reset!
   end
 
   def restart
@@ -122,17 +116,17 @@ class RPSGame
     play
   end
 
+  def restart?
+    restart = user_chooses_option('start a new game? (y or n)', %w[y n yes no])
+    restart.start_with?('y')
+  end
+
   def update_history
     history.add!(human.move, computer.move, round_winner)
   end
 
-  def update_strategy
-    human_strategy = history.detect_human_strategy
-    computer.adjust_human_strategy(human_strategy, human.move)
-  end
-
   def update_winner_score
-    round_winner&.add_point
+    round_winner&.add_point!
   end
 end
 

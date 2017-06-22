@@ -11,15 +11,15 @@ class Outcome
     @winner = winner
   end
 
-  def display(human_name, computer_name)
-    puts "\n#{human_name} chose #{human_move}."
-    puts "#{computer_name} chose #{@computer_move}."
+  def display(human, computer)
+    puts "\n#{human} chose #{human_move}."
+    puts "#{computer} chose #{@computer_move}."
     if no_winner?
       prompt("It's a tie!")
     elsif human_won?
-      prompt("#{human_name} won!")
+      prompt("#{human} won!")
     else
-      prompt("#{computer_name} won!")
+      prompt("#{computer} won!")
     end
   end
 
