@@ -1,7 +1,7 @@
 require_relative 'outcome'
 
 class History
-  WIN_RATIO_GOAL = 0.6
+  WIN_RATIO_GOAL = 0.66
 
   def initialize
     @list_of_outcomes = []
