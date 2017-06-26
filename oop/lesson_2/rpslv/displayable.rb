@@ -1,6 +1,6 @@
 module Displayable
   def clear
-    system('clr') || system('clear')
+    system('cls') || system('clear')
   end
 
   def display_table(table)

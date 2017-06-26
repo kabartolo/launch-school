@@ -67,7 +67,7 @@ class Human < Player
       prompt('What is your name?')
       new_name = gets.chomp
       return @name = new_name if new_name =~ /^\w+/
-      prompt('Not a valid name. Please enter a value.')
+      prompt('Not a valid name. The first character must not be a space.')
     end
   end
 
