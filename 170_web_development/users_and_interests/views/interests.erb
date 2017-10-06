@@ -1,0 +1,7 @@
+<h1><%= @name.capitalize %></h1>
+<h2>Email: <%= @email %></h2>
+<h2>Interests: <%= @interests.join(', ') %></h2>
+
+<p>
+  <%= @other_users.map { |name| "<a href='/users/#{name}'>#{name}</a>" }.join(', ') %>
+</p>
