@@ -1,1 +1,1 @@
-#Launch School: notes and solutions
+# Launch School: notes and solutions
