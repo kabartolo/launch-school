@@ -97,7 +97,6 @@ h3 {
 	padding-top: 26px;
 }
 
-
 h3,
 p {
 	padding-left: 16px;
@@ -108,7 +107,7 @@ label {
 }
 
 input[type="checkbox"] {
-	/*visibility: hidden;*/
+	display: none;
 }
 
 input[type="checkbox"]:checked + figure img {
@@ -120,23 +119,22 @@ input[type="checkbox"]:checked + figure img {
 	z-index: 2;
 }
 
-input[type="checkbox"]:after {
+input[type="checkbox"]:checked + figure {
+	background: white;
+	height: 156px;
+}
+
+figure:after {
 	content: "";
 	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: rgba(0,0,0,0);
 	z-index: -1;
 }
 
-input[type="checkbox"]:checked + figure {
-	background: white;
-	height: 156px;
-}
-
-input[type="checkbox"]:checked:after {
+input[type="checkbox"]:checked + figure:after {
 	z-index: 1;
     cursor: pointer;
     background: rgba(0,0,0,0.4);
