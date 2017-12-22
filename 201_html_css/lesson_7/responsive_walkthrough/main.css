@@ -1,0 +1,208 @@
+/*
+----------------------------------------
+Tantek Celik's Whitepsace Reset
+     Author:    Tantek Celik, Shane Riley
+    Version:    (CC) 2010 Some Rights Reserved - http://creativecommons.org/licenses/by/2.0
+Description:  Resets default styling of common browsers to a common base
+----------------------------------------
+*/
+
+ul,ol { list-style: none; }
+h1,h2,h3,h4,h5,h6,pre,code { font-size: 1em; }
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input,dl,dt,dd, figure, figcaption {
+  margin: 0;
+  padding: 0; }
+a img,:link img,:visited img, fieldset { border: none; }
+address { font-style: normal; }
+header, section, article, nav, footer, hgroup, details, summary, figure, main { display: block; }
+mark {
+  color: inherit;
+  background: transparent; }
+abbr { border: none; }
+summary::-webkit-details-marker { display: none; }
+
+/* Base Styles and Reset */
+
+html {
+	font-size: 20px;
+}
+
+body {
+	color: #45494D;
+	font: normal 1rem Helvetica, Arial, sans-serif;
+}
+
+a {
+	text-decoration: none
+}
+
+/* Column Layout */
+
+.container,
+footer {
+	margin: 0 auto;
+	max-width: 1000px;
+}
+
+.container {
+	padding: 80px 0 90px 0;
+}
+
+.container::after {
+    clear: both;
+    content: "";
+    display: block; 
+    height: 0; 
+}
+
+main {
+	float: left;
+	padding-right: 11.5%;
+	max-width: 65%;
+}
+
+aside {
+	box-sizing: border-box;
+	float: right;
+	overflow: hidden;
+	width: 23.5%;
+}
+
+/* Header */
+
+body > header {
+	background: #3D3D3D;
+	padding: 130px 0 50px 0;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+h1 {
+	background: transparent url("images/logo.png") 50% 100% no-repeat;
+	font-size: 3.4rem;
+	font-weight: normal;
+	letter-spacing: 1rem;
+	margin-bottom: 135px;
+	padding-bottom: 125px;
+}
+
+body > header a {
+	color: white;
+}
+
+header nav a:hover {
+	color: #F5DC39;
+}
+
+.nav-current {
+	color: #50C3AF;
+}
+
+header li {
+	display: inline;
+	padding: 0 25px;
+}
+
+/* Main */
+
+article {
+	line-height: 1.5rem;
+	padding-bottom: 80px;
+	text-align: justify;
+}
+
+h2 {
+	font-size: 1.8rem;
+	line-height: normal;
+	padding-bottom: 20px;
+}
+
+h2 a {
+	color: #45494D;
+}
+
+h2 a:hover {
+	color: #50C3AF;
+}
+
+address {
+	display: inline-block;
+	padding-bottom: 15px;
+}
+
+address a {
+	color: #50C3AF;
+}
+
+/* Footer */
+
+footer {
+	border-top: 1px solid #D2D5DA;
+	color: #7e8287;
+	font-size: 0.6rem;
+	padding: 15px 0 30px 0;
+}
+
+footer p {
+	line-height: 18px;
+}
+
+/* Sidebar */
+
+aside {
+	background: #F6F7F8;
+	padding: 40px;
+}
+
+aside h3 {
+	color: #45494D;
+	font-size: 0.8rem;
+	margin-bottom: 35px;
+	text-transform: uppercase;
+}
+
+aside ul {
+	margin: 0 0 115px 20px;
+}
+
+aside li {
+	font-size: 0.7rem;
+	list-style: url("images/blt_ul.png");
+	padding-bottom: 5px;
+}
+
+aside a,
+aside p {
+	color: #787B80;
+}
+
+aside a:hover {
+	color: #6CC3AF;
+}
+
+aside p {
+	font-size: 0.7rem;
+	line-height: 21px;
+	text-align: justify;
+}
+
+/* Buttons */
+
+.button {
+	background: #50C3AF;
+	border: none;
+	border-radius: 20px;
+	color: white;
+	display: inline-block;
+	font-size: 0.7rem;
+	padding: 5px 25px;
+}
+
+.disabled {
+	background: #D2D5DA;
+	cursor: default;
+}
+
+.button + .button {
+	margin-left: 25px;
+}
