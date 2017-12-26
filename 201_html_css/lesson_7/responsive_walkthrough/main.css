@@ -90,7 +90,7 @@ body > header a {
 	color: white;
 }
 
-header nav a:hover {
+nav a:hover {
 	color: #F5DC39;
 }
 
@@ -98,15 +98,14 @@ header nav a:hover {
 	color: #50C3AF;
 }
 
-header li {
+nav li {
 	display: inline;
 	padding: 0 25px;
 }
 
 /* Main */
 
-article,
-.comments {
+article {
 	line-height: 1.5rem;
 	padding-bottom: 80px;
 	text-align: justify;
@@ -130,19 +129,6 @@ address a {
 address {
 	display: inline-block;
 	padding-bottom: 15px;
-}
-
-/* Footer */
-
-footer {
-	border-top: 1px solid #D2D5DA;
-	color: #7e8287;
-	font-size: 0.6rem;
-	padding: 15px 0 30px 0;
-}
-
-footer p {
-	line-height: 150%;
 }
 
 /* Sidebar */
@@ -179,13 +165,26 @@ h3 {
 }
 
 .sidebar a:hover {
-	color: #6CC3AF;
+	color: #50C3AF;
 }
 
 .sidebar p {
 	font-size: 0.7rem;
 	line-height: 150%;
 	text-align: justify;
+}
+
+/* Footer */
+
+footer {
+	border-top: 1px solid #D2D5DA;
+	color: #7e8287;
+	font-size: 0.6rem;
+	padding: 15px 0 30px 0;
+}
+
+footer p {
+	line-height: 150%;
 }
 
 /* Buttons */
@@ -210,13 +209,12 @@ h3 {
 }
 
 /* Comments */
-
 .comments {
-	padding-bottom: 70px;
+	padding-bottom: 25px;
 }
 
-.comments section + section {
-	margin-top: 45px;
+.comments article {
+	padding-bottom: 45px;
 }
 
 .comments header {
@@ -264,14 +262,7 @@ textarea {
 	width: 100%;
 }
 
-::placeholder {
-	color: #999999;
-}
-
-::selection {
-	color: #ffffff;
-    background: #50c3af;
-}
+/* Breakpoints */
 
 @media (max-width: 768px) {
 	body > header {
@@ -286,7 +277,6 @@ textarea {
 		font-size: 1.2rem;
 	}
 
-
 	input[type="text"],
 	input[type="email"] {
 		width: 100%;
@@ -294,7 +284,8 @@ textarea {
 }
 
 @media (max-width: 600px) {
-	main {
+	.content {
+		float: none;
 		padding: 0 25px 50px 25px;
 		max-width: 100%;
 	}
@@ -325,7 +316,7 @@ textarea {
 		padding-bottom: 90px;
 	}
 
-	header li {
+	nav li {
 		box-sizing: border-box;
 		display: inline-block;
 		padding: 10px 0px;
