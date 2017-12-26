@@ -105,7 +105,8 @@ header li {
 
 /* Main */
 
-article {
+article,
+.comments {
 	line-height: 1.5rem;
 	padding-bottom: 80px;
 	text-align: justify;
@@ -149,40 +150,44 @@ footer p {
 
 /* Sidebar */
 
-aside {
+.sidebar {
 	background: #F6F7F8;
 	padding: 40px;
 }
 
-aside h3 {
+.sidebar h3 {
 	color: #45494D;
 	font-size: 0.8rem;
 	margin-bottom: 35px;
 	text-transform: uppercase;
 }
 
-aside ul {
-	margin: 0 0 115px 20px;
+.sidebar section:first-of-type {
+	margin-bottom: 115px;
 }
 
-aside li {
+.sidebar ul {
+	padding-left: 20px;
+}
+
+.sidebar li {
 	font-size: 0.7rem;
 	list-style: url("images/blt_ul.png");
 	padding-bottom: 5px;
 }
 
-aside a,
-aside p {
+.sidebar a,
+.sidebar p {
 	color: #787B80;
 }
 
-aside a:hover {
+.sidebar a:hover {
 	color: #6CC3AF;
 }
 
-aside p {
+.sidebar p {
 	font-size: 0.7rem;
-	line-height: 21px;
+	line-height: 150%;
 	text-align: justify;
 }
 
@@ -206,3 +211,59 @@ aside p {
 .button + .button {
 	margin-left: 25px;
 }
+
+/* Comments */
+
+.comments {
+	padding-bottom: 70px;
+}
+
+.comments section + section {
+	margin-top: 45px;
+}
+
+.comments header {
+	margin-bottom: 9px;
+}
+
+.comments img {
+	vertical-align: -16px;
+}
+
+.comments a {
+	padding-left: 10px;
+}
+
+/* Forms */
+
+dl {
+	margin-bottom: 15px;
+}
+
+dt {
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+input {
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	font-size: 0.75rem;
+	padding: 3px 10px;
+}
+
+input[type="text"],
+input[type="email"] {
+	height: 30px;
+	width: 66%;
+}
+
+input[type="textbox"] {
+	height: 135px;
+	width: 100%;
+}
+
+::placeholder {
+	color: #999999
+}
+
