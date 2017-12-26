@@ -21,7 +21,7 @@ mark {
 abbr { border: none; }
 summary::-webkit-details-marker { display: none; }
 
-/* Base Styles and Reset */
+/* Base Styles */
 
 html {
 	font-size: 20px;
@@ -55,13 +55,13 @@ footer {
     height: 0; 
 }
 
-main {
+.content {
 	float: left;
 	padding-right: 11.5%;
 	max-width: 65%;
 }
 
-aside {
+.sidebar {
 	box-sizing: border-box;
 	float: right;
 	overflow: hidden;
@@ -122,17 +122,14 @@ h2 a {
 	color: #45494D;
 }
 
-h2 a:hover {
+h2 a:hover,
+address a {
 	color: #50C3AF;
 }
 
 address {
 	display: inline-block;
 	padding-bottom: 15px;
-}
-
-address a {
-	color: #50C3AF;
 }
 
 /* Footer */
@@ -145,7 +142,7 @@ footer {
 }
 
 footer p {
-	line-height: 18px;
+	line-height: 150%;
 }
 
 /* Sidebar */
@@ -155,14 +152,14 @@ footer p {
 	padding: 40px;
 }
 
-.sidebar h3 {
+h3 {
 	color: #45494D;
 	font-size: 0.8rem;
 	margin-bottom: 35px;
 	text-transform: uppercase;
 }
 
-.sidebar section:first-of-type {
+.sidebar > section:first-of-type {
 	margin-bottom: 115px;
 }
 
@@ -234,37 +231,46 @@ footer p {
 	padding-left: 10px;
 }
 
-/* Forms */
+/* Comment Form */
 
-dl {
+dl,
+dd {
 	margin-bottom: 15px;
 }
 
 dt {
 	font-weight: bold;
-	margin-bottom: 5px;
+	padding-bottom: 5px;
 }
 
-input {
+input,
+textarea {
 	border: 1px solid #cccccc;
 	border-radius: 4px;
+	box-sizing: border-box;
 	font-size: 0.75rem;
-	padding: 3px 10px;
+	padding: 5px 10px;
 }
 
 input[type="text"],
 input[type="email"] {
-	height: 30px;
-	width: 66%;
+	height: 38px;
+	width: 450px;
 }
 
-input[type="textbox"] {
-	height: 135px;
+textarea {
+	height: 140px;
+	resize: none;
 	width: 100%;
 }
 
 ::placeholder {
-	color: #999999
+	color: #999999;
+}
+
+::selection {
+	color: #ffffff;
+    background: #50c3af;
 }
 
 @media (max-width: 768px) {
@@ -278,6 +284,12 @@ input[type="textbox"] {
 
 	h2 {
 		font-size: 1.2rem;
+	}
+
+
+	input[type="text"],
+	input[type="email"] {
+		width: 100%;
 	}
 }
 
