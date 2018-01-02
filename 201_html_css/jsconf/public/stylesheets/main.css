@@ -1,0 +1,449 @@
+/*
+----------------------------------------
+Tantek Celik's Whitepsace Reset
+     Author:    Tantek Celik, Shane Riley
+    Version:    (CC) 2010 Some Rights Reserved - http://creativecommons.org/licenses/by/2.0
+Description:  Resets default styling of common browsers to a common base
+----------------------------------------
+*/
+
+ul,ol { list-style: none; }
+h1,h2,h3,h4,h5,h6,pre,code { font-size: 1em; }
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input,dl,dt,dd, figure, figcaption {
+  margin: 0;
+  padding: 0; }
+a img,:link img,:visited img, fieldset { border: none; }
+address { font-style: normal; }
+header, section, article, nav, footer, hgroup, details, summary, figure, main { display: block; }
+mark {
+  color: inherit;
+  background: transparent; }
+abbr { border: none; }
+summary::-webkit-details-marker { display: none; }
+
+/* Main */
+
+body,
+h3 {
+	color: #444444;
+	font: 300 16px "Open Sans", Arial, sans-serif;
+}
+
+a {
+	color: #008000;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+ a:hover {
+	text-decoration: underline;
+}
+
+p {
+	line-height: 25px;
+	margin-bottom: 17px;
+}
+
+main {
+	margin: 0 auto;
+	text-align: center;
+	max-width: 100%;
+	overflow: hidden;
+	padding: 0 30px;
+}
+
+section {
+	border-top: 1px solid #EFEFEF;
+	margin: 0 auto;
+	padding: 59px 0 60px 0;
+}
+
+h3 {
+	font-size: 3rem;
+	margin: 0 0 30px 0;
+}
+
+h4 {
+	font-size: 1.5rem;
+}
+
+.button {
+	background: #008000;
+	color: white;
+	font-weight: bold;
+	padding: 10px 30px;
+}
+
+.button:hover {
+	background: #006000;
+	text-decoration: none;
+}
+
+/* Main Navigation */
+
+nav {
+	background: white;
+	border-bottom: 1px solid #EFEFEF;
+	border-top: 10px solid #F5F5F5;
+	left: 0;
+	position: fixed;
+	text-align: center;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+nav li {
+	display: inline-block;
+	list-style: none;
+	margin: 0 24.75px 0 24.5px;
+}
+
+nav a {
+	color: #444444;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 44px;
+	text-transform: uppercase;
+}
+
+.column {
+	margin: 0 auto;
+	max-width: 960px;
+	text-align: left;
+}
+
+.column h3 {
+	text-align: center;
+}
+
+/* Header */
+
+.banner {
+	background: transparent url("../images/front.jpg") center no-repeat;
+	height: 428px;
+	margin: 55px 0 0 0;
+	text-align: center;
+}
+
+.banner img {
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+	height: 80px;
+	position: relative;
+    top: 150px;
+}
+
+.banner h1,
+.banner h2 {
+	font-weight: normal;
+	color: white;
+	margin: 0;
+	position: relative;
+	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    top: 149px;
+}
+
+h1 {
+	font-size: 72px;
+}
+
+h2 {
+	font-size: 31px;
+	text-transform: uppercase;
+}
+
+/* Speakers */
+
+.speakers ul {
+	margin: 0 auto;
+	max-width: 960px;
+	text-align: center;
+}
+
+.speaker {
+	border: 1px solid #E8E8E8;
+	display: inline-block;
+	height: 378px;
+	margin: 5px 6.5px 5px 7px;
+	position: relative;
+	width: 280px;
+	vertical-align: top;
+}
+
+.overlay {
+	background: rgba(0, 0, 0, 0.9);
+	box-sizing: border-box;
+	color: white;
+	visibility: hidden;
+	font-size: 0.81rem;
+	height: 100%;
+	padding: 10px 20px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.overlay h4 {
+	padding: 4px 0;
+}
+
+.overlay p {
+	line-height: 15px;
+}
+
+.speaker:hover .overlay {
+	visibility: visible;
+}
+
+figcaption p:first-of-type {
+	color: #008000;
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+figcaption {
+	padding: 33px 10px 0 10px;
+}
+
+/* Schedule */
+
+table {
+	font-size: 1.5rem;
+	font-weight: normal;
+	margin: 0 auto;
+	max-width: 960px;
+	vertical-align: middle;
+}
+
+td {
+	border-top: 1px solid #EFEFEF;
+	padding: 10px;
+	text-align: left;
+}
+
+td:nth-of-type(3) {
+	padding-bottom: 7px;
+}
+
+tr:last-of-type td {
+	border-bottom: 1px solid #EFEFEF;
+}
+
+td h4 {
+	display: inline-block;
+	font-weight: normal;
+	margin-right: 7px;
+}
+
+td:nth-of-type(2) a {
+	display: block;
+	font-size: 18px;
+	padding-top: 8px;
+}
+
+td:nth-of-type(3) img {
+	width: 130px;
+}
+
+.tag {
+	background: #EEEEEE;
+	border: 1px solid  #AAAAAA;
+	display: inline-block;
+	font-size: 7px;
+	text-align: initial;
+	margin: 0 3.5px 0 0;
+	padding: 1px 4px;
+	vertical-align: 65%;
+}
+
+/* Location*/
+
+.location img {
+	left: -195px;
+	margin: 13px 0 24px 0;
+	position: relative;
+}
+
+/* Sponsors */
+
+.column > section {
+	border-top: none;
+	padding: 0;
+	text-align: left;
+	margin-bottom: 30px;
+}
+
+.sponsors h4 {
+	text-align: left;
+	font-size: 18px;
+	font-weight: 600;
+	padding: 0 0 5px 0;
+}
+
+.sponsors a {
+	display: inline-block;
+}
+
+.sponsors section + section a {
+	margin: 0 40px 2px 0;
+}
+
+.silver img {
+	width: 240px;
+}
+
+.support img {
+	width: 180px;
+}
+
+.sponsors .platinum {
+	margin-bottom: 32px;
+}
+
+.sponsors .support {
+	margin-bottom: 18px;
+}
+
+/* Footer */
+
+footer {
+	background: transparent url("../images/people.jpg") 0 23% no-repeat;
+	background-size: cover;
+	color: white;
+	height: 340px;
+}
+
+footer > p {
+	font-size: 3rem;
+	padding: 49px 0 0 0;
+	text-align: center;
+}
+
+footer h2 {
+	font-weight: 600;
+}
+
+footer section {
+	background: rgba(0, 0, 0, 0.7);
+	border-top: none;
+	margin: 50px 0 0 0;
+	padding: 10px;
+	max-width: 100%;
+	text-align: left;
+}
+
+footer p,
+footer h2 {
+	margin: inherit auto;
+  max-width: 960px;
+}
+
+/* Breakpoints */
+
+@media (max-width: 654px) {
+	nav {
+		display: none;
+	}
+
+	main {
+		padding: 0 32px;
+	}
+
+	.banner {
+		height: 300px;
+		margin: 0;
+	}
+
+	.banner img {
+		position: relative;
+	  top: 90px;
+	}
+
+	.banner h1,
+	.banner h2 {
+	  top: 89px;
+	}
+
+	h1 {
+		font-size: 40px;
+	}
+
+	h2 {
+		font-size: 20px;
+	}
+
+	.schedule h3 {
+		margin-bottom: 32px;
+	}
+
+	table {
+		border-collapse: collapse;
+	}
+
+	tr {
+		border-top: 1px solid #EFEFEF;
+		display: block;
+		position: relative;
+	}
+
+	td {
+		display: block;
+		border: none;
+		padding: 0;
+		text-align: right;
+		vertical-align: middle;
+	}
+
+	td:nth-of-type(1) {
+		padding: 20px;
+	}
+
+	td:nth-of-type(2) {
+		padding: 10px;
+		text-align: left;
+	}
+
+	.schedule-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		vertical-align: middle
+	}
+
+	td:nth-of-type(3) img {
+		margin: 10px;
+		width: 80px;
+	}
+
+	.empty {
+		height: 13px;
+		width: 100%;
+	}
+
+	tr:last-of-type td.empty {
+		border-bottom: 1px solid #EFEFEF;
+	}
+
+	tr:last-of-type td {
+		border-bottom: none;
+	}
+
+	.sponsors {
+		margin: 0 -22px;
+	}
+
+	footer section {
+		margin-top: 33px;
+		padding: 10px;
+	}
+
+	footer > p {
+		font-size: 35px;
+		padding: 33px 0 0 0;
+	}
+
+	footer h2 {
+		font-size: 31px;
+	}
+}
