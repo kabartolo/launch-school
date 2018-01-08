@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+
+    <style>
+      #positioned {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        z-index: 2;
+        padding: 20px 10px;
+        width: 400px;
+        margin-left: -200px;
+        background: #ffffcc;
+        box-sizing: border-box;
+      }
+
+      #fixed {
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, .6);
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+      }
+
+      #offset {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: 20px;
+        height: 20px;
+        background: #fcfc99;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="positioned">I'm positioned!
+      <div id="offset"></div>
+    </div>
+
+    <div id="fixed"></div>
+    <p>Pellentesque a massa pretium nisi lobortis auctor eget non nisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla consequat scelerisque urna vel accumsan. Donec maximus tincidunt justo. Quisque id semper lorem. Pellentesque nec turpis in nibh ullamcorper interdum. Nunc id turpis sit amet velit laoreet accumsan luctus id nisi. Sed ultricies malesuada libero vestibulum lobortis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras ligula justo, volutpat quis pretium sit amet, maximus dapibus quam. Phasellus nec ornare nisi, eget sagittis eros. Proin porta tempus mauris, id accumsan lectus rutrum in. In quis sem quis nisl pharetra lacinia non vitae quam.</p>
+        
+    <p>Nullam gravida ligula vel dictum auctor. Pellentesque tristique mi quam, ultrices congue sapien vestibulum ac. Vivamus et viverra neque, sit amet euismod dolor. Sed aliquam eu lacus quis convallis. Etiam quis blandit massa. Suspendisse potenti. Vestibulum lorem mi, mollis blandit faucibus vitae, ultricies eu lectus. Suspendisse fringilla vehicula enim, at ullamcorper massa ornare porta. Proin eget egestas felis, in blandit metus. Quisque a commodo mauris. Morbi sed ornare massa. Aliquam facilisis sagittis interdum. Etiam ut ligula mi. Sed vestibulum venenatis sem at viverra.</p>
+
+    <p>Quisque tempus purus ut vulputate egestas. Aliquam non tempor orci. Praesent est sapien, ornare a dolor a, vehicula malesuada nisi. Maecenas turpis purus, pulvinar a venenatis id, ornare et nisi. Vivamus volutpat sapien eget quam pulvinar, vitae lacinia ante venenatis. Proin venenatis arcu at velit aliquam, a pretium leo aliquam. Cras a hendrerit tellus. Proin at lacinia ligula.</p>
+
+    <p>Nam placerat, metus at accumsan sagittis, est tellus mattis nunc, ut mollis lorem risus in sem. Sed at arcu varius, pharetra tortor sed, auctor tellus. Aenean ac varius tellus. Vestibulum dapibus faucibus convallis. Suspendisse potenti. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce ornare massa arcu. Quisque ullamcorper aliquam augue, at tempor arcu dignissim eget. Morbi mauris ante, finibus a ipsum in, posuere finibus ante. Cras dignissim elementum eros quis porta.</p>
+  </body>
+</html> 

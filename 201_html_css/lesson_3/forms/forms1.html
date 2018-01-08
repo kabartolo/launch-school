@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Forms 1</title>
+    <meta charset="utf-8" />
+  </head> 
+
+  <style>
+    label {
+      color: blue;
+    }
+  </style>
+
+  <body>
+
+    <form action="#" method="post">
+      <fieldset>
+        <dl>
+          <dt><label for="customer-name">Your Name</label></dt>
+          <dd><input type="text" name="customer-name" id="customer-name" required /></dd>
+
+          <dt><label for="customer-email">Email</label></dt>
+          <dd><input type="email" name="customer-email" id="customer-email" required /></dd>
+
+          <dt><label for="customer-phone">Phone Number</label></dt>
+          <dd><input type="tel" name="customer-number" id="customer-number" placeholder="###-###-####" required /></dd>
+
+          <dt><label for="customer-message">Message</label></dt>
+          <dd><textarea rows="6" cols="80" name="customer-message" id="customer-message" required>Type your message here.</textarea></dd>
+        </dl>
+
+        <input type="submit" value="Send Message" />
+        <input type="reset" value="Clear" />
+      </fieldset>
+    </form>
+  </body>
+</html>
