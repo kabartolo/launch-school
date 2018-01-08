@@ -1,0 +1,119 @@
+/*
+----------------------------------------
+Tantek Celik's Whitepsace Reset
+     Author:    Tantek Celik, Shane Riley
+    Version:    (CC) 2010 Some Rights Reserved - http://creativecommons.org/licenses/by/2.0
+Description:  Resets default styling of common browsers to a common base
+----------------------------------------
+*/
+
+ul,ol { list-style: none; }
+h1,h2,h3,h4,h5,h6,pre,code { font-size: 1em; }
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input,dl,dt,dd, figure, figcaption {
+  margin: 0;
+  padding: 0; }
+a img,:link img,:visited img, fieldset { border: none; }
+address { font-style: normal; }
+header, section, article, nav, footer, hgroup, details, summary, figure, main { display: block; }
+mark {
+  color: inherit;
+  background: transparent; }
+abbr { border: none; }
+summary::-webkit-details-marker { display: none; }
+
+/* Main CSS */
+
+html,
+body {
+	font: normal 28px Helvetica, Arial, sans-serif;
+}
+
+article {
+	border: 4px solid black;
+	margin: 5px auto;
+	padding: 0 15px;
+	width: 580px;
+}
+
+header p {
+	padding-bottom: 3px;
+}
+
+h1 {
+	font-weight: bold;
+	font-size: 2.9rem;
+}
+
+table {
+	border-collapse: collapse;
+	display: block;
+	width: 100%;
+	white-space: nowrap;
+}
+
+thead th,
+tr:nth-of-type(11) {
+	text-align: left;
+	border-top: 1rem solid black;
+}
+
+tbody th {
+	text-align: right;
+	border-top: 0.4rem solid black;
+}
+
+tfoot {
+	white-space: pre-wrap;
+}
+
+th,
+tfoot {
+	font-size: 0.8rem;
+}
+
+th,
+td {
+	padding: 5px 0;
+}
+
+td {
+	border-top: 1px solid black;
+}
+
+td:last-of-type {
+	text-align: right;
+}
+
+tbody td:last-of-type {
+	font-weight: bold;
+}
+
+dt, dd {
+	display: inline-block;
+}
+
+dt {
+	font-weight: bold;
+}
+
+table + table {
+	font-size: 0.8rem;
+}
+
+table + table th,
+table + table td {
+	border: none;
+	padding: 3px 0;
+	text-align: left;
+	width: 40%;
+}
+
+table + table th {
+	border-bottom: 1px solid black;
+	font-weight: normal;
+}
+
+.secondary {
+	font-weight: normal;
+	text-indent: 1rem;
+}
