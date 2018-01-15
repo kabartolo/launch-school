@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Trimming Spaces</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write a function that takes a string as an argument, and returns the string stripped of spaces from both ends. Do not remove or alter internal spaces.</p>
+    <p>You may use the square brackets ([]) to access a character by index (as shown below), and the length property to find the string length. However, you may not use any other properties or methods from JavaScript's built-in String class.</p>
+
+  <script>
+
+  function trimLeft(string) {
+    var copyMode = false;
+    var copy = '';
+    var i;
+
+    for (i = 0; i < string.length; i++) {
+      if (string[i] != ' ') {
+        copyMode = true;
+      }
+
+      if (copyMode) {
+        copy += string[i];
+      }
+    }
+
+    return copy;
+  }
+
+  function trimRight(string) {
+    var copyMode = false;
+    var copy = '';
+    var i;
+
+    for (i = string.length - 1; i >= 0; i--) {
+      if (string[i] != ' ') {
+        copyMode = true;
+      }
+      
+      if (copyMode) {
+        copy = string[i] + copy;
+      }
+    }
+
+    return copy;
+  }
+  
+  function trim(string) {
+    return trimRight(trimLeft(string));   
+  }
+
+  console.log(trim('  abc  '));  // "abc"
+  console.log(trim('abc   '));   // "abc"
+  console.log(trim(' ab c'));    // "ab c"
+  console.log(trim(' a b  c'));  // "a b  c"
+  console.log(trim('      '));   // ""
+  console.log(trim(''));         // ""
+  </script>
+  </body>
+</html> 

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Print Multiples</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write a function logMultiples that takes one argument number. It should log all multiples of the argument between 0 and 100 (inclusive) that are also odd numbers. Log the values in descending order.</p>
+
+    <p>You may assume that number is an integer between 0 and 100.</p>
+
+    <p>Further exploration:</p>
+    <p>This solution must step through every number between 100 and 0. Alternatively, you can determine the number's largest multiple that is less than 100, then start the loop with that multiple. With each iteration of the loop, you can decrement the number by the argument; when the result is negative, you can quit.</p>
+
+    <p>As above, we must check each multiple to determine whether it is odd. If it is odd, we log it. Math.floor(100 / number) * number returns the largest multiple of number that is between 0 and 100. If you're not familiar with the floor method, see the documentation.</p>
+
+    <script>
+      function logMultiples(number) {
+        for (var i = 100; i >= number; i--) {
+          if (i % number === 0 && i % 2 === 1) {
+            console.log(i);
+          }
+        }
+      }
+
+      logMultiples(5);
+
+      // Further exploration:
+
+      function logMultiples(number) {
+        var largestMultiple = Math.floor(100 / number) * number;
+
+        for (; largestMultiple >= number; largestMultiple -= number) {
+          if (largestMultiple % 2 === 1) {
+            console.log(largestMultiple);
+          }
+        }
+      }
+
+      // logMultiples(7);
+
+      // OR
+
+      function logMultiples(number) {
+        var largestMultiple = Math.floor(100 / number) * number;
+
+        while(largestMultiple >= number) {
+          if(largestMultiple % 2 === 1) {
+            console.log(largestMultiple);
+          }
+
+          largestMultiple -= number;
+        }
+      }
+
+      logMultiples(5);
+    </script>
+  </body>
+</html> 

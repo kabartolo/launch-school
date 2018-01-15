@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Substring 1</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write a function that returns a substring of a string based on a starting index and length.</p>
+
+  <script>
+    function substr(string, start, length) {
+      var output = '';
+
+      if (start < 0) {
+        start = string.length + start;
+      }
+
+      for (i = start; i < start + length; i++) {
+        if (string[i] === undefined) {
+          break;
+        }
+
+        output += string[i];
+      }
+
+      return output;
+    }
+
+    var string = 'hello world';
+
+    console.log(substr(string, 2, 4));      // "llo "
+    console.log(substr(string, -3, 2));     // "rl"
+    console.log(substr(string, 8, 20));     // "rld"
+    console.log(substr(string, 0, -20));    // ""
+    console.log(substr(string, 0, 0));      // ""
+  </script>
+  </body>
+</html> 

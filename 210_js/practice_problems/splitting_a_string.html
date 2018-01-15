@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Splitting a String</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write a function that takes two arguments: a string to be split, a delimiter character. The function logs the split strings to the console.</p>
+
+  <script>
+    function splitString(string, delimiter) {
+      var i;
+      var output;
+
+      if (delimiter === undefined) {
+        console.log('ERROR: No delimiter');
+        return;
+      }
+
+      output = '';
+      for (i = 0; i < string.length; i++) {
+        if (string[i] === delimiter) {
+          console.log(output);
+          output = '';
+        } else if (delimiter === '') {
+          console.log(string[i]);
+        } else {
+          output += string[i];
+        }
+      }
+
+      if (output) {
+        console.log(output);
+      }
+
+    }
+
+    splitString('abc,123,hello world', ',');
+    // logs:
+    // abc
+    // 123
+    // hello world
+
+    splitString('hello');
+    // logs:
+    // ERROR: No delimiter
+
+    splitString('hello', '');
+    // logs:
+    // h
+    // e
+    // l
+    // l
+    // o
+
+    splitString('hello', ';');
+    // logs:
+    // hello
+
+    splitString(';hello;', ';');
+    // logs:
+    //  (this is a blank line)
+    // hello
+  </script>
+  </body>
+</html> 

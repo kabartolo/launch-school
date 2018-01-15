@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Greatest Common Divisor</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Create a function that computes the Greatest Common Divisor of two positive integers.</p>
+
+    <p>Further exploration: The examples all put the larger number first. Do you think the program will still work if you reverse the order and place the smaller number first?</p>
+
+    <p>Our solution works with only two numbers. Can you expand it to accept an array of two or more numbers instead? Hint: the GCD is associative. To compute the GCD of 12, 4, and 8, for instance, you can compute: gcd(12, gcd(4, 8));  // 4 </p>
+
+
+  <script>
+      function gcd(a, b) {
+        var temp;
+
+        while (b != 0) {
+          temp = b;
+          b = a % b;
+          a = temp;
+        }
+
+        return a;
+      }
+
+      console.log(gcd(12, 4));  // 4
+      console.log(gcd(15, 10)); // 5
+      console.log(gcd(9, 2));   // 1
+      console.log(gcd(48, 18)); // 6
+
+      console.log(gcd(12, 4));  // 4
+      console.log(gcd(15, 10)); // 5
+      console.log(gcd(9, 2));   // 1
+      console.log(gcd(18, 48)); // 6
+
+      // Further exploration:
+      // This algorithm works whether a > b or b > a. This is because if b > a, the values of a and b will switch after the
+      // second step of the algorithm, since the remainder of a smaller number divided by a larger number is the smaller number itself. 
+      // For example, with gcd(18, 48), the first step involves setting b to the remainder of a / b, 
+      // which is 18 % 48 = 18, so b = 18, and a is set to the value of temp, which is 48, so a = 48.
+      // The process continues as for gcd(48, 18).
+
+      // For an array of two or more numbers:
+      function gcd(numArray) {
+        var a = numArray[0];
+
+        for (var i = 1; i < numArray.length; i++) {  
+          var b = numArray[i];
+          var temp;
+          
+          while (b != 0) {
+            temp = b;
+            b = a % b;
+            a = temp;
+          }
+        }
+
+        return a;
+      }
+
+      console.log(gcd([12, 4, 8]));  // 4
+      console.log(gcd([25, 100, 50])); // 25
+      console.log(gcd([44, 22, 99])); //  11
+
+
+
+
+  </script>
+  </body>
+</html> 

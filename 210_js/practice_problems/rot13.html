@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>rot13</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+
+    <p>Rot13 ("rotate by 13 places") is a letter-substitution cipher that translates a String into a new String:</p>
+
+    <p>For each character in the original String:</p>
+
+    <ul>
+      <li>If the character is a letter in the modern English alphabet, change it to the character 13 positions later in the alphabet. So a becomes n. If you reach the end of the alphabet, return to the beginning. So o becomes b.</li>
+      <li>Letter transformations preserve case. A becomes N while a becomes n.</li>
+      <li>Don't modify characters that are not letters.</li>
+      <li>Write a Function, rot13, that takes a String and returns that String transformed by the rot13 cipher.</li>
+    </ul>
+
+    <script>
+      function rot13(string) {
+        var i;
+        var char;
+        var convertedString = '';
+
+        for (i = 0; i < string.length; i++) {
+          char = string[i];
+
+          if (isLetter(char)) {
+            char = rotate(char);
+          }
+
+          convertedString += char;
+        }
+
+        return convertedString;
+      }
+
+      function rotate(letter) {
+        var charCode = letter.charCodeAt(0);
+        var newCharCode = charCode + 13;
+
+        if (inUpperAlphabet(letter)) {
+          newCharCode -= 26;
+        }
+
+        return String.fromCharCode(newCharCode);
+      }
+
+      function inUpperAlphabet(letter) {
+        return (letter >= 'n' && letter <= 'z') || (letter >= 'N' && letter <='Z');
+      }
+
+      function isLetter(char) {
+        return (char >= 'A' && char <= 'Z') || (char >= 'a' && char <= 'z');
+      }
+
+      console.log(rot13('Teachers open the door, but you must enter by yourself.')); 
+      // logs: Grnpuref bcra gur qbbe, ohg lbh zhfg ragre ol lbhefrys.
+      console.log(rot13(''));
+      // logs: ''
+      console.log(rot13(rot13('Teachers open the door, but you must enter by yourself.')));
+      // logs: Teachers open the door, but you must enter by yourself.
+    </script>
+  </body>
+</html> 

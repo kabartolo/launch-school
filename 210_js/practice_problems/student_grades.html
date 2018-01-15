@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Student Grade</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write a program to determine a student’s grade based on the average of three scores you get from the user. Use these rules to compute the grade:</p>
+    <ul>
+      <li>If the average score is greater than or equal to 90 then the grade is 'A'</li>
+      <li>If the average score is greater than or equal to 70 and less than 90 then the grade is 'B'</li>
+      <li>If the average score is greater than or equal to 50 and less than 70 then the grade is 'C'</li>
+      <li>If the average score is less than 50 then the grade is 'F'</li>
+    </ul>
+
+    <p>You may assume that all input values are valid positive integers.</p>
+
+    <p>Further exploration: Our solution limits us to exactly three input scores. Modify it to accept any number of scores. To simplify matters, move the computation of the average into a function.</p>
+   <script>
+      var sum = 0;
+      var scoreCount = 1;
+
+      while (scoreCount <= 3) {
+        sum += Number(prompt('Enter score ' + String(scoreCount) + ':'));
+
+        scoreCount++;
+      }
+
+      var average = sum / 3;
+      var grade = 'F';
+      if (average >= 90) {
+        grade = 'A';
+      } else if (average >= 70) {
+        grade = 'B';
+      } else if (average >= 50) {
+        grade = 'C';
+      }
+
+      console.log('Based on the average of your 3 scores, your letter grade is ' + '"' + grade + '".');
+
+      // Further exploration
+
+      function gradeFromScores(numScores) {
+        var sum = 0;
+        var scoreCount = 1;
+
+        while (scoreCount <= numScores) {
+          sum += Number(prompt('Enter score ' + String(scoreCount) + ':'));
+
+          scoreCount++;
+        }
+
+        var average = sum / numScores;
+        var grade = 'F';
+        if (average >= 90) {
+          grade = 'A';
+        } else if (average >= 70) {
+          grade = 'B';
+        } else if (average >= 50) {
+          grade = 'C';
+        }
+
+
+        console.log('Based on the average of your ' + String(numScores) + ' scores, your letter grade is ' + '"' + grade + '".');
+      }
+
+      gradeFromScores(5);
+
+    </script>
+  </body>
+</html> 

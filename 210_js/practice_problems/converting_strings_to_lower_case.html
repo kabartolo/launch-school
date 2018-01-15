@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Converting Strings to Lower Case</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write a function that returns a string converted to lowercase.</p>
+
+    <p>To convert a single uppercase character to a lowercase character, get its ASCII numeric representation from the ASCII table, add 32 to that number, then convert the number back to a character using the same ASCII table. You can use the String.fromCharCode and the String.charCodeAt methods for these operations.</p>
+
+  <script>
+    function toLowerCase(string) {
+      var CONVERSION_OFFSET = 32;
+      var output = '';
+      var i;
+      var char;
+      var charCode;
+
+      for (i = 0; i < string.length; i++) {
+        char = string[i];
+        charCode = char.charCodeAt(0);
+        
+        if (char >= 'A' && char <= 'Z') {
+          charCode += CONVERSION_OFFSET;
+        }
+
+        output += String.fromCharCode(charCode);
+      }
+
+      return output;
+    }
+
+    console.log(toLowerCase('ALPHABET'));    // "alphabet"
+    console.log(toLowerCase('123'));         // "123"
+    console.log(toLowerCase('abcDEF'));      // "abcdef"
+  </script>
+  </body>
+</html> 

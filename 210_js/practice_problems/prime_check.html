@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Prime Check</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write a function that takes a number argument, and returns true if the number is prime, or false if it is not.</p>
+    <p>You may assume that the input is always a non-negative integer.</p>
+
+    <p>Further exploration: If we use the fact that even numbers greater than 2 can't be prime (they're all divisible by 2), we can add this to the guard clause as well, and return immediately for even numbers greater than 2. This also means that we only need to test odd divisors; odd numbers are never divisible by even numbers.</p>
+
+   <script>
+      function isPrime(number) {
+        if (number <= 1) {
+          return false;
+        }
+
+        for (var divisor = 2; divisor < number; divisor++) {
+          if (number % divisor === 0) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      // Further exploration:
+      function isPrime(number) {
+        if (number <= 1 || (number > 2 && number % 2 === 0)) {
+          return false;
+        }
+
+        for (var divisor = 3; divisor < number; divisor += 2) {
+          if (number % divisor === 0) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      console.log(isPrime(1));   // false
+      console.log(isPrime(2));   // true
+      console.log(isPrime(3));   // true
+      console.log(isPrime(43));  // true
+      console.log(isPrime(55));  // false
+      console.log(isPrime(0));   // false
+    </script>
+  </body>
+</html> 

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Fizz Buzz</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write a function that iterates over the integers from 1 to 100, inclusive. For multiples of three, log "Fizz" to the console. For multiples of five, log "Buzz". For numbers which are multiples of both three and five, log "FizzBuzz". For all other numbers, log the number.</p>
+
+   <script>
+      function fizzBuzz() {
+        for (var i = 1; i <= 100; i++) {
+          var output = '';
+
+          if (i % 3 === 0) {
+            output += "Fizz";
+          }
+          if (i % 5 === 0) {
+            output += "Buzz";
+          }
+
+          console.log(output || i); // the empty string is falsy
+        }
+      }
+
+      fizzBuzz();
+    </script>
+  </body>
+</html> 

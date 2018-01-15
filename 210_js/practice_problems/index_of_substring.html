@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Index of Substring</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <p>Write two functions that each take two strings as arguments. Their expected behaviors are as follows:</p>
+    <ul>
+      <li>The indexOf() function searches for the first instance of a substring in firstString that matches the string secondString, and returns the index of the character where that substring begins.</li>
+
+      <li>The lastIndexOf() function searches for the last instance of a substring in firstString that matches the string secondString, and returns the index of the character where that substring begins.</li>
+
+      <li>Both functions return -1 if firstString does not contain the substring specified by secondString.</li>
+    </ul>
+
+  <script>
+    function indexOf(firstString, secondString) {
+      var m = firstString.length;
+      var n = secondString.length;
+      var i;
+
+      for (i = 0; i <= m - n; i++) {
+        if (firstString.substring(i, n + i) === secondString) {
+          return i;
+        }
+      }
+
+      return -1;
+
+    }
+
+    function lastIndexOf(firstString, secondString) {
+      var m = firstString.length;
+      var n = secondString.length;
+      var i;
+      var lastIndex;
+
+      for (i = 0; i <= m - n; i++) {
+        if (firstString.substring(i, n + i) === secondString) {
+          lastIndex = i;
+        }
+      }
+
+      return lastIndex || -1;
+
+    }
+
+
+    console.log(indexOf('Some strings', 's'));                      // 5
+    console.log(indexOf('Blue Whale', 'Whale'));                    // 5
+    console.log(indexOf('Blue Whale', 'Blute'));                    // -1
+    console.log(indexOf('Blue Whale', 'leB'));                      // -1
+
+    console.log(lastIndexOf('Some strings', 's'));                  // 11
+    console.log(lastIndexOf('Blue Whale, Killer Whale', 'Whale'));  // 19
+    console.log(lastIndexOf('Blue Whale, Killer Whale', 'all'));    // -1
+  </script>
+  </body>
+</html> 
