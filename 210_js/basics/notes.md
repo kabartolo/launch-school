@@ -2,6 +2,7 @@
 
 ## Basics
 
+* [The Javascript Language](#javascript-language)
 * [Running Code](#running-code)
 * [Data Types](#data-types)
 * [Variables](#variables)
@@ -13,6 +14,40 @@
 * [Conditionals](#conditionals)
 * [Looping and Iteration](#looping-iteration)
 
+<a name="javascript-language"></a>
+### The Javascript Language
+
+Note: This section comes from [How Javascript Works](https://blog.sessionstack.com/how-does-javascript-actually-work-part-1-b0bacc073cf) and is not required Launch School material.
+
+* A Javascript engine is a program or interpreter that executes Javascript code (e.g., V8, Rhiny, SpiderMonkey)
+* V8 was built by Google and is used in Google Chrome and Node.js
+
+* Javascript is a single-threaded programming language; it has a single call stack.
+* This means it can do only one thing at a time.
+* The call stack is a data structure that gives the location of the program. Stepping into a function puts it on the top of the stack; returning from a function pops it from the top of the stack.
+
+```javascript
+// When the Javascript engine starts executing, the call stack is empty.
+
+function multiply(x, y) {    // Stack Step 2: printSquare(5), multiply(x, x)
+    return x * y;
+}
+
+function printSquare(x) {    // Stack Step 1: printSquare(5)
+    var s = multiply(x, x);  
+    console.log(s);          // Stack Step 3: printSquare(5), console.log(s)
+                             // Stack Step 4: printSquare(5)
+}
+               
+
+printSquare(5);
+// The call stack empties when printSquare returns
+
+```
+
+* Given that Javascript is single-threaded, too many tasks in the call stack can slow the browser.
+* **Asynchronous callbacks** allow execution of heavier code.
+
 <a name="running-code"></a>
 ### Running Code
 
@@ -20,7 +55,7 @@ Place the Javascript in an HTML file and open it in Chrome.
 
 Add the Javascript either directly inside a `script` element or by loading it from a file:
 
-```
+```javascript
 <body>
   <script>
     console.log('I run automatically!');
@@ -29,16 +64,17 @@ Add the Javascript either directly inside a `script` element or by loading it fr
 ```
 
 
-```<script src="my_javascript.js"></script>
+```javascript
+<script src="my_javascript.js"></script>
 ```
 
 Avoid combining the attribution of a `src` to the script tag *and* embedding script inside it. If both exist, only the Javascript from the referenced file will be loaded.
 
-```
+```javascript
 console.log("I'm Loaded!");
 ```
 
-```
+```javascript
 <body>
   <script src="my_javascript.js">
     console.log("I'm NOT Loaded!");
@@ -50,21 +86,21 @@ console.log("I'm Loaded!");
 ### Data Types
 
 Use the `typeof` operator to get the data type of any value:
-```
+```javascript
 typeof false; // "boolean"
 ```
 
-There are five **primitive** data types (primitive values) in Javascript (ES5): number, boolean, string, null, and undefined. It has one **compound** data type: object.
+There are five **primitive** data types (primitive values) in Javascript (ES5): number, boolean, string, null, and undefined. It has one **compound** data type: object. In ES6, there is an additional data type: symbol.
 
 **Unlike in Ruby, strings are immutable in Javascript. All primitives in Javascript are immutable.** Instead of changing the value itself of a variable, Javascript assigns a *new* value to the variable. You must remember to assign the new value to the desired variable.
 
-```
+```javascript
 a = 'hello';
 a.toUpperCase(); // a new "HELLO" string is returned
 a;               // still "hello"
 ```
 
-```
+```javascript
 var name = 'Bob'; // name points to string 'Bob'
 var saveName = name; // saveName points to same string 'Bob'
 name = 'Alice'; // name now points to new string 'Alice'; saveName still points to 'Bob'
@@ -74,7 +110,7 @@ console.log(name, saveName); // 'Alice Bob'
 Strings, numbers and booleans are primitives, but Javascript distinguishes between the primitive
 values and their object counterparts (where the objects are instances of String, Number, or Boolean). The primitive types are *coerced* into objects in order to access the object's methods; this is only temporary, however, as the object will be thrown away after use. See: [https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/](https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/)
 
-```
+```javascript
 var foo = "bar";
 typeof foo; // "string"
 
@@ -110,15 +146,16 @@ typeof foo; // "string"
     | \r   | Carriage return |
     | \v   | Vertical tab    |
     | \b   | Backspace       |
-  * Strings are like a collection of characters, and characters are indexed (starting from 0). Use `String.prototype.charAt()` or bracket notation to access a character in a string:
 
-    ```
-    'hello'.charAt(1); // "e"
-    ```
+  * Strings are like a collection of characters, and characters are indexed (starting from 0). Use `String.prototype.charAt()` or bracket notation to access a character in a string. As for Arrays, indexes can only be non-negative integers.
 
-    ```
-    'hello'[1]; // "e"
-    ```
+```javascript
+'hello'.charAt(1); // "e"
+```
+
+```javascript
+'hello'[1]; // "e"
+```
     * Note: bracket notation in Javascript is an *operator* (not a method as it is in Ruby). 
   * Strings have a `length` property: `'hello'.length; // 5`
   * Javascript's string methods: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/prototype](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/prototype)
@@ -146,7 +183,7 @@ There is an important difference between declared and undeclared names. Variable
 
 Use `=` to assign a value to a variable once it is declared.
 
-```
+```javascript
 var book;
 
 book = 'The Way of Kings'; // variable 'book' is assigned the String value 'The Way of Kings'
@@ -154,7 +191,7 @@ book = 'The Way of Kings'; // variable 'book' is assigned the String value 'The 
 
 Combine the variable declaration and assignment with an initialization assignment:
 
-```
+```javascript
 var book = 'The Way of Kings';
 ```
 
@@ -164,7 +201,7 @@ Note: A declared variable will be initialized to `undefined` if it is not assign
 
 A variable in Javascript is just a name for a value at a particular time; it can hold a reference to any data type or value and can be reassigned to different type or value without error. This is called dynamic typing.
 
-```
+```javascript
 var myName = 'Joe';
 myName = 200;
 myName; // 200
@@ -176,7 +213,13 @@ Operators tell the computer to perform operators on values (operands)
 
 #### Arithmetic Operators
 
-`+`, `-`, `/`, `*`, `%` 
+`+`, `-`, `/`, `*`, `%`
+
+Note: Javascript numbers are floating points. Unlike in Ruby, division in Javascript returns a floating-point number.
+
+```javascript
+2014 / 1000; // logs: 2.014 (Ruby would return 2)
+```
 
 `%` is the **remainder** operator, not the modulo operator of other programming languages. It returns the remainder of an integer division. With positive integers, it acts like a modulo (e.g., `10 % 3` returns `1`). The distinction is seen when one of the numbers is negative: `10 % -3` returns `-1` when `%` performs as a remainder and `-2` when it performs as a modulo.
 
@@ -207,7 +250,7 @@ A comparison operator returns a boolean value based on whether the comparison it
 
 Strings can be compared like numbers, based on their Unicode lexicographical ordering.
 
-```
+```javascript
 'a' < 'b';         // true
 'Ant' > 'Falcon';  // false
 '50' < '6';        // true ('5' precedes '6' lexicographically)
@@ -233,7 +276,7 @@ Combining boolean values and logical operators:
 An expression is code that **resolves to a value**. The **return value** of an expression is the value that 
 it resolves to.
 
-```
+```javascript
 'hello';   // a single string is an expression
 10 + 13;   // arithmetic operations are expressions
 sum = 10;  // assignments are expressions
@@ -241,7 +284,7 @@ sum = 10;  // assignments are expressions
 
 Some common expression types are arithmetic (`10 + 3`), string (`'hello' + 'world'`), and logical (`10 > 9`). An expression can be used as part of an assignment.
 
-```
+```javascript
 var a;
 var b;
 var c;
@@ -255,14 +298,14 @@ c = (a + (3 + b));  // a more complicated expression
 
 Javascript performs multiplication and division operations before addition and subtraction. Parentheses override the default precedence. Parentheses can enclose any expression (including function calls).
 
-```
+```javascript
 3 + 3 * 4;    // 15
 (3 + 3) * 4;  // 24
 ```
 
 Arithmetic operators have higher precedence than logical AND and OR, which have higher precedence than assignment.
 
-```
+```javascript
 var a = 0;
 
 0 && (a += 1); // 0 (short-circuits at first falsy value, 0)
@@ -279,7 +322,7 @@ The increment (`++`) and decrement (`--`) operators increment and decrement thei
   * Operator after operand: JS evaluates the expression then modifies the operand.
   * Operator before operand: JS modifies the operand, then evaluates the expression.
 
-```
+```javascript
 var a;
 var b;
 var c;
@@ -301,7 +344,7 @@ The **return value** of a statement is `undefined`.
 
 Statements control the execution of the program but do not necessarily resolve to a value (e.g., variable declarations, `if` statements, looping). Variable assignments are *expressions* but variable declarations are *statements*.
 
-```
+```javascript
 var a;                // a statement to declare variables
 var b;
 var c;
@@ -309,7 +352,7 @@ var b = (a = 1);      // this works, because assignments are expressions too
 var c = (var a = 1);  // this gives an error, since a statement can't be used as part of an expression
 ```
 
-```
+```javascript
 var myNumber = 3; // both a statement and an expression, but returns undefined
 ```
 
@@ -333,7 +376,7 @@ Since Javascript primitives are immutable values, it doesn't convert values but 
 
 `parseInt()` and `parseFloat()` turn strings to numbers, but `parseInt()` will only return an integer. 
 
-```
+```javascript
 parseInt('453.6', 10);  // 453
 parseFloat('453.6');    // 453.6
 ```
@@ -356,7 +399,7 @@ The `toString()` method can be called on booleans: `true.toString(); // "true"`
 
 * Compare a string representation of a boolean to `'true'` to determine whether it is `'true'` or `'false'`. 
 
-```
+```javascript
 var a = 'true';
 var b = 'false';
 a === 'true';            // true
@@ -377,7 +420,7 @@ Programmers should be aware of implicit type coercion but should avoid them. The
 #### Arithmetic Operators
 
 * The **unary plus** operator converts a value to a number, following the rules for `Number()`
-```
+```javascript
 +('123')        // 123
 +(true)         // 1
 +(false)        // 0
@@ -392,7 +435,7 @@ Programmers should be aware of implicit type coercion but should avoid them. The
 
 * For the **binary plus** operator used with mixed operands that include a string, Javascript converts the non-string operand to a string. If the operands do not include a string (they are a combination of numbers, booleans, `null`, or `undefined`), they are converted to numbers and added.
 
-```
+```javascript
 1 + true        // 2
 1 + false       // 1
 true + false    // 1
@@ -401,7 +444,7 @@ null + null     // 0
 1 + undefined   // NaN
 ```
   * If one of the operands is an object, both operands are converted to strings and concatenated: 
-```
+```javascript
 [1] + 2                     // "12"
 [1] + '2'                   // "12"
 [1, 2] + 3                  // "1,23"
@@ -413,7 +456,7 @@ null + null     // 0
 
 * Other arithmetic operators are only defined for numbers so Javascript converts both operands to numbers. 
 
-```
+```javascript
 1 - true                // 0
 '123' * 3               // 369 -- the string is coerced to a number
 '8' - '1'               // 7
@@ -449,7 +492,7 @@ The `if` statement consists of `if`, an expression, and a block. It can be follo
 
 The `if` and the expression make up the conditional statement. The expression evaluates to a boolean. If it evaluates to `true`, the block of code following the condition runs. If an `else` follows and the `if` or `else if` condition is `false`, the `else`'s block is run.
 
-```
+```javascript
 if (score > 70) {
   console.log('Congratulations, you passed!');
 } else {
@@ -465,7 +508,7 @@ All other values are truthy.
 
 Note: `1 || 2` returns `1`, which is truthy.
 
-```
+```javascript
 if (1 || 2) {
   console.log('True'); // "True"
 }
@@ -477,7 +520,7 @@ The `switch` statement compares an expression with `case` labels; the statement(
 
 However, the `switch` will continue to the next cases until it reaches `default` or a `break` statement. To force the `switch` to stop after the first one match, insert a `break` statement to each `case` statement.
 
-```
+```javascript
 var reaction = 'negative';
 
 switch (reaction) {
@@ -503,13 +546,13 @@ The market has not reacted enough
 
 You can use the `isNan()` function to determine whether a value is `NaN`. However, it checks whether a value is literally not a number and will return `true` for any value that is not numeric: `'isNan('hello'); // true`. To get around this and check for the actual `NaN` value, check both type and value:
 
-```
+```javascript
 function isValueNaN(value) {
   return typeof value === 'number' && isNaN(value);
 }
 ```
 
-```
+```javascript
 function isValueNaN(value) {
   return value !== value;
 }
@@ -530,7 +573,7 @@ The `break` statement exits from a loop immediately. The `continue` statement sk
 
 For `do..while`, Javascript evaluates the condition *after* executing the loop body. The `do...while` loop always iterates at least once, but the `while` loop won't iterate at all if the condition is falsy. 
 
-```
+```javascript
 var counter = 0;
 var limit = 0;
 
@@ -544,7 +587,7 @@ do {
 
 The `for` loop consists of an initial expression, a condition, and an increment expression. You can also place the condition outside the loop, check the condition/break out of the loop or increment the iterator manually, or omit the condition component entirely (JS assumes true).
 
-```
+```javascript
 for (initialExpression; condition; incrementExpression) {
   // statements
 }

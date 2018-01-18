@@ -1,17 +1,18 @@
 // Variables and numbers
 var numerator = 10;
-
 var denominator = 2;
-
-var answer = numerator / denominator;
-console.log(answer);
-
-var incrementor = 1;
-
-var start = incrementor;
-
+var incrementor;
+var start;
 var end;
 var difference;
+var answer;
+
+answer = numerator / denominator;
+
+console.log(answer); // 5
+
+incrementor = 1;
+start = incrementor;
 
 incrementor += 1;
 incrementor += 1;
@@ -22,11 +23,12 @@ incrementor++;
 
 end = incrementor;
 difference = end - start;
-console.log(end);
-console.log(difference);
 
-var answer = (11 + 31)*3;
-console.log(answer);
+console.log(end); // 6
+console.log(difference); // 5
+
+answer = (11 + 31) * 3;
+console.log(answer); // 126
 
 // Primitive Types and Type Coercion
 
