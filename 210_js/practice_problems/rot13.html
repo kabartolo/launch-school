@@ -18,10 +18,12 @@
     </ul>
 
     <script>
+      var SHIFT = 13;
+
       function rot13(string) {
+        var convertedString = '';
         var i;
         var char;
-        var convertedString = '';
 
         for (i = 0; i < string.length; i++) {
           char = string[i];
@@ -36,9 +38,13 @@
         return convertedString;
       }
 
+      function isLetter(char) {
+        return char.match(/[A-Za-z]/);
+      }
+
       function rotate(letter) {
         var charCode = letter.charCodeAt(0);
-        var newCharCode = charCode + 13;
+        var newCharCode = charCode + SHIFT;
 
         if (inUpperAlphabet(letter)) {
           newCharCode -= 26;
@@ -48,17 +54,13 @@
       }
 
       function inUpperAlphabet(letter) {
-        return (letter >= 'n' && letter <= 'z') || (letter >= 'N' && letter <='Z');
-      }
+        charCode = letter.toLowerCase().charCodeAt(0);
 
-      function isLetter(char) {
-        return (char >= 'A' && char <= 'Z') || (char >= 'a' && char <= 'z');
+        return (charCode + SHIFT > 'z'.charCodeAt(0));
       }
 
       console.log(rot13('Teachers open the door, but you must enter by yourself.')); 
       // logs: Grnpuref bcra gur qbbe, ohg lbh zhfg ragre ol lbhefrys.
-      console.log(rot13(''));
-      // logs: ''
       console.log(rot13(rot13('Teachers open the door, but you must enter by yourself.')));
       // logs: Teachers open the door, but you must enter by yourself.
     </script>
