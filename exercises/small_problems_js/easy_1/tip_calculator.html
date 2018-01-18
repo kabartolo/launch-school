@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Tip Calculator</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Tip Calculator</h1>
+    <h2>January 15, 2018</h2>
+
+    <p>Create a simple tip calculator. The program should prompt for a bill amount and a tip rate. The program must compute the tip, and then log both the tip and the total amount of the bill to the console. You can ignore input validation and assume that the user will put in numbers.</p>
+
+    <script>
+      var bill = parseFloat(prompt('What is the bill?'));
+      var tipPercentage = parseFloat(prompt('What is the tip percentage?'));
+
+      var tip = bill * (tipPercentage / 100);
+      var total = bill + tip;
+
+      console.log('The tip is $' + tip.toFixed(2));
+      console.log('The total is $' + total.toFixed(2));
+      
+    </script>
+  </body>
+</html> 

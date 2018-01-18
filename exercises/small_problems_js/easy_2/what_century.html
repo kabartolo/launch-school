@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>What Century is That</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>What Century is That</h1>
+    <h2>January 17, 2018</h2>
+    <p>Write a function that takes a year as input and returns the century. The return value should be a string that begins with the century number, and ends with 'st', 'nd', 'rd', or 'th' as appropriate for that number.</p>
+
+    <p>New centuries begin in years that end with 01. So, the years 1901 - 2000 comprise the 20th century.</p>
+
+    <script>
+      function century(year) {
+        var century = parseInt(year / 100, 10);
+        var remainder = year - century * 100;
+
+        if (remainder !== 0) {
+          century += 1;
+        }
+
+        return ordinal(century);
+      }
+
+      function ordinal(number) {
+        var result = String(number);
+        var lastDigit = number % 10;
+
+        if (isTeen(number % 100)) {
+          return result += 'th';
+        } 
+
+        switch (lastDigit) {
+        case 1: return result += 'st';
+        case 2: return result += 'nd';
+        case 3: return result += 'rd';
+        default: return result += 'th';
+        }
+      }
+
+      function isTeen(number) {
+        return number === 11 || number === 12 || number === 13;
+      }
+
+      console.log(century(2000));        // "20th"
+      console.log(century(2001));        // "21st"
+      console.log(century(1965));        // "20th"
+      console.log(century(256));         // "3rd"
+      console.log(century(5));           // "1st"
+      console.log(century(10103));       // "102nd"
+      console.log(century(1052));        // "11th"
+      console.log(century(1127));        // "12th"
+      console.log(century(11201));       // "113th"
+
+    </script>
+  </body>
+</html>

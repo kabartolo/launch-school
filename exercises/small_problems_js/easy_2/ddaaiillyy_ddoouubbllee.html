@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Ddaaiillyy ddoouubbllee</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Ddaaiillyy ddoouubbllee</h1>
+    <h2>January 15, 2018</h2>
+
+    <p>Write a function that takes a string argument, and returns a new string that contains the value of the original string with all consecutive duplicate characters collapsed into a single character.</p>
+
+    <p>Further exploration: You may have noticed that the solution continues iterating until index points past the end of the string. As a result, on the last iteration, text[index] is the last character in text, while text[index + 1] is undefined. Why does it do this? What happens if it stops iterating when index is equal to text.length - 1?</p>
+
+    <p>It's also possible to solve this using regular expressions. For a nice challenge, give this a try with regular expressions. Can you think of any other solutions that don't use regular expressions?</p>
+
+    <script>
+      function crunch(string) {
+        var newString = '';
+        var i;
+
+        for (i = 0; i < string.length; i++) {
+          if (string[i] !== string[i + 1]) {
+            newString += string[i];
+          }
+        }
+
+        return newString;
+      }
+
+      console.log(crunch('ddaaiillyy ddoouubbllee'));    // "daily double"
+      console.log(crunch('4444abcabccba'));              // "4abcabcba"
+      console.log(crunch('ggggggggggggggg'));            // "g"
+      console.log(crunch('a'));                          // "a"
+      console.log(crunch(''));                           // ""
+
+      //Further exploration:
+      function crunch(string) {
+        return string.replace(/(.)\1{1,}/g, '$1');
+      }
+
+      // Using filter
+      function crunch(string) {
+        return string.split('').filter(function(char, index, self) {
+          return char !== self[index + 1];
+        }).join('');
+      }
+
+    </script>
+  </body>
+</html> 

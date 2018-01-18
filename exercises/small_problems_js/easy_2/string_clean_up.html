@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Clean Up the Words</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Clean Up the Words</h1>
+    <h2>January 17, 2018</h2>
+    <p>Given a string that consists of some words and an assortment of non-alphabetic characters, write a function that returns that string with all of the non-alphabetic characters replaced by spaces. If one or more non-alphabetic characters occur in a row, you should only have one space in the result (i.e., the result string should never have consecutive spaces).</p>
+
+    <script>
+      function cleanUp(string) {
+        var result = '';
+        var lastChar = '';
+        var char;
+        var i;
+
+        for (i = 0; i < string.length; i++) {
+          char = string[i];
+          if (isLetter(char)) {
+            result += char;
+            lastChar = char;
+          } else if (lastChar !== ' ') {
+            result += ' ';
+            lastChar = ' ';
+          }
+        }
+
+        return result;
+      }
+
+      function isLetter(char) {
+        return char.match(/[A-Za-z]/);
+      }
+
+      console.log(cleanUp("---what's my +*& line?"));    // " what s my line "
+    </script>
+  </body>
+</html>

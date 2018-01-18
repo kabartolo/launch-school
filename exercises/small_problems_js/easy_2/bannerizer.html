@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Bannerizer</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Bannerizer</h1>
+    <h2>January 16, 2018</h2>
+
+    <p>Write a function that will take a short line of text, and write it to the console log within a box.</p>
+
+    <p>Modify this function so that it truncates the message if it doesn't fit inside a maximum width provided as a second argument (the width is the width of the box itself). You may assume no maximum if the second argument is omitted. For a real challenge, try word wrapping messages that are too long to fit, so that they appear on multiple lines but are still contained within the box.</p>
+
+    <script>
+      function logInBox(string) {
+        var width = string.length + 2;
+
+        var border = '+' + '-'.repeat(width) + "+\n";
+        var emptyLine = '|' + ' '.repeat(width) + "|\n";
+        var center = '| ' + string + " |\n";
+
+        console.log(border + emptyLine + center + emptyLine + border);
+      }
+
+      // logInBox('To boldly go where no one has gone before.');
+      // will log on the console:
+
+      // +--------------------------------------------+
+      // |                                            |
+      // | To boldly go where no one has gone before. |
+      // |                                            |
+      // +--------------------------------------------+
+
+      // logInBox('');
+      // +--+
+      // |  |
+      // |  |
+      // |  |
+      // +--+
+
+      // With custom repeat function
+      function logInBox(string) {
+        var width = string.length + 2;
+
+        var border = '+' + repeat('-', width) + "+\n";
+        var emptyLine = '|' + repeat(' ', width) + "|\n";
+        var center = '| ' + string + " |\n";
+
+        console.log(border + emptyLine + center + emptyLine + border);
+      }
+      
+      function repeat(string, times) {
+        var i;
+        var repeatedString = '';
+
+        for (i = 1; i <= times; i++) {
+          repeatedString += string;
+        }
+
+        return repeatedString;
+      }
+
+      // Further exploration: with word wrapping
+      function logInBox(string, maxWidth) {
+        var textWidth = ((string.length < maxWidth - 4) ? string.length : maxWidth - 4);
+        var border;
+        var emptyLine;
+        var center;
+
+        if (string.length > textWidth) {
+          center = wrapCenterLines(string, textWidth);
+        } else {
+          center = '| ' + string + " |\n";
+        }
+
+        border = '+' + '-'.repeat(textWidth + 2) + "+\n";
+        emptyLine = '| ' + ' '.repeat(textWidth) + " |\n";
+        
+        console.log(border + emptyLine + center + emptyLine + border);
+      }
+
+      function wrapCenterLines(string, textWidth) {
+        var numCenterLines = Math.ceil(string.length / textWidth);
+        var startIndex = 0;
+        var center = '';
+
+        string = string.padEnd(textWidth * numCenterLines);
+
+        for (i = 1; i <= numCenterLines; i++) {
+            center += '| ' + string.slice(startIndex, startIndex += textWidth) + " |\n";
+        }
+
+        return center;
+      }
+
+      logInBox('To boldly go where no one has gone before.', 20);
+      //logs:
+      // +------------------+
+      // |                  |
+      // | To boldly go whe |
+      // | re no one has go |
+      // | ne before.       |
+      // |                  |
+      // +------------------+
+      logInBox('', 10);
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>ASCII String Value</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>ASCII String Value</h1>
+    <h2>January 15, 2018</h2>
+
+    <p>Write a function that determines and returns the ASCII string value of a string passed in as an argument. The ASCII string value is the sum of the ASCII values of every character in the string. (You may use String.prototype.charCodeAt() to determine the ASCII value of a character.)</p>
+
+    <script>
+      function asciiValue(string) {
+        var sum = 0;
+        var i;
+        
+        for (i = 0; i < string.length; i++) {
+          sum += string.charCodeAt(i);
+        }
+
+        return sum;
+      }
+
+      console.log(asciiValue('Four score'));         // 984
+      console.log(asciiValue('Launch School'));      // 1251
+      console.log(asciiValue('a'));                  // 97
+      console.log(asciiValue(''));                   // 0
+    </script>
+  </body>
+</html> 

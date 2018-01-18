@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Grade Book</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Grade Book</h1>
+    <h2>January 17, 2018</h2>
+    <p>Write a function that determines the mean (average) of the three scores passed to it, and returns the letter associated with that grade.</p>
+
+    <p>Numerical score letter grade list:</p>
+
+    <ul>
+      <li>90 <= score <= 100: 'A'</li>
+      <li>80 <= score < 90: 'B'</li>
+      <li>70 <= score < 80: 'C'</li>
+      <li>60 <= score < 70: 'D'</li>
+      <li>0 <= score < 60: 'F'</li>
+    </ul>
+    <p>Tested values are all between 0 and 100. There is no need to check for negative values or values greater than 100.</p>
+
+    <script>
+      function getGrade(score1, score2, score3) {
+        var mean = (score1 + score2 + score3) / 3;
+
+        if (mean >= 90) {
+          return 'A';
+        } else if (mean >= 80) {
+          return 'B';
+        } else if (mean >= 70) {
+          return 'C';
+        } else if (mean >= 60) {
+          return 'D';
+        }
+
+        return 'F';
+      }      
+
+      console.log(getGrade(95, 90, 93));    // "A"
+      console.log(getGrade(50, 50, 95));    // "D"
+    </script>
+  </body>
+</html>

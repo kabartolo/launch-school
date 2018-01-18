@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Sum or Product of Consecutive Integers</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Sum or Product of Consecutive Integers</h1>
+    <h2>January 15, 2018</h2>
+
+    <p>Write a program that asks the user to enter an integer greater than 0, then asks if the user wants to determine the sum or the product of all numbers between 1 and the entered integer, inclusive.</p>
+
+    <p>Further exploration: What if the input was an array of integers instead of just a single integer? How would your computeSum and computeProduct functions change? Given that the input is an array, how might you make use of the Array.prototype.reduce() method?</p>
+
+    <script>
+      function computeSum(integer) {
+        var total = 0;
+        var i;
+
+        for (i = 1; i <= integer; i++) {
+          total += i;
+        }
+
+        return total;
+      }
+
+      function computeProduct(integer) {
+        var total = 1;
+        var i;
+
+        for (i = 1; i <= integer; i++) {
+          total *= i;
+        }
+
+        return total;
+      }
+     
+      var operation = '';
+      var posInteger;
+      var sum;
+      var product;
+      
+      while (!(posInteger > 0)) {
+        posInteger = parseInt(prompt('Please enter an integer greater than 0:'), 10);
+      }
+
+      while (!(operation.startsWith('s')) && !(operation.startsWith('p'))) {
+        operation = prompt('Enter "s" to compute the sum, or "p" to compute the product.').toLowerCase();
+
+        if (operation.startsWith('s')) {
+          sum = computeSum(posInteger);
+          console.log('The sum of the integers between 1 and ' + String(posInteger) + ' is ' + String(sum));
+        } else if (operation.startsWith('p')) {
+          product = computeProduct(posInteger);
+          console.log('The product of the integers between 1 and ' + String(posInteger) + ' is ' + String(product));
+        } else {
+          console.log('Unknown Operation. Try again.');
+        }
+      }
+
+      // Further exploration:
+      
+      function computeSumFromArray(numArray) {
+        return numArray.reduce(function (a, b) {
+          return a + b;
+        }, 0);
+      }
+      
+      function computeProductFromArray(numArray) {
+        return numArray.reduce(function (a, b) {
+          return a * b;
+        }, 1);
+      }
+
+      var numArray = [];
+      var operation = '';
+      var input;
+      var sum;
+      var product;
+      
+      while (input !== 'end') {
+        input = prompt('Please enter an integer greater than 0. Enter "end" to finish.');
+        if (parseInt(input, 10) > 0) {
+          numArray.push(parseInt(input, 10));
+        }
+      }
+
+      while (!(operation.startsWith('s')) && !(operation.startsWith('p'))) {
+        operation = prompt('Enter "s" to compute the sum, or "p" to compute the product.').toLowerCase();
+
+        if (operation.startsWith('s')) {
+          sum = computeSumFromArray(numArray);
+          console.log('The sum of the integers ' + numArray.toString() + ' is ' + String(sum));
+        } else if (operation.startsWith('p')) {
+          product = computeProductFromArray(numArray);
+          console.log('The product of the integers ' + numArray.toString() + ' is ' + String(product));
+        } else {
+          console.log('Unknown Operation. Try again.');
+        }
+      }
+      
+    </script>
+  </body>
+</html> 

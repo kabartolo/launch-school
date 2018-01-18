@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>How Big is the Room</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>How Big is the Room</h1>
+    <h2>January 15, 2018</h2>
+
+    <p>Build a program that asks a user for the length and width of a room in meters, and then logs to the console the area of the room in both square meters and square feet.</p>
+
+    <p>Note: 1 square meter == 10.7639 square feet</p>
+
+    <p>Do not worry about validating the input at this time. Use the prompt() function to collect user input.</p>
+
+    <p>Further exploration: Modify the program so that it asks the user for the input type (meters or feet). Compute for the area accordingly, and log it and its conversion in parentheses.</p>
+
+    <script>
+      // Further exploration:
+      var SQ_METERS_TO_SQ_FEET = 10.7639;
+      var length = parseFloat(prompt('Enter the length of the room in meters:'));
+      var width = parseFloat(prompt('Enter the width of the room in meters:'));
+      var inputType = prompt('Meters or feet?');
+      var area = length * width;
+
+      function logRoomSizeMeters(area) {
+        var areaFeet = area * SQ_METERS_TO_SQ_FEET;
+
+        console.log('The area of the room is ' + area.toFixed(2) + ' square meters (' + areaFeet.toFixed(2) + ' square feet).');
+      }
+      
+      function logRoomSizeFeet(area) {
+        var areaMeters = area / SQ_METERS_TO_SQ_FEET;
+
+        console.log('The area of the room is ' + area.toFixed(2) + ' square feet (' + areaMeters.toFixed(2) + ' square meters).');
+      }
+
+      if (inputType === 'meters') {
+        logRoomSizeMeters(area);
+      } else if (inputType === 'feet') {
+        logRoomSizeFeet(area);
+      }
+      
+    </script>
+  </body>
+</html> 
