@@ -22,7 +22,7 @@ In Javascript, we refer to procedures as *functions*. A procedure/function extra
 * Parameters separated by commas
 * A block of statements (the *function body*)
 
-```
+```javascript
 function triple(number) {
   console.log('tripling in process...');
   return number + number + number;
@@ -48,7 +48,7 @@ console.log(result);                   // logs 15
 ### Invoking Functions
 
 To invoke a function, append `()` to the function name.
-```
+```javascript
 function startle() {
   console.log('Yikes!');
 }
@@ -58,7 +58,7 @@ startle(); // Yikes!
 
 Function names are simply local variables with a function as a value. We can assign a function to a new variable name and call the function with it.
 
-```
+```javascript
 var surprise = startle;
 surprise();
 
@@ -71,7 +71,7 @@ Yikes!
 
 The parameters are the local variables in the function *definition*. The arguments are the values passed to the function at *invocation* and also the local variables in the function body. 
 
-```
+```javascript
 // When we define the function, a and b are called parameters.
 function multiply(a, b) {
   // When this code runs, they are called arguments.
@@ -83,7 +83,7 @@ multiply(5, 6);  // 5 and 6 are also arguments
 
 What happens if we don't provide the same number of arguments as parameters in the function's declaration? 
 
-```
+```javascript
 function takeTwo(a, b) {
   console.log(a);
   console.log(b);
@@ -122,7 +122,7 @@ takeTwo(1, 2, 4);
 Javascript is **pass by value**. Passing a variable to a function binds the local function variable to the passed variable's
 value. Both variables now reference the same value but have no effect on each other.
 
-```
+```javascript
 var a = 7;
 
 function myValue(b) {
@@ -135,7 +135,7 @@ console.log(a); // 7
 
 **However**, when passing an object (e.g., an array), **the value is the *reference* to the object**.
 
-```
+```javascript
 var a = [1, 2, 3];
 
 function myValue(b) {
@@ -154,7 +154,7 @@ When `b[2] += 7` is executed, it is executed on the array object itself.
 
 Functions can be nested inside other functions. There is no limit to how deeply functions can be nested.
 
-```
+```javascript
 function circumference(radius) {
   function double(number) {      // nested function declaration
     return 2 * number;
@@ -176,7 +176,7 @@ Remember these important variable scoping rules:
 
 #### The Global Scope
 
-```
+```javascript
 var name = 'Julian';
 console.log(name);
 
@@ -193,7 +193,7 @@ The variable `name` is available everywhere in this program because it exists in
 
 Function scopes nest inside each other. The code inside the function's scope can access variables in the same scope or **any surrounding scope**.
 
-```
+```javascript
 var name = 'Julian';
 
 function greet() {
@@ -215,7 +215,7 @@ A function creates a **closure**, which means it retains access to (*encloses*) 
 
 The **value** of a variable can change after a closure that includes the variable is created. The closure then sees the new value, and the old value is no longer available.
 
-```
+```javascript
 var count = 1;
 
 function logCount() {  // create a closure
@@ -241,7 +241,7 @@ There are three ways to create a variable in the current scope:
 * Using arguments passed to a function
 * The function declaration itself
 
-```
+```javascript
 function lunch() {    // A Function declaration creates a new variable scope
   var food = 'taco';  // 1. Add a new variable food within the current variable scope
 }
@@ -263,7 +263,7 @@ For example, `country = 'Liechtenstein';` checks the current scope and each high
 
 If Javascript can't find a matching variable, it creates a new global variable instead (due to the lack of `var`). This should be avoided!
 
-```
+```javascript
 var country = 'Spain';
 function update() {
   country = 'Liechtenstein';
@@ -275,7 +275,7 @@ update();
 console.log(country);  // logs: Liechtenstein (as expected)
 ```
 
-```
+```javascript
 // no other code above
 function assign() {
   var country1 = 'Liechtenstein';
@@ -293,7 +293,7 @@ console.log(country1);   // gets ReferenceError, country1 is not available in th
 
 If a variable is declared inside a function with the same name as a variable in the outer scope, the variable in the function shadows the outer one, which is not accessible.
 
-```
+```javascript
 var name = 'Julian';
 
 function greet() {
@@ -306,7 +306,7 @@ greet(); // logs: Logan
 
 If a function has an argument with the same name as a variable from an outer scope, the argument shadows the outer variable. Below, the variable `name` receives the value passed to the function in the invocation.
 
-```
+```javascript
 var name = 'Julian';
 
 function greet(name) {
@@ -323,7 +323,7 @@ A **ReferenceError** is thrown if Javascript can't find a variable in the scope 
 
 #### Function Declarations
 
-```
+```javascript
 function hello() {
   return 'hello world!';
 }
@@ -333,7 +333,7 @@ console.log(typeof hello);    // function
 
 A function declaration (statement) defines a variable (`hello`) whose type is `function`, and it does not require assignment to another variable. **The function variable's value is the function itself**. This variable obeys scoping rules and it can be used like any other variable.
 
-```
+```javascript
 function outer() {
   function hello() {
     return 'hello world!';
@@ -351,7 +351,7 @@ foo();                        // we can then use it to invoke the function
 
 A function defined using a function declaration must always have a name (it cannot be an anonymous function). In addition to creating a named function, a function declaration also creates a variable with the same name as that function's name and assigns the function to that variable. For example, the following two function definitions both define two things: a named function and a variable with the same name as that function.
 
-```
+```javascript
 var foo = function foo() {
   return 'a named function expression assigned to a variable';
 };
@@ -386,7 +386,7 @@ console.log(typeof functionVar);         // string
 
 A function expression defines a function as part of a larger expression syntax, such as variable assignment.
 
-```
+```javascript
 // Define an anonymous function and assign it to variable `hello`
 var hello = function () {     
   return 'hello';
@@ -396,7 +396,7 @@ console.log(typeof hello);    // function
 console.log(hello());         // hello
 ```
 
-```
+```javascript
 var foo = function () {
   return function () {   // function expression as return value
     return 1;
@@ -414,7 +414,7 @@ Above, the function `foo` returns an anonymous function. Then `foo` is called an
 
 Function expressions can also be named, but **the name can only be referenced from within the function's local scope**. Named function expressions are mostly used for debugging, since the debugger can show the function's name in the call stack, and for recursive functions.
 
-```
+```javascript
 var hello = function foo() {
   console.log(typeof foo);   // function
 };
@@ -426,7 +426,7 @@ foo();                       // Uncaught ReferenceError: foo is not defined
 
 The difference between a function declaration and a function expression is the following: It is a function declaration if a **statement** begins with the `function` keyword, a function expression otherwise.
 
-```
+```javascript
 function foo() {
   console.log('function declaration');
 }
@@ -451,13 +451,13 @@ Javascript processes variable declarations before it executes any code within a 
 then executes the code.
 
 
-```
+```javascript
 console.log(a);  // logs `undefined`
 var a = 123;     
 var b = 456;
 ```
 
-```
+```javascript
 // This is equivalent to:
 
 var a;           // hoisted to the top of the global scope
@@ -474,7 +474,7 @@ b = 456;
 
 Function declarations are also hoisted to the top of the scope. With function declarations, everything is hoisted, **both the function name and body**.
 
-```
+```javascript
 console.log(hello());
 
 function hello() {
@@ -482,7 +482,7 @@ function hello() {
 }
 ```
 
-```
+```javascript
 // This is equivalent to:
 
 function hello() {
@@ -498,7 +498,7 @@ Since function expressions involve a declared variable, they are just variable d
 
 See also: [http://www.ecma-international.org/ecma-262/5.1/#sec-10.5](http://www.ecma-international.org/ecma-262/5.1/#sec-10.5)
 
-```
+```javascript
 console.log(hello());
 
 var hello = function () {
@@ -506,7 +506,7 @@ var hello = function () {
 };
 ```
 
-```
+```javascript
 //This is equivalent to:
 
 var hello;
@@ -522,7 +522,7 @@ hello = function () {
 
 When both a variable and a function declaration exist, the function declaration is hoisted first. 
 
-```
+```javascript
 bar();              // logs undefined since foo is still undefined
 var foo = 'hello';
 
@@ -531,7 +531,7 @@ function bar() {
 }
 ```
 
-```
+```javascript
 // This is equivalent to: 
 
 function bar() {
@@ -547,7 +547,7 @@ foo = 'hello';
 What if the same name is used for a variable and a function? Javascript ignores the variable declaration, as it is redundant,
 and reassignment occurs.
 
-```
+```javascript
 bar();             // logs "world"
 var bar = 'hello';
 
@@ -556,7 +556,7 @@ function bar() {
 }
 ```
 
-```
+```javascript
 var bar = 'hello';
 bar();             // raises "Uncaught TypeError: bar is not a function"
 
@@ -566,7 +566,7 @@ function bar() {
 ```
 
 These are equivalent to:
-```
+```javascript
 function bar() {
   console.log('world');
 }
@@ -575,7 +575,7 @@ bar();
 bar = 'hello'; // note the omission of the variable declaration
 ```
 
-```
+```javascript
 function bar() {
   console.log('world');
 }
@@ -585,7 +585,7 @@ bar();         // raises "Uncaught TypeError: bar is not a function"
 ```
 
 Note also:
-```
+```javascript
 var a = 'outer';
 
 console.log(a); // 'outer'
@@ -599,7 +599,7 @@ var setScope = function () {
 ```
 
 Another interesting example:
-```
+```javascript
 function foo() {
   console.log('Waiting for bar!');
 }
