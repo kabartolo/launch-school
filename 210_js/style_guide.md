@@ -9,7 +9,7 @@ See also: [Airbnb Javascript Style Guide](https://github.com/airbnb/javascript)
 
 * For names of variables, functions, and object properties, use **camelCase**, always starting with a lowercase letter.  
 
-```
+```javascript
 var firstName = 'Brent';
 var lastName = 'Hinds';
 
@@ -34,7 +34,7 @@ Constant and variable names can also be acronyms.
 * Use soft tabs set to 2 spaces
 * Never use tab characters
 * Place one space before the leading brace.
-```
+```javascript
 function test() {
   console.log('test');
 }
@@ -43,7 +43,7 @@ function test() {
 * Place one space before the opening parenthesis in control statements (`if`, `while`, etc.).
 * Place no space between the argument list and the function name in function calls and declarations.
 * Place one space between the closing parenthesis and the opening brace. 
-```
+```javascript
 if (isJedi) {
   fight();
 }
@@ -51,12 +51,12 @@ if (isJedi) {
 
 * Set off operators with spaces.
 * Do not add spaces inside parentheses.
-```
+```javascript
 var a = 2 * (2 + 3);
 ```
 
 * Do not add space between unary special-character operators (`!`, `++`) and their operand.
-```
+```javascript
 i++;
 ```
 
@@ -66,12 +66,12 @@ i++;
 
 * Add space to both sides of `?` and `:` in a ternary conditional.
 * Ternaries should not be nested or on multiple lines.
-```
+```javascript
 var maybe1 > maybe2 ? 'bar' : null;
 ```
 
 * Avoid unneeded ternary statements:
-```
+```javascript
 // bad
 var foo = a ? a : b;
 var bar = c ? true : false;
@@ -87,7 +87,7 @@ var baz = !c;
 
 * Leave a blank line after blocks and before the next statement.
 * Do not pad blocks with blank lines.
-```
+```javascript
 if (foo) {
   return bar;
 }
@@ -98,7 +98,7 @@ return baz;
 * Use braces with all multi-line blocks.
 * For blocks of multiple lines, place the first curly brace on the same line as the initial statement and the ending line on its own line. 
 * Put `else` on the same line as the `if` block's closing brace.
-```
+```javascript
 if (test) {
   return false;
 } else {
@@ -110,7 +110,7 @@ if (test) {
 
 * Use only one var declaration per variable.
 
-```
+```javascript
 // Bad
 var firstName = 'Brann',
     lastName = 'Dailor',
@@ -127,7 +127,7 @@ var roles = ['drums', 'vocals'];
 * Semicolons always terminate a statement, except for statements ending with a block (**semicolons should be used after statements ending with a function expression, however**). 
 * (Without the semicolon, Javascript may not properly interpret the end of the statement.)
 
-```
+```javascript
 // bad
 var number
 number = 5
@@ -173,7 +173,7 @@ var bar = function () {
 
 * Use single quotes for strings.
 * Use explicit type coercion.
-```
+```javascript
 var a = 9;
 var string = String(a);
 ```
@@ -182,7 +182,7 @@ var string = String(a);
 
 * Use `Number` for typecasting and `parseInt` always with a radix for parsing strings.
 
-```
+```javascript
 var inputValue = '4';
 
 var val = Number(inputValue);
@@ -193,7 +193,7 @@ var val = parseInt(inputValue, 10);
 ### Booleans
 
 * Use `Boolean` or not not (`!!`) operator for typecasting to boolean.
-```
+```javascript
 var age = 0;
 
 var hasAge = Boolean(age);
@@ -209,7 +209,7 @@ var hasAge = !!age; // better
 
 * Never declare a function in a non-function block (`if`, `while`, etc).
 
-```
+```javascript
 // bad
 if (currentUser) {
   function test() {
@@ -228,7 +228,7 @@ if (currentUser) {
 
 * Never name a parameter `arguments`. This takes precedence over the `arguments` object that is given to every function scope.
 
-```
+```javascript
 // bad
 function nope(name, options, arguments) {
   // ...stuff...
