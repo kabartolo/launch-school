@@ -239,3 +239,24 @@ function yup(name, options, args) {
   // ...stuff...
 }
 ```
+
+### Objects
+
+* Custom objects using object literal notation should have a trailing comma when written across multiple lines (i.e., the last line of properties should end with a comma).
+* This allows easy reorganization of the entries.
+* `git diff` will show 2 lines of change for one added property without the trailing comma. A new comma has to be added to the previous line (counts as 1 line change) before the next line is added (the second line change). Using a trailing comma everywhere shows only one new line in the `git diff` output.
+* For one-line literals, the trailing commma is not necessary: `var coordinates = { x: 25, y: 50};`
+
+```javascript
+var myObj = {
+  prop1: 'sample data',
+  method1: function () {},
+  prop2: 'sample data',
+};
+
+var myObj = {
+  prop1: 'sample data',
+  prop2: 'sample data',
+  method1: function () {},
+};
+```

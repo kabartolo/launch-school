@@ -94,6 +94,9 @@ There are five **primitive** data types (primitive values) in Javascript (ES5): 
 
 **Unlike in Ruby, strings are immutable in Javascript. All primitives in Javascript are immutable.** Instead of changing the value itself of a variable, Javascript assigns a *new* value to the variable. You must remember to assign the new value to the desired variable.
 
+* Primitives are passed by value and compared by value.
+* Primitives exist on the stack.
+
 ```javascript
 a = 'hello';
 a.toUpperCase(); // a new "HELLO" string is returned
@@ -102,7 +105,7 @@ a;               // still "hello"
 
 ```javascript
 var name = 'Bob'; // name points to string 'Bob'
-var saveName = name; // saveName points to same string 'Bob'
+var saveName = name; // saveName points to same string 'Bob' (but it is passed the value, not the reference)
 name = 'Alice'; // name now points to new string 'Alice'; saveName still points to 'Bob'
 console.log(name, saveName); // 'Alice Bob'
 ```

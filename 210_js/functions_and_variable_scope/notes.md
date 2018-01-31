@@ -119,8 +119,7 @@ takeTwo(1, 2, 4);
 <a name="pass-by-value"></a>
 ### Pass by Value or Pass by Reference
 
-Javascript is **pass by value**. Passing a variable to a function binds the local function variable to the passed variable's
-value. Both variables now reference the same value but have no effect on each other.
+Javascript is **pass by value**. Passing a variable to a function binds the local function variable to the passed variable's value. Both variables now reference the same value but have no effect on each other. So primitives are passed by value and are immutable.
 
 ```javascript
 var a = 7;
@@ -133,7 +132,7 @@ myValue(a);
 console.log(a); // 7
 ```
 
-**However**, when passing an object (e.g., an array), **the value is the *reference* to the object**.
+**However**, when passing an object (e.g., an array), **the value is the *reference* to the object** and objects are mutable.
 
 ```javascript
 var a = [1, 2, 3];
@@ -142,7 +141,7 @@ function myValue(b) {
   b[2] += 7;
 }
 
-myValue(a);
+myValue(a);     // side effect: the function changes the array a
 console.log(a); // [1, 2, 10] (the array in the global scope is mutated)
 ```
 
