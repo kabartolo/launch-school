@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Objects: Welcome Stranger</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Welcome Stranger
+      function greetings(array, object) {
+        var greeting = 'Hello, ';
+        var name = array.join(' ');
+        var occupation = object.title + ' ' + object.occupation;
+
+        console.log(greeting + name + '! Nice to have a ' + occupation + ' around.');
+      }
+
+      greetings(['John', 'Q', 'Doe'], { title: 'Master', occupation: 'Plumber' });
+
+      // console output
+      //Hello, John Q Doe! Nice to have a Master Plumber around.
+
+    </script>
+  </body>
+</html> 

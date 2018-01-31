@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Objects: Repeated Characters</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Repeated Characters
+      function repeatedCharacters(string) {
+        var counts = countCharacters(string);
+
+        for (var letter in counts) {
+          if (counts[letter] === 1) delete counts[letter];
+        }
+
+        return counts;
+      }
+
+      function countCharacters(string) {
+        var chars = string.toLowerCase().split('');
+        var counts = {};
+        var i;
+        var char;
+
+        for (i = 0; i < chars.length; i++) {
+          char = chars[i];
+
+          if (!(char in counts)) {
+            counts[char] = 1;
+          } else {
+            counts[char] += 1;
+          }
+        }
+
+        return counts;
+      }
+
+      console.log(repeatedCharacters('Programming'));    // { r: 2, g: 2, m: 2 }
+      console.log(repeatedCharacters('Combination'));    // { o: 2, i: 2, n: 2 }
+      console.log(repeatedCharacters('Pet'));            // {}
+      console.log(repeatedCharacters('Paper'));          // { p: 2 }
+      console.log(repeatedCharacters('Baseless'));       // { s: 3, e: 2 }
+
+    </script>
+  </body>
+</html> 
