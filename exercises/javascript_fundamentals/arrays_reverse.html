@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Arrays: Reverse</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Reverse
+      // Argument: string or array
+      // Returns: new string or array (reversed)
+      // Note: Array.prototype.reverse does not accept strings and mutates the array in place.
+      
+      function reverse(inputForReversal) {
+        if (Array.isArray(inputForReversal)) {
+          return reverseArray(inputForReversal);
+        } else if (typeof inputForReversal === 'string') {
+          return reverseString(inputForReversal);
+        }
+      }
+
+      function reverseString(string) {
+        var result = '';
+        for (i = string.length - 1; i >= 0; i--) {
+          result += string[i];
+        }
+
+        return result;
+      }
+
+      function reverseArray(array) {
+        var result = [];
+        for (i = array.length - 1; i >= 0; i--) {
+          result = result.concat(array[i]);
+        }
+
+        return result;
+      }
+
+      console.log(reverse('Hello'));           // "olleH"
+      console.log(reverse('a'));               // "a"
+      console.log(reverse([1, 2, 3, 4]));      // [4, 3, 2, 1]
+      console.log(reverse([]));                // []
+
+      var array = [1, 2, 3];
+      console.log(reverse(array));             // [3, 2, 1]
+      console.log(array);                      // [1, 2, 3]
+
+    </script>
+  </body>
+</html> 

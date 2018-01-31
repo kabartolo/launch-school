@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Arrays: Comparisons</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Oddities
+      function oddities(array) {
+        var oddElements = [];
+        var i;
+
+        for (i = 0; i < array.length; i += 2) {
+          oddElements.push(array[i]);
+        }
+
+        return oddElements;
+      }
+
+      oddities([2, 3, 4, 5, 6]) === [2, 4, 6];      // false
+      oddities(['abc', 'def']) === ['abc'];         // false
+
+      // These comparisons return false because strict equality operator is used (===)
+      // and the two arrays are different objects.
+
+      // Array Comparison
+      // Implement an array comparison function that allows the values to be in a different order.
+      // Two arrays containing the same values (in any order) are considered equal.
+      function areArraysEqual(array1, array2) {
+        if (array1.length !== array2.length) {
+          return false;
+        }
+
+        array1 = array1.slice().sort();
+        array2 = array2.slice().sort();
+
+        var i;
+
+        for (i = 0; i < array1.length; i++) {
+          if (array1[i] !== array2[i]) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      console.log(areArraysEqual([1, 2, 3], [1, 2, 3]));                  // true
+      console.log(areArraysEqual([1, 2, 3], [3, 2, 1]));                  // true
+      console.log(areArraysEqual(['a', 'b', 'c'], ['b', 'c', 'a']));      // true
+      console.log(areArraysEqual(['1', 2, 3], [1, 2, 3]));                // false
+      console.log(areArraysEqual([1, 1, 2, 3], [3, 1, 2, 1]));            // true
+      console.log(areArraysEqual([1, 2, 3, 4], [1, 1, 2, 3]));            // false
+      console.log(areArraysEqual([1, 1, 2, 2], [4, 2, 3, 1]));            // false
+      console.log(areArraysEqual([1, 1, 2], [1, 2, 2]));                  // false
+      console.log(areArraysEqual([1, 1, 1], [1, 1]));                     // false
+      console.log(areArraysEqual([1, 1], [1, 1]));                        // true
+            
+    </script>
+  </body>
+</html> 
