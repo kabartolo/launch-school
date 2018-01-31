@@ -9,6 +9,7 @@
 * [Arithmetic and Comparison Operators](#arithmetic-comparison-operators)
 * [Mutability of Values and Objects](#mutability)
 * [Pure Functions and Side Effects](#pure-functions-side-effects)
+* [Working with the Function Arguments Object](#arguments-object)
 
 <a name="basics"></a>
 ### Basics
@@ -482,3 +483,66 @@ friends;                            // ["Joe", "Mary", "David"]
 friends = removeElement(friends, 'David');
 friends;                            // ["Joe", "Mary"]
 ```
+
+<a name="arguments-object"></a>
+### Working with the Function Arguments Object
+
+* Omitted arguments take on a value of `undefined` in the function, and functions ignore excess arguments.
+* The `arguments` object let you circumvent these limitations.
+* It is a local variable available inside all functions containing all arguments passed to the Function (even if less or more than the definition includes).
+* It is Array-*like*: Argument values are accessed using bracket notation. And `arguments` has a `length` property. Those are the only similarities. It is NOT an array.
+
+```javascript
+function logArgs(a) {
+  console.log(arguments[0]);
+  console.log(arguments[1]);
+  console.log(arguments.length);
+  console.log(typeof arguments);
+}
+
+logArgs(1, 'a');
+
+// logs:
+1
+a
+2
+"object"
+```
+
+* To create an array from the `arguments` object:
+```javascript
+var args = Array.prototype.slice.call(arguments); 
+// "borrows" slice method from the Array global object
+
+function logArgs() {
+  var args = Array.prototype.slice.call(arguments);
+  console.log(typeof args);
+  console.log(Array.isArray(args));
+  var a = args.pop();
+};
+
+logArgs(1, 2);
+
+// logs:
+object
+true         // args is a proper Array now
+```
+
+* The `arguments` object is useful for functions requiring a flexible number of arguments, such as this sum method:
+```javascript
+function sum() {
+  var result = 0;
+  var i;
+  for (i = 0; i < arguments.length; i += 1) {
+    result += arguments[i];
+  }
+
+  return result;
+}
+
+sum();                 // 0
+sum(1, 2, 3);          // 6
+sum(1, 2, 3, 4, 5);    // 15
+```
+
+* The drawback is this function is more difficult to read and understand.
