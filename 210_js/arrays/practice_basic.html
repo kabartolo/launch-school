@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Practice Problems: Basic Arrays</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Basics
+      // 1.
+      function lastInArray(array) {
+        return array[array.length - 1];
+      }
+
+      console.log(lastInArray([1, 2, 3])); // 3
+
+      // 2.
+      function rollCall(firstNames) {
+        var i;
+
+        for (i = 0; i < firstNames.length; i++) {
+          console.log(firstNames[i]);
+        }
+      }
+
+      rollCall(['Pete', 'Alejandro', 'Quintin', 'Sophie']);
+
+      // 3.
+      function reverse(array) {
+        var result = [];
+        var i;
+
+        for (i = array.length - 1; i >= 0; i--) {
+          result.push(array[i]);
+        }
+
+        return result;
+      }
+
+      console.log(reverse([1, 2, 3])); // [3, 2, 1]
+
+      // 4.
+      function find(value, array) {
+        var i;
+
+        for (i = 0; i < array.length; i++) {
+          if (value === array[i]) {
+            return i;
+          }
+        }
+
+        return -1;
+      }
+
+      console.log(find(5, [1, 2, 3, 4, 5, 5])); // 4
+
+      // 5.
+      function stringify(array) {
+        var result = '';
+        var i;
+
+        for (i = 0; i < array.length; i++) {
+          result += String(array[i]);
+        }
+
+        return result;
+      }
+
+      console.log(stringify([1, 'a', 2, 'b'])); // '1a2b'
+
+      // Comparison operators
+
+      // Write a function that checks whether two arrays contain the same values.
+      function arraysEqual(array1, array2) {
+        var i;
+
+        if (array1.length !== array2.length) {
+          return false;
+        }
+
+        for (i = 0; i < array1.length; i++) {
+          if (array1[i] !== array2[i]) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      console.log(arraysEqual([1], [1]));                               // true
+      console.log(arraysEqual([1], [2]));                               // false
+      console.log(arraysEqual([1, 2], [1, 2, 3]));                      // false
+      console.log(arraysEqual([1, 'hi', true], [1, 'hi', true]));       // true
+      console.log(arraysEqual([1, 'hi', true], [1, 'hi', false]));      // false
+      console.log(arraysEqual([1, 'hi', true], [1, 'hello', true]));    // false
+      console.log(arraysEqual([1, 'hi', true], [2, 'hi', true]));       // false
+
+      // Basic Array Uses
+
+      // 1. 
+      function firstElementOf(arr) {
+        return arr[0];
+      }
+
+      console.log(firstElementOf(['U', 'S', 'A'])); // returns 'U'
+
+      // 2.
+      function lastElementOf(arr) {
+        return arr[arr.length - 1];
+      }
+
+      console.log(lastElementOf(['U', 'S', 'A'])); // returns 'A'
+
+      // 3. 
+      function nthElementOf(arr, index) {
+        return arr[index];
+      }
+
+      var digits = [4, 8, 15, 16, 23, 42];
+
+      console.log(nthElementOf(digits, 3));   // returns 16
+      console.log(nthElementOf(digits, 8));   // what does this return? undefined
+      console.log(nthElementOf(digits, -1));  // what does this return? undefined
+
+      // 4.
+      function firstNOf(arr, count) {
+        return arr.slice(0, count); // splice also works
+      }
+
+      var digits = [4, 8, 15, 16, 23, 42];
+      console.log(firstNOf(digits, 3)); // returns [4, 8, 15]
+      console.log(digits)               // [4, 8, 15, 16, 23, 42]
+
+      // 5.
+      function lastNOf(arr, count) {
+        return arr.slice(-count);
+      }
+
+      var digits = [4, 8, 15, 16, 23, 42];
+      console.log(lastNOf(digits, 3)); // returns [16, 23, 42]
+      console.log(digits)               // [4, 8, 15, 16, 23, 42]
+
+      // 6.
+
+      //Using the function from the previous problem, What happens if you pass a count greater than the length of the array? How can you fix the function so it returns a new instance of the entire array when count is greater than the array length?
+      console.log(lastNOf(digits, 7)); // already returns entire array
+
+      // My solution uses slice with count * -1. According to the documentation, an
+      // index with absolute value greater than the length of the array will be 
+      // treated as 0 and return the entire array (if no end index is given).
+
+      // Launch school solution:
+      // Original:
+      function lastNOf(arr, count) {
+        return arr.slice(arr.length - count);
+      }
+
+      console.log(lastNOf(digits, 7)); // -42 (final element)
+      // This is because arr.length - count becomes a negative number when count is greater
+      // than the length of the array, so this becomes arr.slice(-1), returning the final element.
+
+      // Launch school fix:
+      function lastNOf(arr, length) {
+        var index = arr.length - length;
+
+        if (index < 0) {
+          index = 0;
+        }
+
+        return arr.slice(index);
+      }
+
+      // 8. 
+
+      function endsOf(beginningArr, endingArr) {
+        return [beginningArr[0], endingArr[endingArr.length - 1]];
+      }
+
+      console.log(endsOf([4, 8, 15], [16, 23, 42]));  // returns [4, 42]
+
+    </script>
+  </body>
+</html> 
