@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Objects: Practice Problems: Math Object</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // 1.
+      function radiansToDegrees(radians) {
+        return (radians * 180) / Math.PI;
+      }
+
+      // 2.
+      var angle = -180;
+      console.log(Math.abs(angle));
+
+      // 3.
+      console.log(Math.sqrt(16777216)); // 4096
+
+      // 4.
+      console.log(Math.pow(16, 6));
+
+      // 5.
+      // Return a value of 50 for each value
+
+      var a = 50.72;
+      var b = 49.2;
+      var c = 49.86;
+
+      console.log(Math.floor(a));
+      console.log(Math.ceil(b));
+      console.log(Math.round(c));
+
+      // 6.
+      function randomInteger(min, max) {
+        var temp;
+
+        if (min > max) {
+          temp = min;
+          min = max;
+          max = temp;
+        }
+
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.random() * (max - min + 1) + min; // returns min if max === min
+      }
+
+    </script>
+  </body>
+</html> 
