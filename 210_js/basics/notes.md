@@ -132,15 +132,31 @@ typeof foo; // "string"
   * There are no distinct data types (e.g., integer, float).
   * JS uses 64 bits to store numbers in memory, so the largest Number that can be used is 9,223,372,036,854,775,807, but the largest number that can be precisely stored is 9,007,199,254,740,991 (`Number.MAX_SAFE_INTEGER`) due to Javascript's use of double precision floats. The maximum number that can be represented is 1.7976931348623157e+308 (`Number.MAX_VALUE`).
   * The special number values are `Infinity`, `-Infinity`, and `NaN` (not a number, used when a math function encounters an error such as when dividing by zero).
+  * Decimal fractions are approximate
+  * Therefore, the associative law does not always hold for binary floating point. 
+```javascript
+a = o.1;
+b = 0.2;
+c = 0.3;
+console.log(a + b) + c === a + (b + c); // false
+```
 
 #### Booleans
   `true` and `false`
 
 #### Strings
   * Javascript strings have *no* size limit.
+  * There is no character type (a char is a string with length 1).
   * There is no functional distinction between single- and double-quoted Strings.
-  * Use `+` to **concatenate** strings. You can use `\` at the end of a line (within the quotation marks) to ignore newlines and concatenate lines of strings (warning: Javascript will treat any spaces or tabs after the `\` as literal and then fail to find the closing quote mark). 
-  * Strings can hold any character in the UTF-16 character set.
+  * Use `+` to **concatenate** strings. 
+  * You can use `\` at the end of a line (within the quotation marks) to ignore newlines and concatenate lines of strings (warning: Javascript will treat any spaces or tabs after the `\` as literal and then fail to find the closing quote mark). It is better not to use this syntax.
+```javascript
+var a = "This is a \
+multi-line string"; // ok
+var b = "This is a \ 
+multi-line string;" // Syntax error
+```
+  * Strings can hold any character in the UTF-16 character set (no awareness of surrogate pairs).
   * Formatting characters should be handled using escape sequences: 
     | Code | Character       |
     | :--- | :-------------- |
@@ -165,6 +181,11 @@ typeof foo; // "string"
 
 
 #### Null data type
+
+* Note the error in the standard:
+```javascript
+typeof null; // "object"
+```
 
 #### undefined data type
 
@@ -266,12 +287,28 @@ Combining boolean values and logical operators:
 * Logical And (`&&`)
   * Returns `true` if both operands are true, `false` otherwise
   * For non-boolean values, returns the first operand if it can be converted to `false`, the second operator otherwise
+  * This can be used to avoid null references:
+```javascript
+if (a) {
+  return a.member;
+} else {
+  return a;
+}
+// can be written as
+return a && a.member;
+```
+
 * Logical Or (`||`)
   * Returns `true` if at least one operand is true, `false` otherwise
   * For non-boolean values, returns the first operand if it can be converted to `true`, the second operand otherwise
+  * This can be used to fill in default values.
+```javascript
+var last = input || nr_items; // if input is truthy, then assign input to last, otherwise assign nr_items
+```
 * Logical Not (`!`)
   * Returns `true` if its operand can be converted to false, `false` otherwise
   * This is a unary operator (it takes only one operand).
+  * `!!` produces booleans
 
 <a name="expressions-statements"></a>
 ### Expressions and Statements
@@ -375,13 +412,27 @@ Since Javascript primitives are immutable values, it doesn't convert values but 
 
 #### Strings to Numbers
 
-`Number()` turns a string that contains a numeric value into a number or returns `NaN` if the string cannot be converted.
+* `Number()` turns a string that contains a numeric value into a number or returns `NaN` if the string cannot be converted.
+* You can also use the unary + prefix operator: `num = +str;`. According to MDN, "unary plus is the fastest and preferred way of converting something into a number, because it does not perform any other operations on the number. It can convert string representations of integers and floats, as well as the non-string values true, false, and null."
+```javascript
++null;      // 0
++undefined; // NaN
++'10';      // 10
++'hi';      // NaN
++true;      // 1
++false;     // 0
++'true';    // NaN
+```
 
-`parseInt()` and `parseFloat()` turn strings to numbers, but `parseInt()` will only return an integer. 
+* `parseInt()` and `parseFloat()` turn strings to numbers, but `parseInt()` will only return an integer.
+* This function stops at the first non-digit character
 
 ```javascript
 parseInt('453.6', 10);  // 453
 parseFloat('453.6');    // 453.6
+parseInt("12em")        // 12
+parseInt('08');         // 0 (assumes it is in base 8, but 8 is not a base-8 digit so it stops at 0)
+parseInt('08', 10);     // 8 (always use the radix!)
 ```
 
 #### Numbers to Strings
@@ -389,6 +440,10 @@ parseFloat('453.6');    // 453.6
 The `String()` function turns numbers into strings: `String(123); // "123"`
 
 The `toString()` method can be called on numbers: `(123).toString(); // "123"`
+
+* Prefer String() to toString()
+* String() works with all types, including null and undefined, while toString() raises an exception in those cases.
+* String() is guaranteed to return a string. This is not the case with toString() — individual objects can override toString() and they don't have to return a string.
 
 #### Booleans to Strings
 
@@ -418,7 +473,8 @@ b === 'true';            // false
 
 When two values of different types are used as operands in expressions, Javascript attempts to convert one value to a type it can operate on. 
 
-Programmers should be aware of implicit type coercion but should avoid them. The intent of this kind of code can be unclear, and bugs are much more likely and difficult to detect. 
+* Programmers should be aware of implicit type coercions but should avoid them. The intent of this kind of code can be unclear, and bugs are much more likely and difficult to detect. 
+* Javascript is a loosely typed language, but + as both concatenation and addition comes from Java, which is strongly typed.
 
 #### Arithmetic Operators
 
@@ -470,15 +526,55 @@ true / false            // Infinity
 '5' % 2                 // 1
 ```
 
+* Example:
+```javascript
+function productOfSums(array1, array2) {
+  var result;
+  result = total(array1) * total(array2); // NaN (undefined * undefined)
+  return result;
+}
+
+function total(numbers) {
+  var sum;
+  var i;
+
+  for (i = 0; i < numbers.length; i += 1) {
+    sum += numbers[i]; // sum is never assigned a value and has value NaN here (undefined + numbers[i])
+  }
+
+  sum; // explicit return is missing, will return undefined regardless of sum's value
+}
+
+```
+
 #### Equality Operators
 
-* Javascript's strict operators (`===` and `!==`) never perform type coercions. With this operator, two operands are only equal if they are both the same type and have the same value.
+* Javascript's strict operators (`===` and `!==`) never perform type coercions. With this operator, two operands are only equal if they are both the same type and have the same value. **Use these operators.**
 
 * The non-strict equality operators (`==` and `!=`) work the same way as the strict equality operators when the operands are of the same type. When they are of different types, Javascript implicitly coerces them to the same type before comparing them.
   * When one operand is a string and the other a number, the string is converted to a number: `0 == '' // true (0 == 0)`
   * When one operand is a boolean, it is converted to a number: `'0' == false // true ('0' == 0 then 0 == 0, two conversions)`
   * When `null` is compared to `undefined` using the non-strict equality operator (`==`), it always returns `true`. It returns `false` when `null` or `undefined` is compared to any other value: `null == false // false` but `null == undefined // true`
   * `==` always returns `false` if either or both of the operands is `NaN`
+
+Note the lack of transitivity in the following (from Douglas Crockford):
+```javascript
+'' == '0';         // false
+0  == '' ;         // true 
+0  == '0';         // true
+
+// If 0 = '' and 0 == '0', then '' should equal '0' (it doesn't!)
+
+false == 'false'   // false
+false == '0'       // true
+
+false == undefined // false
+false == null      // false
+null == undefined  // true
+
+' \t\r\n ' == 0    // true
+
+```
 
 #### Relational Operators
 

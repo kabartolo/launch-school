@@ -67,6 +67,8 @@ for (i = 0; i < count.length; i++) {
 // 5
 ```
 
+* Do not use `for in` with arrays: It does not guarantee the order of the items.
+
 <a name="accessing"></a>
 ### Accessing, Modifying, and Detecting Values
 
@@ -282,6 +284,18 @@ fruits; // ["Strawberry", "Mango"]
 * Args: array
 * Returns: reference to original array, elements in reverse order
 * Mutates the array in place
+
+#### Sort
+
+[Array.prototype.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
+
+* Sort usually gives unexpected results if the items in the array are not strings.
+```javascript
+var array = [4, 15, 23];
+array.sort; // [15, 23, 4], sorted according to Unicode value
+```
+
+* Pass a custom function to sort numbers.
 
 <a name="arithmetic-operations"></a>
 ### Arithmetic Operations on Arrays
