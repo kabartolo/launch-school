@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Basics: Convert a String to a Number</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // String to Number
+      // Assume all characters are numeric and there are no '+' or '-' signs.
+      var DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+      function charToDigit(char) {
+        DIGITS.indexOf(char);
+      }
+
+      function stringToInteger(string) {
+        var number = 0;
+        var multiple = 10**(string.length - 1);
+        var digit;
+        var i;
+
+        for (i = 0; i < string.length; i++) {
+          digit = DIGITS[string[i]];
+          number += (digit * multiple);
+
+          multiple /= 10;
+        }
+
+        return number;
+      }
+
+      stringToInteger('4321');      // 4321
+      stringToInteger('570');       // 570
+
+      // String to Signed Number
+      function stringToSignedInteger(string) {
+        var firstChar = string[0];
+        var result;
+
+        if (firstChar.match(/^[+-]/)) { string = string.slice(1); }
+        result = stringToInteger(string);
+
+        return (firstChar === '-') ? result * (-1) : result;
+      }
+
+      stringToSignedInteger('4321');      // 4321
+      stringToSignedInteger('-570');      // -570
+      stringToSignedInteger('+100');      // 100
+    </script>
+  </body>
+</html> 

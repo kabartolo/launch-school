@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Basics: Convert a Number to a String</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Number to String
+      // Takes a positive integer or zero
+
+      var DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+      function integerToString(integer) {
+        var string = '';
+        var digit;
+
+        do {
+          digit = integer % 10;
+          integer = Math.floor(integer / 10);
+
+          string = DIGITS[digit] + string;
+        } while (integer > 0)
+
+        return string;
+      }
+
+      console.log(integerToString(4321));      // "4321"
+      console.log(integerToString(0));         // "0"
+      console.log(integerToString(5000));      // "5000"
+
+      // Signed Number to String
+      function signedIntegerToString(integer) {
+        var start = '';
+
+        switch (true) {
+          case (integer < 0):
+            start = '-';
+            integer *= -1;
+            break;
+          case (integer > 0):
+            start = '+';
+        }
+
+        return start + integerToString(integer);
+      }
+
+      signedIntegerToString(4321);      // "+4321"
+      signedIntegerToString(-123);      // "-123"
+      signedIntegerToString(0);         // "0"
+    </script>
+  </body>
+</html> 
