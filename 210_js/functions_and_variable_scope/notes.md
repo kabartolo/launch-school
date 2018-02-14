@@ -232,6 +232,27 @@ logCount();            // closure sees new value for count; logs: 2
 Lexical scoping is used to resolve variables, meaning it searches for a variable in the hierarchy of scopes from the local scope up to the program's global scope. It stops and returns the first variable it finds with a matching name. **Variables in a lower scope can *shadow* variables with the same name in a higher scope**.
 
 **Note**: Code blocks do not create a new local scope (*functions* do).
+```javascript
+function getSelectedColumns(numbers, cols) {
+  var result = [];
+
+  for (var i = 0, length = numbers.length; i < length; i += 1) { // recall length variable is hoisted
+    for (var j = 0, length = cols.length; j < length; j += 1) { // length gets REASSIGNED here
+      if (!result[j]) {
+        result[j] = [];
+      }
+
+      result[j][i] = numbers[i][cols[j]];
+    }
+  }
+
+  return result;
+}
+
+var array1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+
+getSelectedColumns(array1, [0]);     // [[1]];            expected: [[1, 4, 7]], actual: [[1]]
+```
 
 #### Adding Variables to the Current Scope
 
@@ -446,8 +467,7 @@ See also: [https://javascriptweblog.wordpress.com/2010/07/06/function-declaratio
 
 #### Hoisting for Variable Declarations
 
-Javascript processes variable declarations before it executes any code within a scope, effectively moving variable **declarations** to the top of the scope. **Note**: It does not actually move any code, but rather behaves that way since it declares the variables first,
-then executes the code.
+Javascript processes variable declarations before it executes any code within a scope, effectively moving variable **declarations** to the top of the scope. **Note**: It does not actually move any code, but rather behaves that way since it declares the variables first, then executes the code.
 
 
 ```javascript
@@ -543,8 +563,7 @@ bar();          // logs undefined since foo is still undefined
 foo = 'hello';
 ```
 
-What if the same name is used for a variable and a function? Javascript ignores the variable declaration, as it is redundant,
-and reassignment occurs.
+What if the same name is used for a variable and a function? Javascript ignores the variable declaration, as it is redundant, and reassignment occurs.
 
 ```javascript
 bar();             // logs "world"
@@ -618,6 +637,59 @@ function foo() { // global variable foo reassigned to this function
 
 console.log(foo()); // 3. logs undefined
 ```
+
+<a name="functions-as-return-values"></a>
+### Functions as Return Values
+
+* Two sets of parentheses on a function call means the first function itself returns a function, and that second function is called immediately with any argments given in the second set of parentheses.
+
+```javascript
+function one() {
+  function log(result) {
+    console.log(result);
+  }
+
+  function anotherOne() {
+    var result = '';
+    var i;
+    for (i = 0; i < arguments.length; i += 1) {
+      result += String.fromCharCode(arguments[i]);
+    }
+
+    log(result);
+  }
+
+  function anotherAnotherOne() {
+    console.log(String.fromCharCode(87, 101, 108, 99, 111, 109, 101)); // Welcome
+    anotherOne(116, 111); // to
+  }
+
+  anotherAnotherOne();
+  anotherOne(116, 104, 101); // the
+  return anotherOne; // calls anotherOne(77, 97, 116, 114, 105, 120, 33), logs 'Matrix!'
+}
+
+one()(77, 97, 116, 114, 105, 120, 33);
+
+// The function named 'one' returns the function anotherOne, and that function is called immediately with the set of arguments 77, 97, etc.
+// When the anotherOne function is returned, it still has access to the 'log' function defined in its closure.
+// logs:
+// Welcome
+// to
+// the
+// Matrix!
+
+// The function calls are the following:
+// one();
+// anotherAnotherOne();
+// anotherOne(116, 111);
+// log(result);
+// anotherOne(116, 104, 101);
+// log(result);
+// anotherOne(77, 97, 116, 114, 105, 120, 33);
+// log(result);
+    ```
+
 
 <a name="best-practices"></a>
 ### Best Practices

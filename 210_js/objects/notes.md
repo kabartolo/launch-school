@@ -60,10 +60,12 @@ colors.orange;      // "#ff0"
 
 * Properties are the associations between named items and their values (which represent the attributes of the object).
 * Use dot notation or bracket notation to get the value of an object property. Use dot notation when possible.
+* The key used in bracket notation must be a string. If it is a number, it will be converted by JS to a string. If it is a variable, JS will get its value and convert it to a string if necessary.
+
 * A property name can be any valid string, and a property value can be any valid expression.
+
 * Use the reserved keyword `delete` to delete properties from objects.
 * Use a `for... in` loop to step through Object properties. Get all object properties with `Object.keys()`
-
 
 ```javascript
 // Accessing property values
@@ -123,6 +125,15 @@ var colors = {
 };
 
 colors.blue = '#00f';
+
+var myObject = {
+  a: 'name',
+  'b': 'test',
+  123: 'c',     // property name converted to a string
+  1: 'd',       // property name converted to a string
+};
+
+Object.keys(myObject); // ["a", "b", "123", "1"]
 
 // Different notation types
 var object = {};              // empty object
@@ -293,6 +304,7 @@ a === {};                 // false
 * Primitive values are immutable. Operations on these values return a new value of the same type.
 * Objects are mutable. Their identity remains the same while their data can be changed.
 * Objects are reference values (they are passed by reference).
+* String Objects themselves are mutable (you can add data), but the string primitive wrapped by that object is not (see last example below).
 
 ```javascript
 var alpha = 'abcde'; // the variable references an immutable string
@@ -338,14 +350,14 @@ numbers;                            // [ 1, 6, 27, 34, 92 ], the original array,
 employee1 = { name: 'Max', age: 28 } --> employee1Pointer --> {name:'Max',age:28}
 employee2 = employee1 -----------------> employee2Pointer ---^
 ```
-* The **reference** to the object here is copied and added to the stack (primitive values are added directly).
 
+* The **reference** to the object here is copied and added to the stack (primitive values are added directly).
 ```javascript
 var name = 'Max';
 console.log(name);     // "Max", new string
 
 var secondName = name;
-console.log(secondName); // "Max", new string
+console.log(secondName); // "Max", new string!
 
 console.log(name === secondName);  true (value equality, not object equality)
 
@@ -389,7 +401,21 @@ console.log(person === secondPerson);    // true (object equality)
 
 ```
 
+```javascript
+var stringObj = new String('Hello');  // creates a String Object explicitly
+console.log(typeof stringObj);        // logs "object"
 
+// immutable primitive value
+stringObj[0] = 'B';
+console.log(stringObj.toString());  // logs "Hello"
+
+// mutable String Object
+var stringObjCopy = stringObj;
+stringObjCopy.foo = 'bar';
+console.log(stringObj);
+
+// String { 0: "H", 1: "e", 2: "l", 3: "l", 4: "o", foo: "bar", length: 5, [[PrimitiveValue]]: "Hello" }
+```
 
 <a name="pure-functions-side-effects"></a>
 ### Pure Functions and Side Effects
