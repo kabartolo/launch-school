@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Searching 101</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // var NUM_ITEMS = 6;
+      // var firstNums = [];
+      // var lastNum;
+      // var included;
+      // var includedMsg;
+      // var i;
+
+      // for (i = 1; i < NUM_ITEMS; i++) {
+      //   firstNums.push(prompt('Enter the ' + suffix(i) + ' number: '));
+      // }
+      // lastNum = prompt('Enter the last number: ');
+
+      // included = isIncluded(firstNums, lastNum, (a, b) => { return a === b });
+      // includedMsg = included ? 'is included in' : 'is not included in';
+
+      // firstNums = firstNums.join(', ');
+
+      // console.log(`The number ${lastNum} ${includedMsg} [${firstNums}].`);
+
+      function suffix(number) {
+        var TEENS = [11, 12, 13];
+        var SUFFIXES = ['st', 'nd', 'rd'];
+        var last;
+        var lastTwo;
+        var result;
+
+        number = parseInt(number, 10);
+        last = number % 10;
+        lastTwo = number % 100;
+
+        result = String(number);
+
+        if (TEENS.includes(lastTwo)) { return result + 'th'; }
+
+        result += (last >= 1 && last <= 3) ? SUFFIXES[last - 1] : 'th';
+
+        return result;
+      }
+
+      // Further exploration: Write a flexible program that looks for a number satsifying some condition. Use it above.
+
+      function isIncluded(arr, val, callback) {
+        return arr.some(function(element) {
+          return callback(element, val);
+        });
+      }
+
+      // Example
+      function condition(element, val) {
+        return element > val;
+      }
+
+      isIncluded([1, 2, 3], 25, condition); // false
+
+      // REFACTOR of original solution using isIncluded method
+
+      function duplicateMsg(arr, val) {
+        duplicate = isIncluded(arr, val, (a, b) => { return a === b });
+
+        return duplicate ? 'is included in' : 'is not included in'; 
+      }
+
+      function promptNum(current) {
+        return prompt('Enter the ' + current + ' number:') 
+      }
+
+      function lastIsDuplicate(numItems) {
+        var firstNums = [];
+        var lastNum;
+        var result;
+        var i;
+
+        for (i = 1; i < numItems; i++) {
+          firstNums.push(promptNum(suffix(i)));
+        }
+
+        lastNum = promptNum('last');
+        result = duplicateMsg(firstNums, lastNum);
+        firstNums = firstNums.join(', ');
+
+        console.log(`The number ${lastNum} ${result} [${firstNums}].`);
+      }
+
+      lastIsDuplicate(7);
+
+    </script>
+  </body>
+</html>

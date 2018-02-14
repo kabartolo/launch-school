@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 1: Multiplication Table</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      // Does the following program log a multiplication table for the numbers from 1
+      // to 10? Why or why not?
+      var row;
+      var i;
+      var j;
+
+      function padLeft(number) {
+        var stringNumber = String(number);
+        return stringNumber.length <= 1 ? ' ' + stringNumber : stringNumber;
+      }
+
+      for (i = 1; i < 10; i += 1) { // No, this only creates 9 rows
+        row = '';
+        for (j = 1; j <= 10; j += 1) {
+          row += padLeft(i * j) + ' ';
+        }
+
+        console.log(row + '\n');
+      }
+
+      // Due to the off-by-one error in the first for loop, only 9 rows are created.
+
+    </script>
+  </body>
+</html> 

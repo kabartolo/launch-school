@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 1: Logger</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      // Why does the following log 'debugging'?
+      // This is due to Javascript's lexical scoping rules.
+      function debugIt() {
+        var status = 'debugging';
+        function logger() {
+          console.log(status); // The function creates a new scope that has access to the outer scope.
+        }
+
+        logger();
+      }
+
+      debugIt();
+
+    </script>
+  </body>
+</html> 

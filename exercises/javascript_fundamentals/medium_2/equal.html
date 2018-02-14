@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 2: Equal</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      // Why doesn't the following program work and how can it be fixed?
+      var person = { name: 'Victor' };
+      var otherPerson = { name: 'Victor' }; // object literal creates a new object
+
+      console.log(person === otherPerson);    // false -- expected: true
+
+      // The otherPerson variable is assigned to a new object. It has the same value as the first object,
+      // but it is not the same object. The === operator will only return true if the two objects are the same.
+
+      // The following fixes it:
+
+      var person = { name: 'Victor' };
+      var otherPerson = person; // the reference to the above object is assigned to this variable
+
+      console.log(person === otherPerson);  // true
+
+    </script>
+  </body>
+</html> 

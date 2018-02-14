@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Objects: After Midnight 1 and 2</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // After Midnight Part 1
+      function timeOfDay(deltaMinutes) {
+        return new Date(0, 0, 0, 0, deltaMinutes).toTimeString().slice(0, 5);
+      }
+
+      timeOfDay(0);          // "00:00"
+      timeOfDay(-3);         // "23:57"
+      timeOfDay(35);         // "00:35"
+      timeOfDay(-1437);      // "00:03"
+      timeOfDay(3000);       // "02:00"
+      timeOfDay(800);        // "13:20"
+      timeOfDay(-4231);      // "01:29"
+
+      // After Midnight Part 2 (Reverse)
+      var MINUTES_PER_HOUR = 60;
+      var HOURS_PER_DAY = 24;
+      var MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR; 
+
+      function afterMidnight(timeStr) {
+        var date = new Date('2018/1/1 ' + timeStr);
+
+        return date.getHours() * MINUTES_PER_HOUR + date.getMinutes();
+      }
+
+      function beforeMidnight(timeStr) {
+        var deltaMinutes = MINUTES_PER_DAY - afterMidnight(timeStr);
+        if (deltaMinutes === MINUTES_PER_DAY) {
+          deltaMinutes = 0;
+        }
+
+        return deltaMinutes;
+      }
+
+      afterMidnight('00:00');       // 0
+      beforeMidnight('00:00');      // 0
+      afterMidnight('12:34');       // 754
+      beforeMidnight('12:34');      // 686
+
+    </script>
+  </body>
+</html> 
+      

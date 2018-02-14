@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 1: Counter</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      // What do the following code snippets log?
+      // Code Snippet 1
+
+      // The function is hoisted before the variables.
+      var counter = 5; // variable declaration is ignored, as it has the same name as the function
+      var rate = 3;
+      console.log('The total value is ' + String(counter * rate)); // The total value is 15
+
+      function counter(count) {
+        // ...
+      }
+      
+      // Equivalent to:
+      function counter(count) {
+        // ...
+      }
+
+      var rate;
+      rate = 3;
+      counter = 5;
+      console.log('The total value is ' + String(counter * rate));
+
+      // Code Snippet 2
+
+      function counter(count) {
+        // ...
+      }
+
+      console.log('The total value is ' + String(counter * rate)); // The total value is NaN
+
+      var counter = 5;
+      var rate = 3;
+
+      // Equivalent to:
+
+      function counter(count) {
+        // ...
+      }
+      var rate;
+
+      console.log('The total value is ' + String(counter * rate));
+
+      counter = 5;
+      rate = 3;
+
+      // Code Snippet 3
+
+      var counter = 5;
+      var rate = 3;
+
+      function counter(count) {
+        // ...
+      }
+
+      console.log('The total value is ' + String(counter * rate)); // The total value is 15
+
+    </script>
+  </body>
+</html> 

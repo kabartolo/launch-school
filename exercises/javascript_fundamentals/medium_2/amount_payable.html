@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 2: Amount Payable</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      var startingBalance = 1;
+      var chicken = 5;
+      var chickenQuantity = 7;
+
+      var totalPayable = function (item, quantity) { // new scope created
+        return startingBalance + (item * quantity);  // outer variables are accessible here
+      };
+
+      startingBalance = 5;
+      console.log(totalPayable(chicken, chickenQuantity)); // 40
+
+      startingBalance = 10;
+      console.log(totalPayable(chicken, chickenQuantity)); // 45
+
+      // Due to the function's closure, the startingBalance variable is dynamically looked up each time the function is called. The function keeps track of its value in the outer scope.
+
+      // Note also that this function is not a pure function. Given the same input, it may not always return the same output.
+    </script>
+  </body>
+</html> 

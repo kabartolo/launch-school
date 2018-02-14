@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 1: Conditional Loop</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      // Does the following program log each number between 0 and 9 (inclusive) that is a multiple
+      // of 3? 
+
+      var i = 0;
+      while (i < 10) {
+        if (i % 3 === 0) {
+          console.log(i);
+        } else {
+          i += 1;
+        }
+      }
+      // logs:
+      // 0
+      // 0
+      // 0
+      // ~ infinite loop
+
+      // The variable i is never incremented because (i % 3 === 0) always evaluates to true
+      // and the else clause containing the incrementing expression is never reached.
+
+    </script>
+  </body>
+</html> 

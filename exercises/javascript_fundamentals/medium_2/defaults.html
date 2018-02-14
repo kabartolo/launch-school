@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 2: Defaults</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      // What is the limitation of the following functions?
+
+
+      // When an argument is omitted, Javascript sets it to undefined.
+      // These functions check for arguments with values of undefined and gives them default values.
+      // The limitation is that any of the argument values could be 0, which is falsy. It will test
+      // it and treat it as if it had been omitted. 
+      // To fix this, the functions should check explicitly for values of undefined.
+      function processOrder(price, quantity, discount, serviceCharge, tax) {
+        if (!quantity) {
+          quantity = 1;
+        }
+
+        if (!discount) {
+          discount = 0;
+        }
+
+        if (!serviceCharge) {
+          serviceCharge = 0.1;
+        }
+
+        if (!tax) {
+          tax = 0.15;
+        }
+
+        return (price * quantity) * (1 - discount) * (1 + serviceCharge) * (1 + tax);
+      }
+
+      processOrder(100);      // 126.5
+
+      function processOrder(price, quantity, discount, serviceCharge, tax) {
+        quantity = quantity || 1;
+        discount = discount || 0;
+        serviceCharge = serviceCharge || 0.1;
+        tax = tax || 0.15;
+
+        return (price * quantity) * (1 - discount) * (1 + serviceCharge) * (1 + tax);
+      }
+
+    </script>
+  </body>
+</html> 

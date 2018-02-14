@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>When Will I Retire?</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      var age = parseInt(prompt('What is your age?'), 10);
+      var retiringAge = parseInt(prompt('At what age would you like to retire?'), 10);
+
+      var date = new Date(); // without the new keyword, Date() returns a string instead of a Date object.
+
+      var currentYear = date.getFullYear();
+      var yearsLeft = retiringAge - age;
+      var retirementYear = currentYear + yearsLeft;
+
+      console.log("It's " + String(currentYear) + '. You will retire in ' + String(retirementYear) + '.');
+      console.log('You have only ' + String(yearsLeft) + ' years of work to go!');
+      // What is your age? 30
+      // At what age would you like to retire? 70
+
+      // It's 2017. You will retire in 2057.
+      // You have only 40 years of work to go!
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Palindromic Strings Part 1</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // We can just check the full string
+
+      function isPalindrome(string) {
+        return string === string.split('').reverse().join('');
+      }
+
+      isPalindrome('madam');               // true
+      isPalindrome('Madam');               // false (case matters)
+      isPalindrome("madam i'm adam");      // false (all characters matter)
+      isPalindrome('356653');              // true
+
+    </script>
+  </body>
+</html>

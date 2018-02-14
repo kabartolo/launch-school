@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 2: 5 to 7</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      // What does this log to the console?
+
+      // 5.
+      var array = ['Apples', 'Peaches', 'Grapes'];
+
+      array[3.4] = 'Oranges';
+      console.log(array.length);               // 3
+      console.log(Object.keys(array).length);  // 4
+
+      array[-2] = 'Watermelon';               
+      console.log(array.length);               // 3
+      console.log(Object.keys(array).length);  // 5
+
+      // 6.
+      var languages = ['JavaScript', 'Ruby', 'Python'];
+      console.log(languages);          // ["Javascript", "Ruby", "Python"]
+      console.log(languages.length);   // 3
+
+      languages.length = 4;
+      console.log(languages);          // ["Javascript", "Ruby", "Python", undefined]
+      console.log(languages.length);   // 4
+
+      languages.length = 1;
+      console.log(languages);          // ["Javascript"]
+      console.log(languages.length);   // 1
+
+      languages.length = 3;
+      console.log(languages);          // ["Javascript", undefined, undefined]
+      console.log(languages.length);   // 3
+
+      languages.length = 1;           
+      languages[2] = 'Python';
+      console.log(languages);          // ["Javascript", undefined, "Python"]
+      console.log(languages[1]);       // undefined
+      console.log(languages.length);   // 3
+
+      // 7.
+      function one() {
+        function log(result) {
+          console.log(result);
+        }
+
+        function anotherOne() {
+          var result = '';
+          var i;
+          for (i = 0; i < arguments.length; i += 1) {
+            result += String.fromCharCode(arguments[i]);
+          }
+
+          log(result);
+        }
+
+        function anotherAnotherOne() {
+          console.log(String.fromCharCode(87, 101, 108, 99, 111, 109, 101)); // Welcome
+          anotherOne(116, 111); // to
+        }
+
+        anotherAnotherOne();
+        anotherOne(116, 104, 101); // the
+        return anotherOne; // calls anotherOne(77, 97, 116, 114, 105, 120, 33), logs 'Matrix!'
+    }
+
+    one()(77, 97, 116, 114, 105, 120, 33);
+
+    // The function named 'one' returns the function anotherOne, and that function is called immediately with the set of arguments 77, 97, etc.
+    // When the anotherOne function is returned, it still has access to the log function defined in its closure.
+    // logs:
+    // Welcome
+    // to
+    // the
+    // Matrix!
+
+    // The function calls are the following:
+    // one();
+    // anotherAnotherOne();
+    // anotherOne(116, 111);
+    // log(result);
+    // anotherOne(116, 104, 101);
+    // log(result);
+    // anotherOne(77, 97, 116, 114, 105, 120, 33);
+    // log(result);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 1: Product of Sums</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      // Does this function produce the expected result?
+
+      function productOfSums(array1, array2) {
+        var result;
+        result = total(array1) * total(array2); // NaN (undefined * undefined)
+        return result;
+      }
+
+      function total(numbers) {
+        var sum;
+        var i;
+
+        for (i = 0; i < numbers.length; i += 1) {
+          sum += numbers[i]; // sum is never assigned a value and has value NaN here (undefined + numbers[i])
+        }
+
+        sum; // explicit return is missing, will return undefined regardless of sum's value
+      }
+      
+    </script>
+  </body>
+</html> 

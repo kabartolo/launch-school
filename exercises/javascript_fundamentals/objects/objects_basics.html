@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Objects: 1 to 4</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // 1. Literal
+      // Identify the bug:
+
+      var myObject = {
+        a: 'name',
+        'b': 'test',
+        123: 'c',
+        1: 'd',
+      };
+
+      myObject[1];
+      myObject[a]; // Should be myObject['a']. Raises reference error
+      myObject.a;
+
+      // Javascript looks for a variable named 'a' but cannot find one since it has not been declared. Hence the reference error.
+      // The property name (key) must be a string. If it is a number, Javascript converts it to a string first.
+      // If the key is a variable, it looks for the value and converts it to a string if necessary.
+
+      // 2. Literal Method
+      var person = {
+        firstName: function () {
+          return 'Victor';
+        },
+        lastName: function () {
+          return 'Reyes';
+        },
+      };
+
+      console.log(person.firstName + ' ' + person.lastName); // the functions are not called
+      //logs
+      // function () {
+      //   return 'Victor';
+      // } function () {
+      //   return 'Reyes';
+      // }
+
+      // 3. Mutation
+
+      var array1 = ['Moe', 'Larry', 'Curly', 'Chemp', 'Harpo', 'Chico', 'Groucho', 'Zeppo'];
+      var array2 = [];
+      var i;
+
+      for (i = 0; i < array1.length; i += 1) {
+        array2.push(array1[i]);
+      }
+
+      for (i = 0; i < array1.length; i += 1) {
+        if (array1[i].startsWith('C')) {
+          array1[i] = array1[i].toUpperCase();
+        }
+      }
+
+      console.log(array2); // ['Moe', 'Larry', 'Curly', 'Chemp', 'Harpo', 'Chico', 'Groucho', 'Zeppo'];
+
+      // Further Exploration
+
+      // What would happen if an object literal was part of the array1 elements pushed to array2? Would changes made to the object literal in array1 be reflected in array2?
+
+      // Yes because the element index in each array points to the same object, which is mutable.
+      // In the above, a new string is created as a copy of each element in the first array. 
+      var array1 = [{ name1: 'Moe', name2: 'Larry'} ];
+      var array2 = [];
+      var i;
+
+      for (i = 0; i < array1.length; i += 1) {
+        array2.push(array1[i]);
+      }
+
+      array1[0].name1 = 'Curly';
+
+      console.log(array2); // [ { name1: 'Curly', name2: 'Larry' }]
+
+      // How would you change the code so that any changes made to array1 in the second for loop get reflected to array2?
+
+      var array1 = ['Moe', 'Larry', 'Curly', 'Chemp', 'Harpo', 'Chico', 'Groucho', 'Zeppo'];
+      var array2 = array1;
+      var i;
+
+      for (i = 0; i < array1.length; i += 1) {
+        if (array1[i].startsWith('C')) {
+          array1[i] = array1[i].toUpperCase();
+        }
+      }
+
+      console.log(array2);
+
+      // 4. Dynamic
+      var myObject = {
+        prop1: '123',
+        prop2: '234',
+        'prop 3': '345',
+      };
+
+      var prop2 = '456';
+      myObject['prop2'] = '456';
+      myObject[prop2] = '678';
+
+      console.log(myObject[prop2]); // "678"
+      console.log(myObject.prop2);  // "456"
+
+
+      // Further exploration:
+      var myObj = {};
+      myObj[myFunc()] = 'hello, ';
+
+      function myFunc() {
+        return 'funcProp';
+      }
+
+      console.log(myObj);         // { funcProp: 'hello, ' }
+      myObj[myFunc()] = 'world!'; 
+      console.log(myObj);         // { funcProp: 'world!' }
+
+
+    </script>
+  </body>
+</html> 

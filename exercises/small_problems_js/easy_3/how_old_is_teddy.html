@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>How Old is Teddy?</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Write a program that randomly generates and logs Teddy's age, a random number between 20 and 200 (inclusive).
+
+      // The min and max arguments are inclusive
+      function randomInRange(min, max) {
+        var temp;
+        if (min > max) {
+          temp = min;
+          min = max;
+          max = temp;
+        }
+        
+        min = Math.ceil(min); // ensures an integer value
+        max = Math.floor(max); // ensures an integer value
+        return Math.floor(Math.random() * max - min + 1) + min; // add one to make max inclusive
+      }
+
+      // the code (Math.random() * max - min + 1) generates a random number between 0 and 180.
+      // (200 - 20 + 1) = 181 possible values.
+      // + min offsets the value so it falls instead between the range of 20 and 200.
+
+      var age = randomInRange(20, 200);
+      console.log('Teddy is ' + age + ' years old!');
+
+      // Further exploration:
+      // According to MDN, using the round function can cause the random numbers to follow a non-uniform distribution. This is because each number may be rounded down or up depending on the closest integer value.
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Palindromic Strings Part 2</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function isRealPalindrome(string) {
+        alphaNumString = string.toLowerCase().replace(/\W+/g, '');
+
+        return alphaNumString === alphaNumString.split('').reverse().join('');
+      }
+
+      
+      isRealPalindrome('madam');               // true
+      isRealPalindrome('Madam');               // true (case does not matter)
+      isRealPalindrome("Madam, I'm Adam");     // true (only alphanumerics matter)
+      isRealPalindrome('356653');              // true
+      isRealPalindrome('356a653');             // true
+      isRealPalindrome('123ab321');            // false
+
+    </script>
+  </body>
+</html>

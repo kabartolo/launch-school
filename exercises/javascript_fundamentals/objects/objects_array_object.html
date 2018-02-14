@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Objects: Array Object</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // 5.
+      var myArray = ['a', 'b', 'c'];
+
+      console.log(myArray[0]);  // 'a'
+      console.log(myArray[-1]); // undefined 
+
+      myArray[-1] = 'd';
+      myArray['e'] = 5;
+      myArray[3] = 'f';
+
+      console.log(myArray[-1]);  // 'd'
+      console.log(myArray['e']); // 5
+      console.log(myArray);      // ['a', 'b', 'c', 'f', -1: 'd', e: 5]
+
+      // 6.
+      var myArray = [5, 5];
+      myArray[-1] = 5;
+      myArray[-2] = 5;
+
+      function average(array) {
+        var sum = 0;
+        var i;
+
+        for (i = -2; i < array.length; i += 1) {
+          sum += array[i];
+        }
+
+        return sum / array.length; // array.length is 2!
+      }
+
+      average(myArray); // 10
+
+      // Futher exploration: Refactor the average function so that it returns the result that the user expected, 5.
+      var myArray = [5, 5];
+      myArray[-1] = 5;
+      myArray[-2] = 5;
+
+      function average(array) {
+        var sum = 0;
+        var i;
+
+        for (i = -2; i < array.length; i += 1) {
+          sum += array[i];
+        }
+
+        return sum / Object.keys(array).length;
+      }
+
+      average(myArray); // 5
+
+    </script>
+  </body>
+</html> 
+      

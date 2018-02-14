@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Exercises: Javascript Fundamentals: Medium 1: Invoice</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body> 
+    <script>
+      
+    function invoiceTotal(amount1, amount2, amount3, amount4) {
+      return amount1 + amount2 + amount3 + amount4;
+    }
+
+    invoiceTotal(20, 30, 40, 50);          // works as expected
+    invoiceTotal(20, 30, 40, 50, 40, 40);  // does not work; how can you make it work?
+
+    // Solution:
+
+    function invoiceTotal() {
+      var amounts = Array.prototype.slice.call(arguments);
+      return amounts.reduce(function (a, b) { return a + b });
+    }
+    </script>
+  </body>
+</html> 
