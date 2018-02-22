@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Multiplicative Average</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function showMultiplicativeAverage(array) {
+        var multAverage = array.reduce((x, y) => x * y) / array.length
+        ;
+        return multAverage.toFixed(3);
+      }
+      
+      showMultiplicativeAverage([3, 5]);                   // "7.500"
+      showMultiplicativeAverage([2, 5, 7, 11, 13, 17]);    // "28361.667"
+    </script>
+  </body>
+</html>

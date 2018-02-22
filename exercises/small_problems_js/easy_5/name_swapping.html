@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Name Swapping</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function swapName(fullName) {
+        return fullName.split(' ').reverse().join(', ');
+      }
+
+      swapName('Joe Roberts');    // "Roberts, Joe"
+
+      // Further exploration: What if the person has more than one first name?
+      function swapName(fullName) {
+        var nameArray = fullName.split(' ');
+        var lastName = nameArray.splice(-1);
+        var firstNames = nameArray.join(' ');
+        
+        return [lastName, firstNames].join(', ');
+      }
+
+      swapName('Joe Michael Roberts'); // "Roberts, Joe Michael"
+
+    </script>
+  </body>
+</html>

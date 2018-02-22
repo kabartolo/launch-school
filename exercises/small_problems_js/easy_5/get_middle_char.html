@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Get the Middle Character</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function centerOf(string) {
+        var midChar = string.substr(string.length / 2, 1);
+        var prevChar = string.substr(string.length / 2 - 1, 1);
+
+        return (string.length % 2 === 1) ? midChar : (prevChar + midChar);
+      }
+
+      // Better solution that avoids declaring variables unnecessarily
+      function centerOf(string) {
+        if (string.length % 2 === 0) {
+          return string.substr(string.length / 2 - 1, 2);
+        } else {
+          return string.substr(string.length / 2, 1);
+        }
+      }
+
+      centerOf('I Love Ruby');      // "e"
+      centerOf('Launch School');    // " "
+      centerOf('Launch');           // "un"
+      centerOf('Launchschool');     // "hs"
+      centerOf('x');                // "x"
+    </script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Combine Two Lists</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Assume the two arrays are non-empty and of equal size
+      function interleave(array1, array2) {
+        result = [];
+        var i;
+
+        for (i = 0; i < array1.length; i += 1) {
+          result.push(array1[i], array2[i]);
+        }
+
+        return result;
+      }
+
+      interleave([1, 2, 3], ['a', 'b', 'c']);    // [1, "a", 2, "b", 3, "c"]
+    </script>
+  </body>
+</html>

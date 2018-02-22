@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Multiply Lists</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function multiplyList(array1, array2) {
+        var newArray = [];
+        var i;
+
+        for (i = 0; i < array1.length; i += 1) {
+          newArray.push(array1[i] * array2[i]);
+        }
+
+        return newArray;
+      }
+
+      // More idiomatic
+      function multiplyList(array1, array2) {
+        return array1.map((x, i) => x * array2[i]);
+      }
+
+      multiplyList([3, 5, 7], [9, 10, 11]);    // [27, 50, 77]
+    </script>
+  </body>
+</html>

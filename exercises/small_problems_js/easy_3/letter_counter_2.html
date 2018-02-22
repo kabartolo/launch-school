@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Letter Counter Part 2</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Exclude non-letters in word size
+      function wordSizes(string) {
+        var counts = {};
+        var sizes;
+
+        if (!string) return counts;
+
+        sizes = string.split(' ').map(countLetters);
+
+        sizes.forEach(function(wordSize) {          
+          counts[wordSize] = (counts[wordSize] || 0) + 1;
+        });
+
+        return counts;
+      }
+
+      function countLetters(word) {
+        return word.match(/[\w+]/g).length;
+      }
+
+      wordSizes('Four score and seven.');                       // { "3": 1, "4": 1, "5": 2 }
+      wordSizes('Hey diddle diddle, the cat and the fiddle!');  // { "3": 5, "6": 3 }
+      wordSizes("What's up doc?");                              // { "5": 1, "2": 1, "3": 1 }
+      wordSizes('');                                            // {}
+    </script>
+  </body>
+</html>

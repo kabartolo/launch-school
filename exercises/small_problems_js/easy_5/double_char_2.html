@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Double Char Part 2</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function doubleConsonants(string) {
+        return string.split('').map(doubleChar).join('');
+      }
+
+      function doubleChar(char) {
+        return (char.match(/[b-df-hj-np-tv-z]/i)) ? (char + char) : char;
+      }
+
+      // Using replace
+      function doubleConsonants(string) {
+        return string.replace(/([b-df-hj-np-tv-z])/gi, '$1$1');
+      }
+
+      doubleConsonants('String');          // "SSttrrinngg"
+      doubleConsonants('Hello-World!');    // "HHellllo-WWorrlldd!"
+      doubleConsonants('July 4th');        // "JJullyy 4tthh"
+      doubleConsonants('');                // ""
+    </script>
+  </body>
+</html>

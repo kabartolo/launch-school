@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Running Totals</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function runningTotal(array) {
+        var total = 0;
+        var result = [];
+        var i;
+
+        for (i = 0; i < array.length; i += 1) {
+         result.push(total += sum);
+        }
+
+        return result;
+
+      }
+
+      console.log(runningTotal([2, 5, 13]));             // [2, 7, 20]
+      runningTotal([14, 11, 7, 15, 20]);    // [14, 25, 32, 47, 67]
+      runningTotal([3]);                    // [3]
+      runningTotal([]);                     // []
+
+      // Using map
+      function runningTotal(array) {
+        var sum = 0;
+
+        return array.map(x => sum += x);
+      }
+    </script>
+  </body>
+</html>

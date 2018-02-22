@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Digits List</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function countOccurrences(vehicles) {
+        var counts = {};
+
+        vehicles.forEach(function(vehicle) {
+          counts[vehicle] = (counts[vehicle] || 0) + 1;
+        });
+
+        return prettyPrintObject(counts);
+      }
+
+      function prettyPrintObject(object) {
+        var key;
+
+        for (key in object) {
+          console.log(key + ' => ' + object[key]);
+        }
+      }
+
+      var vehicles = ['car', 'car', 'truck', 'car', 'SUV', 'truck',
+                'motorcycle', 'motorcycle', 'car', 'truck'];
+
+      countOccurrences(vehicles);
+
+      
+    </script>
+  </body>
+</html>

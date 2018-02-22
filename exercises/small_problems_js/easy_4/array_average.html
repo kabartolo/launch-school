@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Array Average</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function average(array) {
+        var average = array.reduce((x, y) => x + y) / array.length;
+        
+        return Math.floor(average);
+      }
+
+      average([1, 5, 87, 45, 8, 8]);       // 25
+      average([9, 47, 23, 95, 16, 52]);    // 40
+     
+    </script>
+  </body>
+</html>

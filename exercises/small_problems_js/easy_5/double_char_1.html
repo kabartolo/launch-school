@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Double Char Part 1</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function repeater(string) {
+        return string.split('').map(x => x + x).join('');
+      }
+      
+      // With loop (for practice)
+      function repeater(string) {
+        var doubledString = '';
+        var i;
+
+        for (i = 0; i < string.length; i += 1) {
+          doubledString += (string[i] + string[i]);
+        }
+
+        return doubledString;
+
+      }
+
+      repeater('Hello');        // "HHeelllloo"
+      repeater('Good job!');    // "GGoooodd  jjoobb!!"
+      repeater('');             // ""
+    </script>
+  </body>
+</html>

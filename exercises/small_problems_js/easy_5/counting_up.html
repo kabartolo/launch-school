@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Counting Up</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function sequence(integer) {
+        var array = new Array(integer).fill();
+
+        return array.map((x, i) => i + 1);
+      }
+
+      // Simpler
+      function sequence(integer) {
+        var array = [];
+        var i;
+
+        for (i = 1; i <= integer; i += 1) {
+          array.push(i);
+        }
+
+        return array;
+      }
+
+      sequence(5);    // [1, 2, 3, 4, 5]
+      sequence(3);    // [1, 2, 3]
+      sequence(1);    // [1]
+
+    </script>
+  </body>
+</html>

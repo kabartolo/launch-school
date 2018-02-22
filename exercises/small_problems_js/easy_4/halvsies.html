@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Halvsies</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function halvsies(array) {
+        var result = [];
+        var midpoint = Math.ceil(array.length / 2);
+
+        result.push(array.slice(0, midpoint));
+        result.push(array.slice(midpoint));
+
+        return result;
+      }
+
+      halvsies([1, 2, 3, 4]);       // [[1, 2], [3, 4]]
+      halvsies([1, 5, 2, 4, 3]);    // [[1, 5, 2], [4, 3]]
+      halvsies([5]);                // [[5], []]
+      halvsies([]);                 // [[], []]
+
+    </script>
+  </body>
+</html>

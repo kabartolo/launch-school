@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Letter Swap</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function swap(string) {
+        var words = string.split(' ');
+
+        return words.map(word => swapFirstLast(word)).join(' ');
+      }
+
+      function swapFirstLast(word) {
+        if (word.length === 1) { return word };
+
+        firstLetter = word[0];
+        lastLetter = word[word.length - 1];
+
+        return word.replace(/^./, lastLetter).replace(/.$/, firstLetter);
+      }
+
+      // Simpler way of swapping:
+      // word[word.length - 1] + word.slice(1, -1) + word[0];
+
+      swap('Oh what a wonderful day it is');  // "hO thaw a londerfuw yad ti si"
+      swap('Abcde');                          // "ebcdA"
+      swap('a');                              // "a"
+    </script>
+  </body>
+</html>

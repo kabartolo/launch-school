@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Reverse Number</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function reverseNumber(number) {
+        return parseInt(reverseString(String(number)), 10);
+      }
+
+      function reverseString(string) {
+        return string.split('').reverse().join('');
+      }
+
+      reverseNumber(12345);    // 54321
+      reverseNumber(12213);    // 31221
+      reverseNumber(456);      // 654
+      reverseNumber(12000);    // 21 -- Note that zeros get dropped!
+      reverseNumber(1);        // 1
+      reverseNumber(101);      // 101
+    </script>
+  </body>
+</html>
