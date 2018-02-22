@@ -42,7 +42,7 @@ console.log(result);                   // logs 15
 
 **The implicit return value of a function is `undefined` (i.e., if it does not have an explicit return statement or value).** Don't forget the `return` in the explicit return statement (it cannot be left out as in Ruby).
 
->If a function does not contain an explicit return statement, or the return statement does not include a value, the function implicitly returns the value undefined. This is a reason why functions are said to "have returned" rather than "finished execution". When we talk about closures in a later course this distinction will become more apparent. For now, just be mindful of the disambiguation between the return value (explicit or implicit) of a function and the statement that a "function that has returned or returns".
+>If a function does not contain an explicit return statement, or the return statement does not include a value, the function implicitly returns the value undefined. This is a reason why functions are said to "have returned" rather than "finished execution". When we talk about closures in a later course this distinction will become more apparent. For now, just be mindful of the disambiguation between the return value (explicit or implicit) of a function and the statement that a "function that has returned or returns". (Launch School)
 
 <a name="invoking-functions"></a>
 ### Invoking Functions
@@ -119,7 +119,7 @@ takeTwo(1, 2, 4);
 <a name="pass-by-value"></a>
 ### Pass by Value or Pass by Reference
 
-Javascript is **pass by value**. Passing a variable to a function binds the local function variable to the passed variable's value. Both variables now reference the same value but have no effect on each other. So primitives are passed by value and are immutable.
+Javascript is **pass by value**. Passing a variable to a function binds the local function variable to the passed variable's value (a copy of that value). Both variables now reference the same value but have no effect on each other. So primitives are passed by value and are immutable.
 
 ```javascript
 var a = 7;
@@ -206,18 +206,20 @@ function greet() {
 greet(); // logs: Julian
 ```
 
-Here, the variable `name` is initialized in the outer scope and is available to each function's inner scope.
+Here, the variable `name` is initialized in the global scope and is available to each function's local scope.
 
 #### Closures
 
 A function creates a **closure**, which means it retains access to (*encloses*) the variable scope that exists when the closure is created. The function can then access those references wherever the function is invoked.
 
-The **value** of a variable can change after a closure that includes the variable is created. The closure then sees the new value, and the old value is no longer available.
+Closures are most relevant when a function returns a function. This is because a function creates a new local scope, which is garbage collected after it returns. If a function exists inside that outer function, any variables it may have access to would also be garbage collected. A closure saves those variables for the inner function to use.
+
+The **value** of a variable can change after a closure is created that includes the variable. The closure then sees the new value, and the old value is no longer available.
 
 ```javascript
 var count = 1;
 
-function logCount() {  // create a closure
+function logCount() {  // creates a closure
   console.log(count);
 }
 
@@ -227,11 +229,133 @@ count += 1;            // reassign count
 logCount();            // closure sees new value for count; logs: 2
 ```
 
+Below, `createFunctions(5)` returns an array of five functions. Each function has the same variable `i` in its closure from the `createFunctions` scope, and `i` is incremented 5 times during the creation of these functions. Since the individual function at index 3 is called after all 5 functions are created and added to the returned array, the value of `i` in its closure at the time of its calling is 5.
+
+The fix shown below works because each function keeps a variable in its closure that is not altered in the `createFunctions` scope. Each function added to `callbacks` still has the same variable `i` in its closure, but it also has a variable `index` that is in the scope of the `callback` function. The value of this variable is unique for each function, as it is assigned the current value of `i` at the time the function is defined. Though `i` is incremented (reassigned to its current value plus 1) in the outer scope, `index` is not.
+
+i = 1;          // 1 (in outer scope)
+var index = i;  // 1 (on creation of new scope during function call)
+i += 1;         // 2 (in outer scope)
+index;          // 1 (saved in closure, never incremented)
+
+Note also the function information:
+`createFunctions(5);`
+[ƒ]
+  ...
+  3: f()
+    ...
+    [[Scopes]]
+      0: Closure (callback)
+        index: 3
+      1: Closure (createFunction)
+        i: 5
+      ...
+
+```javascript
+function createFunctions(n) {
+  var callbacks = [];
+  var i;
+
+  for (i = 0; i < n; i += 1) {
+    callbacks.push(function() { // new function saved to 'callbacks' 5 times, value of i incremented 5 times (including before loop breaks)
+      return i;                 // i is in createFunctions scope
+    });
+  }
+  
+  return callbacks;
+}
+
+createFunctions(5)[3](); // 5
+
+// Doesn't fix it:
+function createFunctions(n) {
+  var callbacks = [];
+  var i;
+
+  for (i = 0; i < n; i += 1) {
+    var index = i;
+    callbacks.push(function () {
+      return i;
+    });
+  }
+
+  return callbacks;
+}
+
+createFunctions(5)[3](); // 4 (though 'i' is incremented a final time in the 'for' structure, 'index' is not)
+
+// FIX:
+
+function createFunctions(n) {
+  var callbacks = [];
+  var callback = function(index) { // new 'callback' local scope created each time
+    return function() {            // closure saves value of 'i' to 'index', which is never reassigned
+      return index;
+    }
+  }
+
+  var i;
+  
+  for (i = 0; i < n; i += 1) {
+    callbacks.push(callback(i));  // 
+  }
+  
+  return callbacks;
+}
+
+createFunctions(5)[3](); // 3
+
+```
+
+Simpler example, partial application of closure:
+```javascript
+let c = 4
+function addX(x) {     // x is part of the closure of line 3's anonymous function
+  return function(n) {
+     return n + x      // x is accessible from this function's closure
+  }
+}
+const addThree = addX(3)
+let d = addThree(c) // contains x = 3 in its closure
+console.log('example partial application', d)
+```
+
+Example from [Olivier De Meulder](https://medium.com/dailyjs/i-never-understood-javascript-closures-9663703368e8)
+```javascript
+function counter() {
+  var count = 0;
+  var incrementer = function() { // count is in this function's closure
+    return count += 1;
+  }
+
+  return incrementer;
+}
+
+var increment = counter();
+var c1 = increment();
+var c2 = increment();
+var c3 = increment();
+console.log(c1, c2, c3); // 1 2 3
+```
+
+**In the above example:** 
+  * Lines 1 to 8: A new variable `counter` is declared in the global scope and is assigned a function definition.
+  * Line 9: A new variable `increment` is declared in the global scope and is assigned the return value of `counter`, so `counter` must be called.
+  * Lines 1 to 8: Calling `counter`, a new local scope is created, and the local variable `count` is declared and assigned `0`. 
+  * Lines 3 to 6: A new variable `incrementer` is declared and is assigned a function definition. A closure is also created and included as part of the function definition. This function is returned on line 7 and assigned to `increment` on line 9.
+  * Returning from `counter` means its local scope and all its local variables are garbage collected, and `incrementer` and `count` no longer exist. However, `count` is saved in the closure (with a value of `0`).
+  * The function (and its closure) saved to `increment` is called on lines 10, 11, and 12 (with variables `c1`, `c2`, and `c3` declared and assigned respectively to the return value of each `increment` execution).
+  * Each time `increment` is called, a new local scope is created. 
+  * Line 4: Javascript looks up the variable `count`. As it was garbage collected earlier, this variable should no longer exist, but it was saved in the function's closure with a value of `0`. It is incremented 3 times, and each time the new value is saved to `count` in the closure.
+
 #### Lexical Scoping
+
+If a function has lexical scope, it has access to variables defined in its calling context. 
 
 Lexical scoping is used to resolve variables, meaning it searches for a variable in the hierarchy of scopes from the local scope up to the program's global scope. It stops and returns the first variable it finds with a matching name. **Variables in a lower scope can *shadow* variables with the same name in a higher scope**.
 
 **Note**: Code blocks do not create a new local scope (*functions* do).
+
 ```javascript
 function getSelectedColumns(numbers, cols) {
   var result = [];
@@ -263,14 +387,14 @@ There are three ways to create a variable in the current scope:
 
 ```javascript
 function lunch() {    // A Function declaration creates a new variable scope
-  var food = 'taco';  // 1. Add a new variable food within the current variable scope
+  var food = 'taco';  // 1. Add a new variable 'food' within the current variable scope
 }
 
 function eat(food) {  // 2. Parameters create variables during Function invocation
   console.log('I am eating ' + food);
 }
 
-function drink() {    // 3. Add a new variable drink within the global variable scope
+function drink() {    // 3. Add a new variable 'drink' within the global variable scope
   console.log('I am drinking a glass of water');
 }
 ```
@@ -311,7 +435,7 @@ console.log(country1);   // gets ReferenceError, country1 is not available in th
 
 #### Variable Shadowing
 
-If a variable is declared inside a function with the same name as a variable in the outer scope, the variable in the function shadows the outer one, which is not accessible.
+If a variable is declared inside a function with the same name as a variable in the outer scope, the variable in the function shadows the outer one, which is now not accessible.
 
 ```javascript
 var name = 'Julian';
@@ -343,6 +467,8 @@ A **ReferenceError** is thrown if Javascript can't find a variable in the scope 
 
 #### Function Declarations
 
+**A  function declaration defines a function, declares a variable with the same name as the function, and then assigns the function to that variable.** So for every function declaration, a variable is initialized.
+
 ```javascript
 function hello() {
   return 'hello world!';
@@ -351,7 +477,7 @@ function hello() {
 console.log(typeof hello);    // function
 ```
 
-A function declaration (statement) defines a variable (`hello`) whose type is `function`, and it does not require assignment to another variable. **The function variable's value is the function itself**. This variable obeys scoping rules and it can be used like any other variable.
+This function declaration (statement) defines a variable (`hello`) whose type is `function`, and it does not require assignment to another variable. **The function variable's value is the function itself**. This variable obeys scoping rules and it can be used like any other variable.
 
 ```javascript
 function outer() {
@@ -365,11 +491,10 @@ function outer() {
 console.log(typeof hello);    // can't access a local scope from here
 
 var foo = outer;              // assign the function to another variable
-foo();                        // we can then use it to invoke the function
+foo();                        // "hello world!" (we can then use it to invoke the function)
 ```
 
-
-A function defined using a function declaration must always have a name (it cannot be an anonymous function). In addition to creating a named function, a function declaration also creates a variable with the same name as that function's name and assigns the function to that variable. For example, the following two function definitions both define two things: a named function and a variable with the same name as that function.
+A function defined using a function declaration must always have a name (it cannot be an anonymous function). **In addition to creating a named function, a function declaration also creates a variable with the same name as that function's name and assigns the function to that variable.** For example, the following two function definitions both define two things: a named function and a variable with the same name as that function.
 
 ```javascript
 var foo = function foo() {
@@ -406,14 +531,26 @@ console.log(typeof functionVar);         // string
 
 A function expression defines a function as part of a larger expression syntax, such as variable assignment.
 
+Note, a function expression is not equivalent to a function declaration (due to [hoisting](#hoisting)).
+
 ```javascript
-// Define an anonymous function and assign it to variable `hello`
+// Define an anonymous function and assign it to variable `hello
+// Only the variable 'hello' is declared during hoisting.
 var hello = function () {     
   return 'hello';
 };
 
 console.log(typeof hello);    // function
 console.log(hello());         // hello
+
+// Similar but not really equivalent to function declaration.
+// Variable 'hello' AND function body hoisted all at once.
+function hello() {
+  return 'hello';
+}
+
+console.log(typeof hello);   // function
+console.log(hello());        // hello
 ```
 
 ```javascript
@@ -577,6 +714,7 @@ function bar() {
 ```javascript
 var bar = 'hello';
 bar();             // raises "Uncaught TypeError: bar is not a function"
+bar;               // 'hello'
 
 function bar() {
   console.log('world');
@@ -614,6 +752,20 @@ var setScope = function () {
   a = 'inner';
 };
 
+
+// Equivalent to
+var a;
+var setScope;
+
+a = 'outer';
+
+console.log(a); // 'outer'
+
+setScope();     // setScope is not a function
+setScope = function() {
+  a = 'inner';
+};
+
 ```
 
 Another interesting example:
@@ -622,7 +774,7 @@ function foo() {
   console.log('Waiting for bar!');
 }
 
-function foo() { // global variable foo reassigned to this function
+function foo() {    // global variable foo reassigned to this function
   console.log(foo); // 1. logs function body
   function bar() {
     console.log('bar again');
@@ -630,7 +782,7 @@ function foo() { // global variable foo reassigned to this function
 
   bar();
 
-  function bar() { // hoisted, variable bar reassigned to this function before bar is called
+  function bar() { // hoisted, variable 'bar' reassigned to this function before bar is called
     console.log('bar again and again'); // 2. logs 'bar again and again'
   }
 }
@@ -641,7 +793,7 @@ console.log(foo()); // 3. logs undefined
 <a name="functions-as-return-values"></a>
 ### Functions as Return Values
 
-* Two sets of parentheses on a function call means the first function itself returns a function, and that second function is called immediately with any argments given in the second set of parentheses.
+* Two sets of parentheses on a function call means the first function itself returns a function, and that second function is called immediately with any arguments given in the second set of parentheses.
 
 ```javascript
 function one() {

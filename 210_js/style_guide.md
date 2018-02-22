@@ -260,3 +260,7 @@ var myObj = {
   method1: function () {},
 };
 ```
+
+### Operators
+
+* Use `num += 1` and `num -= 1` instead of `++` and `--`

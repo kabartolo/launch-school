@@ -2,7 +2,6 @@
 
 ## Basics
 
-* [The Javascript Language](#javascript-language)
 * [Running Code](#running-code)
 * [Data Types](#data-types)
 * [Variables](#variables)
@@ -13,40 +12,7 @@
 * [Implicit Primitive Type Coercions](#primitive-type-coercions-implicit)
 * [Conditionals](#conditionals)
 * [Looping and Iteration](#looping-iteration)
-
-<a name="javascript-language"></a>
-### The Javascript Language
-
-Note: This section comes from [How Javascript Works](https://blog.sessionstack.com/how-does-javascript-actually-work-part-1-b0bacc073cf) and is not required Launch School material.
-
-* A Javascript engine is a program or interpreter that executes Javascript code (e.g., V8, Rhiny, SpiderMonkey)
-* V8 was built by Google and is used in Google Chrome and Node.js
-
-* Javascript is a single-threaded programming language; it has a single call stack.
-* This means it can do only one thing at a time.
-* The call stack is a data structure that gives the location of the program. Stepping into a function puts it on the top of the stack; returning from a function pops it from the top of the stack.
-
-```javascript
-// When the Javascript engine starts executing, the call stack is empty.
-
-function multiply(x, y) {    // Stack Step 2: printSquare(5), multiply(x, x)
-    return x * y;
-}
-
-function printSquare(x) {    // Stack Step 1: printSquare(5)
-    var s = multiply(x, x);  
-    console.log(s);          // Stack Step 3: printSquare(5), console.log(s)
-                             // Stack Step 4: printSquare(5)
-}
-               
-
-printSquare(5);
-// The call stack empties when printSquare returns
-
-```
-
-* Given that Javascript is single-threaded, too many tasks in the call stack can slow the browser.
-* **Asynchronous callbacks** allow execution of heavier code.
+* [Errors](#errors)
 
 <a name="running-code"></a>
 ### Running Code
@@ -105,7 +71,7 @@ a;               // still "hello"
 
 ```javascript
 var name = 'Bob'; // name points to string 'Bob'
-var saveName = name; // saveName points to same string 'Bob' (but it is passed the value, not the reference)
+var saveName = name; // saveName points to string 'Bob' (copy)
 name = 'Alice'; // name now points to new string 'Alice'; saveName still points to 'Bob'
 console.log(name, saveName); // 'Alice Bob'
 ```
@@ -135,7 +101,7 @@ typeof foo; // "string"
   * Decimal fractions are approximate
   * Therefore, the associative law does not always hold for binary floating point. 
 ```javascript
-a = o.1;
+a = 0.1;
 b = 0.2;
 c = 0.3;
 console.log(a + b) + c === a + (b + c); // false
@@ -178,7 +144,6 @@ multi-line string;" // Syntax error
     * Note: bracket notation in Javascript is an *operator* (not a method as it is in Ruby). 
   * Strings have a `length` property: `'hello'.length; // 5`
   * Javascript's string methods: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/prototype](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/prototype)
-
 
 #### Null data type
 
@@ -233,7 +198,7 @@ myName; // 200
 <a name="operators"></a>
 ### Operators
 
-Operators tell the computer to perform operators on values (operands)
+Operators tell the computer to perform operations on values (operands)
 
 #### Arithmetic Operators
 
@@ -270,6 +235,11 @@ A comparison operator returns a boolean value based on whether the comparison it
 | Greater than (>)       | Returns true if the left operand is greater than the right             |
 | Less than (<)          | Returns true if the left operand is less than the right                |
 
+```javascript
+'1' == 1;  // true (which may not be what you expect)
+'1' === 1; // false
+```
+
 #### String Operators
 
 Strings can be compared like numbers, based on their Unicode lexicographical ordering.
@@ -286,7 +256,7 @@ Combining boolean values and logical operators:
 
 * Logical And (`&&`)
   * Returns `true` if both operands are true, `false` otherwise
-  * For non-boolean values, returns the first operand if it can be converted to `false`, the second operator otherwise
+  * For non-boolean values, returns the first operand if it can be converted to `false`, the second operand otherwise
   * This can be used to avoid null references:
 ```javascript
 if (a) {
@@ -296,6 +266,11 @@ if (a) {
 }
 // can be written as
 return a && a.member;
+
+// for example
+var object = { firstName = 'Kate' };
+console.log(object && object.firstName); // 'Kate'
+console.log(object && object.lastName);  // undefined (object is undefined, which is falsy)
 ```
 
 * Logical Or (`||`)
@@ -304,7 +279,16 @@ return a && a.member;
   * This can be used to fill in default values.
 ```javascript
 var last = input || nr_items; // if input is truthy, then assign input to last, otherwise assign nr_items
+
+// for example
+var input = 'hello';
+var message = 'goodbye';
+console.log(input || message); // 'hello'
+
+input = '';
+console.log(input || message); // 'goodbye'
 ```
+
 * Logical Not (`!`)
   * Returns `true` if its operand can be converted to false, `false` otherwise
   * This is a unary operator (it takes only one operand).
@@ -372,9 +356,12 @@ b = a++;  // equivalent to "b = a; a++;". so now b is 5 and a is 6
 c = ++a;  // equivalent to "++a; c = a;". so now c is 7 and a is 7
 ```
 
+* **JS style guides suggest using `num += 1` and `num -= 1` instead.** This is because unary increment/decrement operators are subject to automatic semicolon insertions and can cause silent errors. They are also less expressive.
+* Also note, `++` and `--` return the original value before incrementing/decrementing. `+= 1` and `-=1` return the new value after incrementing/decrementing. See [Looping and Iteration](#looping-iteration) (while loops) for an example of a subtle bug this can introduce.
+
 #### Logical Short Circuit Evaluation in Expressions
 
-The short-circuit rules for evaluation logical And (`&&`) and logical Or (`||`):
+The short-circuit rules for evaluating logical And (`&&`) and logical Or (`||`):
 * `a || b`: if `a` is `true`, the result is always `true`. Javascript short-circuits the evaluation and returns `true` without evaluating `b`.
 * `a && b`: if `a` is `false`, Javascript short-circuits the evaluation and returns `false` without evaluating `b`.
 
@@ -389,11 +376,24 @@ var a;                // a statement to declare variables
 var b;
 var c;
 var b = (a = 1);      // this works, because assignments are expressions too
+// the above has three expressions: 1, a = 1, and b = 1
+
 var c = (var a = 1);  // this gives an error, since a statement can't be used as part of an expression
 ```
 
 ```javascript
 var myNumber = 3; // both a statement and an expression, but returns undefined
+```
+
+The ternary operator is used in an expression while an `if/else` statement is a statement.
+```javascript
+var count = (isTrue() ? 0 : 1); // evaluates to 0 or 1, so it's an expression
+
+var count = if (isTrue()) { // SyntaxError (if/else expressions don't evaluate to a value)
+              0;
+            } else {
+              1;
+            }
 ```
 
 <a name="input-output"></a>
@@ -433,6 +433,10 @@ parseFloat('453.6');    // 453.6
 parseInt("12em")        // 12
 parseInt('08');         // 0 (assumes it is in base 8, but 8 is not a base-8 digit so it stops at 0)
 parseInt('08', 10);     // 8 (always use the radix!)
+
+// compare
++'12em'; // NaN
++'08';   // 8
 ```
 
 #### Numbers to Strings
@@ -464,7 +468,7 @@ a === 'true';            // true
 b === 'true';            // false
 ```
 
-* Use the `Boolean()` function to convert any value to a boolean based on the truthy and falsy rules of Javascript. This cannot be used to coerse string representations of `true` and `false`, however, since `Boolean('false')` returns `true`. 
+* Use the `Boolean()` function to convert any value to a boolean based on the truthy and falsy rules of Javascript. This cannot be used to coerce string representations of `true` and `false`, however, since `Boolean('false')` returns `true`. 
 
 * The double `!` operator is a simpler way to convert truthy or falsy values to the boolean equivalents. For example, `!!(null)` returns `false`
 
@@ -529,13 +533,11 @@ true / false            // Infinity
 * Example:
 ```javascript
 function productOfSums(array1, array2) {
-  var result;
-  result = total(array1) * total(array2); // NaN (undefined * undefined)
-  return result;
+  return total(array1) * total(array2); // NaN (undefined * undefined)
 }
 
 function total(numbers) {
-  var sum;
+  var sum; // sum = undefined
   var i;
 
   for (i = 0; i < numbers.length; i += 1) {
@@ -580,7 +582,18 @@ null == undefined  // true
 
 * `<`, `>`, `<=`, `>=` are defined for numbers and strings.
 * There are no strict versions of these operators. 
-* Operands are converted to numbers before comparison unless both operands are strings, in which case Javascript compares the strings lexicographically: `true > null // true (1 > 0)`
+* **Operands are converted to numbers** before comparison **unless both operands are strings**, in which case Javascript compares the strings lexicographically: 
+```javascript
+true > null;  // true (1 > 0)
+'2' > '10';   // true
+'2' > 10;     // false
+```
+
+* Note: Items in an Array are sorted lexicographically, even if all items are numbers (i.e., they are sorted by their Unicode value):
+```javascript
+var array = [45, 23, 100, 5];
+array.sort(); // [100, 23, 45, 5] !!
+```
 
 <a name="conditionals"></a>
 ### Conditionals
@@ -617,7 +630,7 @@ if (1 || 2) {
 
 The `switch` statement compares an expression with `case` labels; the statement(s) following the first `case` label that matches are executed. 
 
-However, the `switch` will continue to the next cases until it reaches `default` or a `break` statement. To force the `switch` to stop after the first one match, insert a `break` statement to each `case` statement.
+However, the `switch` will continue to the next cases until it reaches `default` or a `break` statement. To force the `switch` to stop after the first match, insert a `break` statement to each `case` statement.
 
 ```javascript
 var reaction = 'negative';
@@ -637,6 +650,18 @@ switch (reaction) {
 The sentiment of the market is negative
 The sentiment of the market is undecided
 The market has not reacted enough
+```
+
+* A case for which the `switch` fall through is useful (though should still be avoided since it is not a well-known idiom):
+```javascript
+function myFunc(arg1, arg2, arg3) {
+    //replace unpassed arguments with their defaults:
+    switch (arguments.length) {
+        case 0 : arg1 = "default1";
+        case 1 : arg2 = "default2";
+        case 2 : arg3 = "default3";
+    }
+}
 ```
 
 #### Comparing values with NaN
@@ -662,13 +687,38 @@ function isValueNaN(value) {
 
 #### while
 
-A `while` loop evaluates the condition first and then executes the block statements if the condition has a truthy value. When execution reaches the end of the block, control is passed back to the conditional expression and the process is repeated until the condition is falsy. This can result in an infinite loop of the condition is never falsy.
+A `while` loop evaluates the condition first and then executes the block statements if the condition has a truthy value. When execution reaches the end of the block, control is passed back to the conditional expression and the process is repeated until the condition is falsy. This can result in an infinite loop if the condition is never falsy.
+
+```javascript
+// The following should log decrementing numbers from a starting count and stop at 0 (not printing 0)
+var count = 1;
+while (count--) {     // expression evaluates to 1 (-- returns original value)
+  console.log(count); // count is actually 0
+}
+
+// logs:
+// 0
+
+count; // -1 (condition evaluated twice)
+
+// Fixed
+var count = 1;
+while (count) {         // evaluates to 1
+  console.log(count--); // evaluates to 1, but count is 0 for the next loop
+}
+
+// logs:
+// 1
+
+// NOTE: The above programs would not work if '-= 1' were used instead of '--'
+// '-=1' returns the new value, not the original
+```
 
 #### Break and Continue
 
 The `break` statement exits from a loop immediately. The `continue` statement skips the current iteration and returns to the top of the loop.
 
-### do...while
+#### do...while
 
 For `do..while`, Javascript evaluates the condition *after* executing the loop body. The `do...while` loop always iterates at least once, but the `while` loop won't iterate at all if the condition is falsy. 
 
@@ -677,9 +727,11 @@ var counter = 0;
 var limit = 0;
 
 do {
-  console.log(counter);
+  console.log(counter);    // 0
   counter += 1;
-} while (counter < limit);
+} while (counter < limit); // runs once
+
+counter; // 1
 ```
 
 #### for
@@ -698,3 +750,107 @@ The flow of execution for a `for` loop:
   * Execute the body of the loop
   * Execute the increment expression
   * Return to the condition and repeat the iteration
+
+<a name="errors"></a>
+### Errors
+
+* `ReferenceError`: when you reference a variable or function that does not exist.
+```javascript
+a;    // Referencing a variable that doesn't exist results in a ReferenceError.
+a();  // The same is true of attempting to call a function that doesn't exist.
+```
+
+* `TypeError`: when you try to access a property on a value that does not have any properties, such as `null`, or try to call something that is not a Function
+```javascript
+var a;
+typeof(a); // "undefined"
+
+a.name;    // TypeError: Cannot read property 'name' of undefined
+
+a = 1;
+a();       // TypeError: Property 'a' is not a function
+```
+
+* `SyntaxError`: This error is detected solely from the text of the program (whereas `ReferenceError` and `TypeError` are dependent on variables and values encountered at runtime).
+
+```javascript
+function ( {}  // SyntaxError: Unexpected token (
+
+// This one is raised at runtime
+JSON.parse('not really JSON'); // SyntaxError: Unexpected token i in JSON at position 0
+```
+
+#### Preventing Errors
+
+* Errors are normally caused by assumptions made in the program.
+```javascript
+function lowerInitial(word) {
+  return word[0].toLowerCase(); // assumes word is a non-empty string
+}
+
+lowerInitial('');  // TypeError: Cannot read property 'toLowerCase' of undefined
+```
+
+* This can be fixed with a guard clause when you don't trust your program to always call `lowerInitial` with a non-empty String.
+```javascript
+function lowerInitial(word) {
+  if (word.length === 0) {       // If word contains an empty String,
+    return '-';                  // return a dash instead of proceeding.
+  }
+
+  return word[0].toLowerCase();  // word is guaranteed to have at least
+}                                // 1 character, so word[0] never evaluates
+                                 // as undefined.
+```
+
+* Errors can be prevented by detecting edge cases.
+  * Start by writing out the common use cases and see how the Function should handle each one. Write the program for the happy cases and then revisit the edge cases and address them if necessary.
+
+```javascript
+var countries = ['Australia', 'Cuba', 'Senegal'];
+
+alphaInsert(countries, 'Brazil');
+
+console.log(countries.join(', '));     // Logs "Australia, Brazil, Cuba, Senegal"
+
+// Cases
+alphaInsert([], 'Brazil');             // Inserting in an empty Array
+alphaInsert(['Brazil'], 'Australia');  // At the beginning of an Array
+alphaInsert(['Brazil'], 'Cuba');       // At the end of an Array
+alphaInsert(['Brazil'], 'Brazil');     // Duplicate entry
+
+```
+
+* It is not necessary to check for valid data types in most cases.
+
+#### Catching Errors
+
+* Use `try/catch/finally` to handle errors in the following cases:
+  * A built-in Javascript function or method can throw an error and you need to prevent or handle that error
+  * A simple guard clause is impossible or impractical to prevent the error.
+```javascript
+function parseJSON(data) {
+  var result;
+
+  try {
+    result = JSON.parse(data);  // Throws an Error if "data" is invalid
+  } catch (e) {
+    // We run this code if JSON.parse throws an Error
+    // "e" contains an Error object that we can inspect and use.
+    console.log('There was a', e.name, 'parsing JSON data:', e.message);
+    result = null;
+  } finally {
+    // This code runs whether `JSON.parse` succeeds or fails.
+    console.log('Finished parsing data.');
+  }
+
+  return result;
+}
+
+var data = 'not valid JSON';
+
+parseJSON(data);    // Logs "There was a SyntaxError parsing JSON data:
+                    //       Unexpected token i in JSON at position 0"
+                    // Logs "Finished parsing data."
+                    // Returns null
+```

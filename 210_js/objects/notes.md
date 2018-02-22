@@ -35,9 +35,9 @@ typeof a;                          // "string", this is a primitive string value
 var stringObject = new String(a);  // Convert the primitive to an object
 typeof stringObject;               // "object", this is a String object
 
-stringObject.toUpperCase();        // Call the method on the object: "HI"
+stringObject.toUpperCase();        // Call the method on the object: "HI" (primitive wrapped by a String object)
 
-var b = a.toUpperCase();
+var b = a.toUpperCase();           // The string is converted into an object only temporarily
 typeof b;                          // "string"
 ```
 
@@ -62,7 +62,7 @@ colors.orange;      // "#ff0"
 * Use dot notation or bracket notation to get the value of an object property. Use dot notation when possible.
 * The key used in bracket notation must be a string. If it is a number, it will be converted by JS to a string. If it is a variable, JS will get its value and convert it to a string if necessary.
 
-* A property name can be any valid string, and a property value can be any valid expression.
+* A property name can be any valid string, and a **property value can be any valid expression**.
 
 * Use the reserved keyword `delete` to delete properties from objects.
 * Use a `for... in` loop to step through Object properties. Get all object properties with `Object.keys()`
@@ -129,8 +129,8 @@ colors.blue = '#00f';
 var myObject = {
   a: 'name',
   'b': 'test',
-  123: 'c',     // property name converted to a string
-  1: 'd',       // property name converted to a string
+  123: 'c',     // property name implicitly converted to a string
+  1: 'd',       // property name implicitly converted to a string
 };
 
 Object.keys(myObject); // ["a", "b", "123", "1"]
@@ -165,7 +165,7 @@ foo;                          // { b: "world" }
 var object = {
   a: 1,                           // a is a string with quotes omitted
   'foo': 2 + 1,                   // property name with quotes
-  'two words': 'this works too',  // a two word string
+  'two words': 'this works too',  // a two-word string
   true: true,                     // property name is implicitly converted to string "true"
   b: {                            // object as property value
     name: 'Jane',
@@ -262,7 +262,7 @@ console.log(Object.keys(a));  // ["0", "1"], the keys of the object!
 
 ```
 
-**For more information, see ../Arrays/nodes.md**
+**For more information, see ../Arrays/notes.md**
 
 <a name="arithmetic-comparison-operators"></a>
 ### Arithmetic and Comparison Operators
@@ -270,8 +270,8 @@ console.log(Object.keys(a));  // ["0", "1"], the keys of the object!
 * The arithmetic and comparison operators are not useful with objects and often lead to surprising results. When one operand is an object and the other is not, Javascript typically coerces the object to the string `'[object Object]'`. 
 
 ```javascript
-[] + {};                  // "[object Object]" -- becomes "" + "[object Object]"
-[] - {};                  // NaN -- becomes "" - "[object Object]", then 0 - NaN
+[] + {};                  // "[object Object]": "" + "[object Object]"
+[] - {};                  // NaN: "" - "[object Object]", then 0 - NaN
 '[object Object]' == {};  // true
 '' == {};                 // false
 false == {};              // false
@@ -420,8 +420,10 @@ console.log(stringObj);
 <a name="pure-functions-side-effects"></a>
 ### Pure Functions and Side Effects
 
-* A side effect occurs when a function modifies an external value, in an outer scope or passed to the function as an argument. 
-* A function without side effects is called a **pure function**. 
+* A side effect occurs when a function modifies an external value, in an outer scope or passed to the function as an argument.
+* A side effect can also be output to the console or the user.
+* A function without side effects is called a **pure function**.
+* Any mutation of an argument passed by reference renders the function impure.
   * A pure function relies only on its arguments to determine its return value. 
   * Given the same argument value(s), it always evaluates to the same result.
   * It always returns a value (otherwise, if it has no side effects and no return value, it would do nothing).
@@ -436,7 +438,11 @@ function add(a, b) {
 ```javascript
 // Not pure functions
 
-// Side effects
+// Math.random();
+// Date.now();
+// console.log();
+
+// Side effects (modifies sum)
 var sum = 0;
 function add(a, b) {
   sum = a + b;
@@ -455,7 +461,7 @@ currentTotal = 5;
 addToTotal(5);      // returns 10
 ```
 
-#### Pure Function Return Value vs. Non-Pure Function Side EFfects
+#### Pure Function Return Value vs. Non-Pure Function Side Effects
 ```javascript
 function joinString(a, b, c) {
   return a.concat(b, c);
@@ -478,6 +484,8 @@ function removeElement(array, element) {
       array.splice(i, 1);
     }
   }
+
+  // no return value
 }
 
 removeElement(friends, 'David');     // undefined
@@ -486,9 +494,10 @@ friends;                             // ["Joe", "Mary"]
 ```
 
 * A pure version of the above function. 
-* Note that to better show intent. you should reassign the friends variable to the new array returned by removeElement.
+* Note that to better show intent, you should reassign the friends variable to the new array returned by removeElement.
 ```javascript
 var friends = ['Joe', 'Mary', 'David'];
+var oldFriends = friends;
 
 function removeElement(array, element) {
   var newArray = [];
@@ -508,6 +517,7 @@ friends;                            // ["Joe", "Mary", "David"]
 // better
 friends = removeElement(friends, 'David');
 friends;                            // ["Joe", "Mary"]
+oldFriends;                         // ["Joe", "Mary", "David"]
 ```
 
 <a name="arguments-object"></a>

@@ -18,7 +18,7 @@
 
 * Arrays are the basic collection type in Javascript, indexed by non-negative integer values starting from 0.
 * The sequence of elements may or may not be important.
-* Bracket notation is an **operator** (as for Strings and Objects), not a method.
+* Bracket notation is an **operator** (for Strings and Objects), not a method.
 
 ```javascript
 // Non-verbose Array construction:
@@ -43,8 +43,7 @@ myArray = [1, 2];
 console.log(myOtherArray); // [1, 2, 3]
 ```
 
-In the above, the local variable `b` is assigned to the same value that `a` references (the array in global scope).
-When `b[2] += 7` is executed, it is executed on the array object itself.
+In the above, the variable `myOtherArray` is assigned to the same value that `myArray` references. When `myArray.pop()` is executed, it is executed on the array object itself, which is still referenced by `myOtherArray`. Then, `myArray` is reassigned to a new array object, but `myOtherArray` still references the original array.
 
 <a name="iterating"></a>
 ### Iterating Through an Array
@@ -67,7 +66,7 @@ for (i = 0; i < count.length; i++) {
 // 5
 ```
 
-* Do not use `for in` with arrays: It does not guarantee the order of the items.
+* Do not use `for in` with arrays: It does not guarantee the order of the items, and `for in` is used to iterate through the properties of an object (the array object may contain properties other than its indexed elements). Use a for loop to iterate through an array's elements only.
 
 <a name="accessing"></a>
 ### Accessing, Modifying, and Detecting Values
@@ -95,6 +94,17 @@ count;                   // [1, 2, 3, 4, 5]
 
 count[6] = 7;
 count;                   // [1, 2, 3, 4, 5, undefined, 7]
+
+count[5];                // undefined (index 5 is itself undefined, NOT value at index 5 is undefined)
+
+count;
+<!-- 
+0:1
+1:2
+2:3
+3:4
+4:5
+6:7 -->
 
 ```
 
@@ -135,10 +145,18 @@ digits[-2];                  // undefined
 
 [Array.prototype.push](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push)
 
-* Adds new value to end of array
+* Adds new value(s) to end of array
 * Args: array, value
 * Returns: length of new array
 * Mutates original array
+
+```javascript
+// Can add more than one value to the array
+var stringArray = ['a', 'b'];
+
+stringArray.push('c', 'd');
+stringArray; // ['a', 'b', 'c', 'd']
+```
 
 #### Pop
 
@@ -211,6 +229,8 @@ array.slice(-1)    // [5]
 ```javascript
 var array = [1, 2, 3];
 var shallowCopy = array.slice(); // [1, 2, 3]
+array.pop();
+shallowCopy;                     // [1, 2, 3]
 ```
 
 #### Splice
@@ -221,8 +241,8 @@ var shallowCopy = array.slice(); // [1, 2, 3]
 * Returns: new array
 * **DOES** mutate original array
 * **Allows negative value for first argument**
-* If values are given, will be added beginning at the start index
-* If deleteCount is 0 or negative, no elements are removed
+* If values are given, they will be added to the array from the start index.
+* If deleteCount is 0 or negative, no elements are removed.
 
 ```javascript
 var array = [1, 2, 3];
@@ -239,7 +259,7 @@ array.splice(1, 2); // [2, 3];
 array;              // [1];
 
 array = [1, 2, 3];
-array.splice(0, 0, 4); // [] (nothing removed)
+array.splice(0, 0, 4); // [] (nothing removed, 4 added at index 0)
 array;                 // [4, 1, 2, 3];
 array.splice(0, 1, 0); // [4];
 array;                 // [0, 1, 2, 3];
@@ -301,7 +321,7 @@ array.sort; // [15, 23, 4], sorted according to Unicode value
 ### Arithmetic Operations on Arrays
 
 * Arithmetic operations do not work on arrays as they do in Ruby. 
-* They convert arrays to strings before performing the operation.
+* They **convert** arrays to strings before performing the operation.
 
 ```javascript
 var initials = ['A', 'H', 'E'];
@@ -413,6 +433,8 @@ myArray.length;                  // returns 3
 ```
 
 * Which elements of the array object are array indexes, and which are not?
+* Note: `indexOf` returns `-1` if the element does not exist in the array. It only works for elements of the array.
+
 ```javascript
 var myArray = [];
 myArray['foo'] = 'bar';
@@ -421,15 +443,15 @@ myArray[1] = 'qux';
 
 console.log(myArray);         // logs ['baz', 'qux', foo: 'bar']
 myArray.length;               // returns 2 since foo: 'bar' is not an element
-myArray.indexOf('bar');       // returns -1 since 'bar' isn't in an element
+myArray.indexOf('bar');       // returns -1 since 'bar' isn't an element
 
 myArray[-1] = 'hello';
 myArray[-2] = 'world';
 myArray.length;               // returns 2
-myArray.indexOf('hello');     // returns -1 since 'hello' is not in an element
+myArray.indexOf('hello');     // returns -1 since 'hello' is not an element
                               // the fact that myArray[-1] is 'hello' is
                               // coincidental
-myArray.indexOf('world');     // returns -1 since 'world' is not in an element
+myArray.indexOf('world');     // returns -1 since 'world' is not an element
 
 console.log(myArray);         // logs ['baz', 'qux', foo: 'bar', '-1': 'hello', '-2': 'world']
 Object.keys(myArray).length;  // returns 5 (there are 5 keys at this point)
@@ -473,6 +495,16 @@ myArray.length;         // returns 5
 
 * The array loses data when its `length` property is set to a value smaller than the current largest array index.
 * If you directly set the value of an array element using a valid index that is greater than the current largest index, Javascript sets the `length` to `1` greater than the array index provided. The number of empty slots is thus also included in the length.
+
+Note the difference in number of properties and number of indexes:
+```javascript
+var count = [1, 2, 3, 4, 5];
+count[6] = 7;
+count;   // [1, 2, 3, 4, 5, undefined x 1, 7];
+
+Object.keys(count).length; // 6
+count.length               // 7 !
+```
 
 <a name="object-operations"></a>
 ### Using Object Operations with Arrays
