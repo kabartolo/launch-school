@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Multiply All Pairs</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function multiplyAllPairs(array1, array2) {
+        var multiples = [];
+
+        array1.forEach(function (a) {
+          array2.forEach(function (b) {
+            multiples.push(a * b);
+          });
+        });
+
+        return multiples.sort((a, b) => a - b);
+      }
+
+      multiplyAllPairs([2, 4], [4, 3, 1, 2]);    // [2, 4, 4, 6, 8, 8, 12, 16]
+    </script>
+  </body>
+</html> 

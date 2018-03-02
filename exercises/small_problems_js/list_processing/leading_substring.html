@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Leading Substrings</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function substringsAtStart(string) {
+        return string.split('').map((_, index) => string.substr(0, index + 1));
+      }
+
+      substringsAtStart('abc');      // ["a", "ab", "abc"]
+      substringsAtStart('a');        // ["a"]
+      substringsAtStart('xyzzy');    // ["x", "xy", "xyz", "xyzz", "xyzzy"]
+    </script>
+  </body>
+</html> 

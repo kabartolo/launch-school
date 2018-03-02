@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>All Substrings</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function substringsAtStart(string) {
+        return string.split('').map((_, index) => string.substr(0, index + 1));
+      }
+
+      function substrings(string) {
+        return string.split('').map(function (_, index) {
+          return substringsAtStart(string.substr(index));
+        }).reduce(function (array1, array2) {
+          return array1.concat(array2);
+        });
+      }
+      
+      substrings('abcde');
+
+      // returns
+      [ "a", "ab", "abc", "abcd", "abcde",
+        "b", "bc", "bcd", "bcde",
+        "c", "cd", "cde",
+        "d", "de",
+        "e" ]
+    </script>
+  </body>
+</html> 
