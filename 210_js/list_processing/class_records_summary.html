@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Class Records Summary</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // 1. Create studentGrades array
+      // 2. Create exams array
+      // 3. Iterate through studentScores object keys. For each student,
+        // 1. Compute average exam score
+        // 2. Compute total exercise score (add scores, out of 100)
+        // 3. Add weights to determine final percent grade
+        // 4. Round the percent grade to the nearest integer
+        // 5. Look up the letter grade in the table
+        // 6. Add grade to studentGrades - as percentage with letter in parentheses - "81 (C)"
+      // 4. Create array of arrays of exam scores (first array is exam 1 scores, etc). For each array,
+        // 1. Create a new object
+        // 2. Find the average, minimum, and maximum scores for each exam. Add them to the object
+        // 3. Add the object to the exams array
+
+      var EXAM_WEIGHT = 0.65;
+      var EXERCISE_WEIGHT = 0.35;
+
+      function generateClassRecordSummary(scores) {
+        var scoreData = Object.keys(scores).map(function (studentName) {
+          return scores[studentName].scores;
+        });
+
+        var studentExamData = scoreData.map(function (score) {
+          return score.exams;
+        });
+
+        return { 
+          studentGrades: generateStudentGrades(scoreData),
+          exams: generateExamData(studentExamData),
+        };
+      }
+
+      function generateStudentGrades(studentScores) {
+        var studentGrades = [];
+
+        studentScores.forEach(function (scores) {
+          studentGrades.push(generateTotalPercentage(scores));
+        });
+
+        return formatStudentGrades(studentGrades);
+      }
+
+      function generateExamData(studentExamData) {
+        var examData = transpose(studentExamData);
+
+        return examData.map(function (scores) {
+          return {
+            average: average(scores),
+            minimum: min(scores),
+            maximum: max(scores),
+          }
+        });
+      }
+
+      function generateTotalPercentage(scores) {
+        var examScore = average(scores.exams);
+        var exerciseScore = sum(scores.exercises);
+        var total = examScore * EXAM_WEIGHT + exerciseScore * EXERCISE_WEIGHT;
+
+        return Math.round(total);
+      }
+
+      function transpose(array) {
+        return array[0].map(function (column, index) {
+          return array.map(function (row) {
+            return row[index];
+          });
+        });
+      }
+      // [ [90, 95, 100, 80]
+      //   [50, 70, 90, 100]
+      //   ...
+      //   [50, 80, 60, 90] ]
+
+      function formatStudentGrades(percentages) {
+        var getGradeLetter = function (percentage) {
+          switch (true) {
+            case (percentage > 92):
+              return 'A';
+            case (percentage > 84):
+              return 'B';
+            case (percentage > 76):
+              return 'C';
+            case (percentage > 68):
+              return 'D';
+            case (percentage > 59):
+              return 'E';
+            default:
+              return 'F';
+            }
+        }
+
+        return percentages.map(function (percentage) {
+          return String(percentage) + ' (' + getGradeLetter(percentage) + ')';
+        });
+      }
+
+      function average(numberArray) {
+        return sum(numberArray) / numberArray.length;
+      }
+
+      function sum(numberArray) {
+        return numberArray.reduce((sum, number) => sum + number);
+      }
+
+      function min(numberArray) {
+        return numberArray.reduce((a, b) => Math.min(a, b));
+      }
+
+      function max(numberArray) {
+        return numberArray.reduce((a, b) => Math.max(a, b));
+      }
+
+      var studentScores = {
+        student1: {
+          id: 123456789,
+          scores: {
+            exams: [90, 95, 100, 80],
+            exercises: [20, 15, 10, 19, 15],
+          },
+        },
+        student2: {
+          id: 123456799,
+          scores: {
+            exams: [50, 70, 90, 100],
+            exercises: [0, 15, 20, 15, 15],
+          },
+        },
+        student3: {
+          id: 123457789,
+          scores: {
+            exams: [88, 87, 88, 89],
+            exercises: [10, 20, 10, 19, 18],
+          },
+        },
+        student4: {
+          id: 112233445,
+          scores: {
+            exams: [100, 100, 100, 100],
+            exercises: [10, 15, 10, 10, 15],
+          },
+        },
+        student5: {
+          id: 112233446,
+          scores: {
+            exams: [50, 80, 60, 90],
+            exercises: [10, 0, 10, 10, 0],
+          },
+        },
+      };
+
+      console.log(generateClassRecordSummary(studentScores));
+
+      // returns:
+      // {
+      //   studentGrades: [ '87 (B)', '73 (D)', '84 (C)', '86 (B)', '56 (F)' ],
+      //   exams: [
+      //     { average: 75.6, minimum: 50, maximum: 100 },
+      //     { average: 86.4, minimum: 70, maximum: 100 },
+      //     { average: 87.6, minimum: 60, maximum: 100 },
+      //     { average: 91.8, minimum: 80, maximum: 100 },
+      //   ],
+      // }
+    </script>
+  </body>
+</html> 

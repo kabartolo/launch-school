@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Anagrams</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // The band countries should be Canada
+      // The band names should have all words capitalized
+      // The dots should be removed from the band names
+
+      var bands = [
+        { name: 'sunset rubdown', country: 'UK', active: false },
+        { name: 'women', country: 'Germany', active: false },
+        { name: 'a silver mt. zion', country: 'Spain', active: true },
+      ];
+
+      // No side effects
+      function processBands(data) {
+        return data.map(function (band) {
+          var newName = capitalizeString(removeDots(band.name));
+          return { 
+            name: newName, 
+            country: 'Canada', 
+            active: band.active,
+          };
+        });
+      }
+
+      function removeDots(string) {
+        return string.replace(/\./g, '');
+      }
+
+      function capitalizeWord(word) {
+        return word[0].toUpperCase() + word.slice(1);
+      }
+
+      function capitalizeString(string) {
+        return string.split(' ').map(word => capitalizeWord(word)).join(' ');
+      }
+
+      // Side effects
+
+      function processBands(data) {
+        return data.map(function (band) {
+          updateCountry(band);
+          updateName(band);
+          return band;
+        });
+      }
+
+      function updateCountry(band) {
+        band.country = 'Canada';
+      }
+
+      function updateName(band) {
+        band.name = capitalizeString(removeDots(band.name));
+      }
+
+      console.log(processBands(bands));
+      console.log(bands);
+
+      // should return:
+      [
+        { name: 'Sunset Rubdown', country: 'Canada', active: false },
+        { name: 'Women', country: 'Canada', active: false },
+        { name: 'A Silver Mt Zion', country: 'Canada', active: true },
+      ]
+    </script>
+  </body>
+</html> 

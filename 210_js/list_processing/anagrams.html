@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Anagrams</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // 1. Filter the list to the anagrams of the given word
+      function anagram(word, list) {
+        return list.filter(function (candidate) {
+          return areAnagrams(candidate, word);
+        });
+      }
+
+      function areAnagrams(candidate, word) {
+        return compareLists(candidate.split('').sort(), word.split('').sort());
+      }
+
+      function compareLists(list1, list2) {
+        var result = true;
+
+        list1.forEach(function (item, index) {
+          if (item !== list2[index]) {
+            result = false;
+          }
+        });
+
+        return result;
+      }
+
+      anagram('listen', ['enlists', 'google', 'inlets', 'banana']);  // [ "inlets" ]
+      anagram('listen', ['enlist', 'google', 'inlets', 'banana']);   // [ "enlist", "inlets" ]
+    </script>
+  </body>
+</html> 

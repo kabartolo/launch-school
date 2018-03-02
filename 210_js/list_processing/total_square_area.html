@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Total Square Area</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      // Write a function that takes an array of rectangles and returns the total area covered by all the rectangles. A rectangle is represented by a height and a width.
+
+      // Abstract the problem:
+      // 1. map the array of rectangles to their respective areas
+      // 2. reduce the array of areas to a sum of the areas
+
+      function totalArea(rectangles) {
+        var areas = rectangles.map(function (rectangle) {
+          return rectangle[0] * rectangle[1];
+        });
+
+        return areas.reduce((sum, area) => sum + area);
+      }
+
+      var rectangles = [[3, 4], [6, 6], [1, 8], [9, 9], [2, 2]];
+
+      console.log(totalArea(rectangles));    // 141
+
+      // Now write a function that calculates the total area of only the squares in the array.
+      // 1. Filter the rectangles to the subset of squares
+      // 2. Call totalArea on the squares
+      function totalSquareArea(rectangles) {
+        var squares = rectangles.filter(function (rectangle) {
+          return rectangle[0] === rectangle[1];
+        });
+
+        return totalArea(squares);
+      }
+    </script>
+  </body>
+</html> 
